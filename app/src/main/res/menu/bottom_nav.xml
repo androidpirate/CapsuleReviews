@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/navMovies"
+        android:icon="@drawable/ic_outline_movie"
+        android:title="@string/bottom_nav_movies"/>
+
+    <item
+        android:id="@+id/navTv"
+        android:icon="@drawable/ic_outline_tv"
+        android:title="@string/bottom_nav_movies"/>
+
+    <item
+        android:id="@+id/navSearch"
+        android:icon="@drawable/ic_outline_search"
+        android:title="@string/bottom_nav_movies"/>
+
+    <item
+        android:id="@+id/navFavorites"
+        android:icon="@drawable/ic_outline_favorite"
+        android:title="@string/bottom_nav_movies"/>
+
+    <item
+        android:id="@+id/navMore"
+        android:icon="@drawable/ic_outline_more"
+        android:title="@string/bottom_nav_movies"/>
+
+</menu>
