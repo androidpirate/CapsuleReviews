@@ -1,5 +1,10 @@
 <resources>
     <string name="app_name">Capsule Reviews</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="popular_movies_title">Popular Movies</string>
+    <string name="bottom_nav_movies">Movies</string>
+    <string name="bottom_nav_tv_shows">TV</string>
+    <string name="bottom_nav_discover">Discover</string>
+    <string name="bottom_nav_favorites">Favorites</string>
+    <string name="bottom_nav_more">More</string>
 </resources>

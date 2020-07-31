@@ -3,28 +3,28 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/navMovies"
+        android:id="@+id/movieListFragment"
         android:icon="@drawable/ic_outline_movie"
         android:title="@string/bottom_nav_movies"/>
 
     <item
-        android:id="@+id/navTv"
+        android:id="@+id/tvListFragment"
         android:icon="@drawable/ic_outline_tv"
-        android:title="@string/bottom_nav_movies"/>
+        android:title="@string/bottom_nav_tv_shows"/>
 
     <item
-        android:id="@+id/navSearch"
+        android:id="@+id/searchFragment"
         android:icon="@drawable/ic_outline_search"
-        android:title="@string/bottom_nav_movies"/>
+        android:title="@string/bottom_nav_discover"/>
 
     <item
-        android:id="@+id/navFavorites"
+        android:id="@+id/favoritesFragment"
         android:icon="@drawable/ic_outline_favorite"
-        android:title="@string/bottom_nav_movies"/>
+        android:title="@string/bottom_nav_favorites"/>
 
     <item
-        android:id="@+id/navMore"
+        android:id="@+id/moreFragment"
         android:icon="@drawable/ic_outline_more"
-        android:title="@string/bottom_nav_movies"/>
+        android:title="@string/bottom_nav_more"/>
 
 </menu>
