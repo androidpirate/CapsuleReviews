@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/movieShowcase"
+    android:background="#000000"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/scPoster"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:contentDescription="@string/showcase_movie_poster_description"
+        android:src="@drawable/ic_image_placeholder"
+        tools:scaleType="fitCenter"
+        tools:srcCompat="@drawable/ic_image_placeholder"/>
+
+    <FrameLayout
+        android:id="@+id/scControlFrame"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:background="@drawable/custom_gradient_background"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <TextView
+        android:id="@+id/scTitle"
+        android:layout_width="@dimen/match_constraint"
+        android:layout_height="wrap_content"
+        android:text="TITLE"
+        android:textSize="32sp"
+        android:textStyle="bold"
+        android:textColor="#FDFDFD"
+        android:gravity="center_horizontal"
+        app:layout_constraintTop_toTopOf="@id/scControlFrame"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <TextView
+        android:id="@+id/scSubtitle"
+        android:layout_width="@dimen/match_constraint"
+        android:layout_height="wrap_content"
+        android:text="Subtitle"
+        android:textSize="18sp"
+        android:textColor="#FDFDFD"
+        android:gravity="center_horizontal"
+        app:layout_constraintTop_toBottomOf="@id/scTitle"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <ImageView
+        android:id="@+id/scAddFavorite"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/showcase_add_to_favorite_description"
+        android:src="@drawable/ic_outline_favorite_white"
+        app:layout_constraintTop_toBottomOf="@id/scSubtitle"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/scPlay"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <TextView
+        android:id="@+id/scAddFavoriteTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Add Favorites"
+        android:textSize="12sp"
+        android:textColor="#FDFDFD"
+        app:layout_constraintTop_toBottomOf="@id/scAddFavorite"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/scPlay"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <ImageView
+        android:id="@+id/scPlay"
+        android:layout_width="60dp"
+        android:layout_height="40dp"
+        android:contentDescription="@string/showcase_plat_description"
+        android:background="@drawable/custom_rectangular_background"
+        android:src="@drawable/ic_filled_play_black"
+        app:layout_constraintTop_toBottomOf="@id/scSubtitle"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/scInfo"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/scAddFavorite"/>
+
+    <ImageView
+        android:id="@+id/scInfo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/showcase_goto_details_description"
+        android:src="@drawable/ic_filled_info_white"
+        app:layout_constraintTop_toBottomOf="@id/scSubtitle"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/scPlay"/>
+
+    <TextView
+        android:id="@+id/scInfoTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="See Details"
+        android:textSize="12sp"
+        android:textColor="#FDFDFD"
+        app:layout_constraintTop_toBottomOf="@id/scInfo"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/scPlay"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -7,4 +7,8 @@
     <string name="bottom_nav_discover">Discover</string>
     <string name="bottom_nav_favorites">Favorites</string>
     <string name="bottom_nav_more">More</string>
+    <string name="showcase_movie_poster_description">Showcase movie poster.</string>
+    <string name="showcase_add_to_favorite_description">Add showcase movie to favorites button.</string>
+    <string name="showcase_plat_description">Play showcase movie trailer.</string>
+    <string name="showcase_goto_details_description">Go to showcase movie details.</string>
 </resources>
