@@ -2,6 +2,7 @@
     <string name="app_name">Capsule Reviews</string>
 
     <string name="popular_movies_title">Popular Movies</string>
+    <string name="top_rated_movies_title">Top Rated Movies</string>
     <string name="bottom_nav_movies">Movies</string>
     <string name="bottom_nav_tv_shows">TV</string>
     <string name="bottom_nav_discover">Discover</string>
@@ -11,4 +12,8 @@
     <string name="showcase_add_to_favorite_description">Add showcase movie to favorites button.</string>
     <string name="showcase_plat_description">Play showcase movie trailer.</string>
     <string name="showcase_goto_details_description">Go to showcase movie details.</string>
+    <string name="list_item_preview_description">List item preview.</string>
+    <string name="now_playing_movies_title">Now Playing Movies</string>
+    <string name="upcoming_movies_title">Upcoming Movies</string>
+    <string name="trending_movies_title">Trending Movies</string>
 </resources>
