@@ -14,7 +14,7 @@
         android:layout_height="wrap_content">
 
         <include
-            layout="@layout/movie_showcase"
+            layout="@layout/showcase"
             android:layout_width="match_parent"
             android:layout_height="500dp"
             app:layout_constraintBottom_toTopOf="@id/popularTitle"
