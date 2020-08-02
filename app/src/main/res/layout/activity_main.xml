@@ -23,6 +23,8 @@
         android:id="@+id/bottomNavigationBar"
         android:layout_width="@dimen/match_constraint"
         android:layout_height="wrap_content"
+        app:itemTextColor="#FDFDFD"
+        app:itemIconTint="#FDFDFD"
         app:menu="@menu/bottom_nav"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
