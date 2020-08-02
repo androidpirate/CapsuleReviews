@@ -20,7 +20,7 @@
         android:id="@+id/movieToolbarTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Movies"
+        android:text="TV"
         android:gravity="center_vertical"
         android:textSize="20sp"
         android:textStyle="bold"

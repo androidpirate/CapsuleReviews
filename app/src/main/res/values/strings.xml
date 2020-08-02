@@ -16,4 +16,7 @@
     <string name="now_playing_movies_title">Now Playing Movies</string>
     <string name="upcoming_movies_title">Upcoming Movies</string>
     <string name="trending_movies_title">Trending Movies</string>
+    <string name="popular_tv_title">Popular TV</string>
+    <string name="top_rated_tv_title">Top Rated TV</string>
+    <string name="trending_tv_title">Trending TV</string>
 </resources>
