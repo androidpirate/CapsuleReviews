@@ -8,7 +8,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.github.androidpirate.capsulereviews.R
 import com.github.androidpirate.capsulereviews.data.Movie
 import com.github.androidpirate.capsulereviews.util.MovieDiffCallback
-import kotlinx.android.synthetic.main.list_item.view.*
 import java.lang.IllegalArgumentException
 
 class MovieListAdapter: ListAdapter<Movie, MovieListAdapter.MovieHolder>(MovieDiffCallback()) {
@@ -16,12 +15,14 @@ class MovieListAdapter: ListAdapter<Movie, MovieListAdapter.MovieHolder>(MovieDi
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieHolder {
         return when(viewType) {
             R.layout.see_more_list_item -> {
-                val view = LayoutInflater.from(parent.context).inflate(R.layout.see_more_list_item, parent, false)
-                MovieHolder(view)
+                val itemView = LayoutInflater.from(parent.context)
+                    .inflate(R.layout.see_more_list_item, parent, false)
+                MovieHolder(itemView)
             }
             R.layout.list_item -> {
-                val view = LayoutInflater.from(parent.context).inflate(R.layout.list_item, parent, false)
-                MovieHolder(view)
+                val itemView = LayoutInflater.from(parent.context)
+                    .inflate(R.layout.list_item, parent, false)
+                MovieHolder(itemView)
             }
             else -> throw IllegalArgumentException("Unknown view type $viewType")
         }
