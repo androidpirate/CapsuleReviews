@@ -17,7 +17,7 @@
         app:layout_constraintBottom_toBottomOf="parent"/>
 
     <TextView
-        android:id="@+id/movieToolbarTitle"
+        android:id="@+id/tvToolbarTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="TV"
@@ -31,7 +31,21 @@
         android:layout_marginStart="@dimen/margin_64"/>
 
     <Button
-        android:id="@+id/movieGenreSpinner"
+        android:id="@+id/tvNetworkSpinner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="#000000"
+        android:text="Networks"
+        android:textAllCaps="false"
+        android:textColor="#FDFDFD"
+        android:textSize="20sp"
+        android:drawableEnd="@drawable/ic_filled_dropdown_white"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toEndOf="@id/tvToolbarTitle"
+        android:layout_marginStart="@dimen/margin_32"/>
+
+    <Button
+        android:id="@+id/tvGenreSpinner"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="#000000"
@@ -41,7 +55,7 @@
         android:textSize="20sp"
         android:drawableEnd="@drawable/ic_filled_dropdown_white"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toEndOf="@id/movieToolbarTitle"
+        app:layout_constraintStart_toEndOf="@id/tvNetworkSpinner"
         android:layout_marginStart="@dimen/margin_32"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
