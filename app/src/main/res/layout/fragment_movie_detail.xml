@@ -35,7 +35,7 @@
             android:id="@+id/actionBar"
             android:layout_width="@dimen/match_constraint"
             android:layout_height="wrap_content"
-            layout="@layout/movie_action_bar"
+            layout="@layout/detail_action_bar"
             android:layout_marginTop="@dimen/margin_32"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -54,7 +54,7 @@
             android:id="@+id/movieSimilar"
             android:layout_width="@dimen/match_constraint"
             android:layout_height="wrap_content"
-            layout="@layout/movie_similar"
+            layout="@layout/detail_similar"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/movieInfo"/>
