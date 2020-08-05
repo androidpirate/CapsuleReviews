@@ -8,11 +8,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.github.androidpirate.capsulereviews.R
 import com.github.androidpirate.capsulereviews.data.TvShow
 import com.github.androidpirate.capsulereviews.util.ItemClickListener
-import com.github.androidpirate.capsulereviews.util.TvShowCallback
+import com.github.androidpirate.capsulereviews.util.TvShowDiffCallback
 import java.lang.IllegalArgumentException
 
 class TvListAdapter(private val clickListener: ItemClickListener):
-    ListAdapter<TvShow, TvListAdapter.TvShowHolder>(TvShowCallback()) {
+    ListAdapter<TvShow, TvListAdapter.TvShowHolder>(TvShowDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TvShowHolder {
         return when(viewType) {
