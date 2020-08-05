@@ -10,13 +10,21 @@
         android:id="@+id/movieListFragment"
         android:name="com.github.androidpirate.capsulereviews.ui.movie.list.MovieListFragment"
         android:label="fragment_movie_list"
-        tools:layout="@layout/fragment_movie_list"/>
+        tools:layout="@layout/fragment_movie_list">
+        <action
+            android:id="@+id/action_movie_list_toDetail"
+            app:destination="@id/movieDetailFragment"/>
+    </fragment>
 
     <fragment
         android:id="@+id/tvListFragment"
         android:name="com.github.androidpirate.capsulereviews.ui.tv.list.TvListFragment"
         android:label="fragment_tv_list"
-        tools:layout="@layout/fragment_tv_list"/>
+        tools:layout="@layout/fragment_tv_list">
+        <action
+            android:id="@+id/action_tv_list_toDetail"
+            app:destination="@id/tvDetailFragment"/>
+    </fragment>
 
     <fragment
         android:id="@+id/searchFragment"
@@ -35,5 +43,34 @@
         android:name="com.github.androidpirate.capsulereviews.ui.more.MoreFragment"
         android:label="fragment_more"
         tools:layout="@layout/fragment_more"/>
+
+    <fragment
+        android:id="@+id/movieDetailFragment"
+        android:name="com.github.androidpirate.capsulereviews.ui.movie.detail.MovieDetailFragment"
+        android:label="fragment_movie_detail"
+        tools:layout="@layout/fragment_movie_detail">
+        <argument
+            android:name="movieId"
+            app:argType="integer"
+            android:defaultValue="0"/>
+        <action
+            android:id="@+id/action_movie_detail_toList"
+            app:destination="@id/movieListFragment"
+            />
+    </fragment>
+
+    <fragment
+        android:id="@+id/tvDetailFragment"
+        android:name="com.github.androidpirate.capsulereviews.ui.tv.detail.TvDetailFragment"
+        android:label="fragment_tv_detail"
+        tools:layout="@layout/fragment_tv_detail">
+        <argument
+            android:name="showId"
+            app:argType="integer"
+            android:defaultValue="0"/>
+        <action
+            android:id="@+id/action_tv_detail_toList"
+            app:destination="@id/tvListFragment"/>
+    </fragment>
 
 </navigation>
