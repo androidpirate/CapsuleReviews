@@ -7,10 +7,12 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.github.androidpirate.capsulereviews.R
 import com.github.androidpirate.capsulereviews.data.TvShow
+import com.github.androidpirate.capsulereviews.util.ItemClickListener
 import com.github.androidpirate.capsulereviews.util.TvShowCallback
 import java.lang.IllegalArgumentException
 
-class TvListAdapter: ListAdapter<TvShow, TvListAdapter.TvShowHolder>(TvShowCallback()) {
+class TvListAdapter(private val clickListener: ItemClickListener):
+    ListAdapter<TvShow, TvListAdapter.TvShowHolder>(TvShowCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TvShowHolder {
         return when(viewType) {
@@ -29,7 +31,7 @@ class TvListAdapter: ListAdapter<TvShow, TvListAdapter.TvShowHolder>(TvShowCallb
     }
 
     override fun onBindViewHolder(holder: TvShowHolder, position: Int) {
-        holder.onBindTvShow(getItem(position))
+        holder.onBindTvShow(getItem(position), clickListener)
     }
 
     override fun getItemViewType(position: Int): Int {
@@ -41,8 +43,8 @@ class TvListAdapter: ListAdapter<TvShow, TvListAdapter.TvShowHolder>(TvShowCallb
 
     class TvShowHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
 
-        fun onBindTvShow(show: TvShow) {
-
+        fun onBindTvShow(show: TvShow, clickListener: ItemClickListener) {
+            itemView.setOnClickListener { clickListener.onItemClick(show) }
         }
     }
 }
