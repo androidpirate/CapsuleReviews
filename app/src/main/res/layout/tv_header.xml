@@ -6,13 +6,22 @@
     android:layout_height="match_parent">
 
     <ImageView
+        android:id="@+id/btUp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_filled_back_white"
+        android:contentDescription="@string/navigate_up_button_description"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <ImageView
         android:id="@+id/tvPoster"
         android:layout_width="200dp"
         android:layout_height="240dp"
         android:src="@drawable/ic_image_placeholder"
         android:contentDescription="@string/movie_poster_description"
         android:scaleType="fitXY"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btUp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"/>
 
