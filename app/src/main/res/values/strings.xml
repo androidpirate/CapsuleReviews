@@ -34,4 +34,6 @@
     <string name="next_icon_description">Next icon.</string>
     <string name="dot_separator_description">Dot separator.</string>
     <string name="navigate_up_button_description">Navigate up button.</string>
+    <string name="search_icon_description">Search icon.</string>
+    <string name="et_search_hint_content">Search for a keyword</string>
 </resources>
