@@ -28,12 +28,12 @@ class MovieListFragment : Fragment(), ItemClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val adapter: MovieListAdapter = MovieListAdapter(this)
-        adapter.submitList(FakeData.getMovies())
-        rvPopular.adapter = adapter
-        rvTopRated.adapter = adapter
-        rvNowPlaying.adapter = adapter
-        rvUpcoming.adapter = adapter
-        rvTrending.adapter = adapter
+//        adapter.submitList(FakeData.getMovies())
+//        rvPopular.adapter = adapter
+//        rvTopRated.adapter = adapter
+//        rvNowPlaying.adapter = adapter
+//        rvUpcoming.adapter = adapter
+//        rvTrending.adapter = adapter
     }
 
     override fun <T> onItemClick(item: T) {

@@ -29,10 +29,10 @@ class TvListFragment : Fragment(), ItemClickListener{
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val adapter: TvListAdapter = TvListAdapter(this)
-        adapter.submitList(FakeData.getTvShows())
-        rvPopular.adapter = adapter
-        rvTopRated.adapter = adapter
-        rvTrending.adapter = adapter
+//        adapter.submitList(FakeData.getTvShows())
+//        rvPopular.adapter = adapter
+//        rvTopRated.adapter = adapter
+//        rvTrending.adapter = adapter
     }
 
     override fun <T> onItemClick(item: T) {

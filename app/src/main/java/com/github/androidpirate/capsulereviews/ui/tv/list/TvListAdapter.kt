@@ -6,13 +6,13 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.github.androidpirate.capsulereviews.R
-import com.github.androidpirate.capsulereviews.data.TvShow
+import com.github.androidpirate.capsulereviews.data.response.tvShows.TvShowsResult
 import com.github.androidpirate.capsulereviews.util.ItemClickListener
 import com.github.androidpirate.capsulereviews.util.TvShowDiffCallback
 import java.lang.IllegalArgumentException
 
 class TvListAdapter(private val clickListener: ItemClickListener):
-    ListAdapter<TvShow, TvListAdapter.TvShowHolder>(TvShowDiffCallback()) {
+    ListAdapter<TvShowsResult, TvListAdapter.TvShowHolder>(TvShowDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TvShowHolder {
         return when(viewType) {
@@ -43,7 +43,7 @@ class TvListAdapter(private val clickListener: ItemClickListener):
 
     class TvShowHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
 
-        fun onBindTvShow(show: TvShow, clickListener: ItemClickListener) {
+        fun onBindTvShow(show: TvShowsResult, clickListener: ItemClickListener) {
             itemView.setOnClickListener { clickListener.onItemClick(show) }
         }
     }
