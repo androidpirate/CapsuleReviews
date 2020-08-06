@@ -6,13 +6,13 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.github.androidpirate.capsulereviews.R
-import com.github.androidpirate.capsulereviews.data.response.movies.MoviesResult
+import com.github.androidpirate.capsulereviews.data.response.movies.MoviesListItem
 import com.github.androidpirate.capsulereviews.util.ItemClickListener
 import com.github.androidpirate.capsulereviews.util.MovieDiffCallback
 import java.lang.IllegalArgumentException
 
 class MovieListAdapter(private val clickListener: ItemClickListener):
-    ListAdapter<MoviesResult, MovieListAdapter.MovieHolder>(MovieDiffCallback()) {
+    ListAdapter<MoviesListItem, MovieListAdapter.MovieHolder>(MovieDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieHolder {
         return when(viewType) {
@@ -43,7 +43,7 @@ class MovieListAdapter(private val clickListener: ItemClickListener):
 
     class MovieHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
 
-        fun onBindMovie(movie: MoviesResult, clickListener: ItemClickListener) {
+        fun onBindMovie(movie: MoviesListItem, clickListener: ItemClickListener) {
             itemView.setOnClickListener { clickListener.onItemClick(movie) }
         }
     }

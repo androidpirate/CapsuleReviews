@@ -1,14 +1,14 @@
 package com.github.androidpirate.capsulereviews.util
 
 import androidx.recyclerview.widget.DiffUtil
-import com.github.androidpirate.capsulereviews.data.response.tvShows.TvShowsResult
+import com.github.androidpirate.capsulereviews.data.response.tvShows.TvShowsListItem
 
-class TvShowDiffCallback(): DiffUtil.ItemCallback<TvShowsResult>() {
-    override fun areItemsTheSame(oldItem: TvShowsResult, newItem: TvShowsResult): Boolean {
+class TvShowDiffCallback(): DiffUtil.ItemCallback<TvShowsListItem>() {
+    override fun areItemsTheSame(oldItem: TvShowsListItem, newItem: TvShowsListItem): Boolean {
         TODO("Not yet implemented")
     }
 
-    override fun areContentsTheSame(oldItem: TvShowsResult, newItem: TvShowsResult): Boolean {
+    override fun areContentsTheSame(oldItem: TvShowsListItem, newItem: TvShowsListItem): Boolean {
         TODO("Not yet implemented")
     }
 }
