@@ -5,11 +5,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.github.androidpirate.capsulereviews.R
 import com.github.androidpirate.capsulereviews.data.response.movies.MoviesListItem
 import com.github.androidpirate.capsulereviews.util.ItemClickListener
 import com.github.androidpirate.capsulereviews.util.MovieDiffCallback
 import java.lang.IllegalArgumentException
+import kotlinx.android.synthetic.main.*
+import kotlinx.android.synthetic.main.list_item.view.*
 
 class MovieListAdapter(private val clickListener: ItemClickListener):
     ListAdapter<MoviesListItem, MovieListAdapter.MovieHolder>(MovieDiffCallback()) {
@@ -31,7 +34,9 @@ class MovieListAdapter(private val clickListener: ItemClickListener):
     }
 
     override fun onBindViewHolder(holder: MovieHolder, position: Int) {
-        holder.onBindMovie(getItem(position), clickListener)
+        if(position != itemCount - 1) {
+            holder.onBindMovie(getItem(position), clickListener)
+        }
     }
 
     override fun getItemViewType(position: Int): Int {
@@ -44,7 +49,14 @@ class MovieListAdapter(private val clickListener: ItemClickListener):
     class MovieHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
 
         fun onBindMovie(movie: MoviesListItem, clickListener: ItemClickListener) {
+            setMovieThumbnail(movie.posterPath)
             itemView.setOnClickListener { clickListener.onItemClick(movie) }
+        }
+
+        private fun setMovieThumbnail(posterPath: String) {
+            Glide.with(itemView.context)
+                .load("https://image.tmdb.org/t/p/w185/" + posterPath)
+                .into(itemView.ivListItem)
         }
     }
 }

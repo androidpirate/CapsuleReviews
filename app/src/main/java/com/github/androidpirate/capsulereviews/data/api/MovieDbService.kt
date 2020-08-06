@@ -26,6 +26,10 @@ interface MovieDbService {
     // https://api.themoviedb.org/3/movie/upcoming?api_key=16c6cda19ab9c4b72bfc817f9dadcc23&page={page_no}
     @GET("movie/upcoming")
     suspend fun getUpcomingMovies(): MoviesResponse
+    // Trending Movies
+    // https://api.themoviedb.org/3/trending/movie/week?api_key=16c6cda19ab9c4b72bfc817f9dadcc23&page={page_no}
+    @GET("trending/movie/week")
+    suspend fun getTrendingMovies(): MoviesResponse
     // Movie Details
     // https://api.themoviedb.org/3/movie/{movie_id}?api_key=16c6cda19ab9c4b72bfc817f9dadcc23
     // Movie Trailers Endpoint
