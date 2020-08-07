@@ -1,5 +1,6 @@
 package com.github.androidpirate.capsulereviews.ui.movie.list
 
+import android.graphics.Movie
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,6 +9,8 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.github.androidpirate.capsulereviews.R
 import com.github.androidpirate.capsulereviews.data.api.MovieDbService
+import com.github.androidpirate.capsulereviews.data.response.movie.MovieResponse
+import com.github.androidpirate.capsulereviews.data.response.movies.MoviesListItem
 import com.github.androidpirate.capsulereviews.util.ItemClickListener
 import kotlinx.android.synthetic.main.fragment_movie_list.*
 import kotlinx.coroutines.Dispatchers
@@ -74,6 +77,7 @@ class MovieListFragment : Fragment(), ItemClickListener {
     }
 
     override fun <T> onItemClick(item: T) {
-        findNavController().navigate(R.id.action_movie_list_toDetail)
+        val action = MovieListFragmentDirections.actionMovieListToDetail((item as MoviesListItem).id)
+        findNavController().navigate(action)
     }
 }

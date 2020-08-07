@@ -55,8 +55,7 @@
             android:defaultValue="0"/>
         <action
             android:id="@+id/action_movie_detail_toList"
-            app:destination="@id/movieListFragment"
-            />
+            app:destination="@id/movieListFragment"/>
     </fragment>
 
     <fragment
