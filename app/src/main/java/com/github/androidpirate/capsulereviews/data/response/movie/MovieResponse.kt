@@ -3,7 +3,7 @@ package com.github.androidpirate.capsulereviews.data.response.movie
 
 import com.google.gson.annotations.SerializedName
 
-data class Movie(
+data class MovieResponse(
     @SerializedName("backdrop_path")
     val backdropPath: String,
     @SerializedName("budget")

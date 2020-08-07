@@ -3,7 +3,7 @@ package com.github.androidpirate.capsulereviews.data.response.tvShow
 
 import com.google.gson.annotations.SerializedName
 
-data class TvShow(
+data class TvShowResponse(
     @SerializedName("backdrop_path")
     val backdropPath: String,
     @SerializedName("created_by")
