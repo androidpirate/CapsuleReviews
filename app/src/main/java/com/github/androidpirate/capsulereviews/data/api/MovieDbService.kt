@@ -1,42 +1,62 @@
 package com.github.androidpirate.capsulereviews.data.api
 
 import com.github.androidpirate.capsulereviews.BuildConfig
-import com.github.androidpirate.capsulereviews.data.response.movies.MoviesListItem
+import com.github.androidpirate.capsulereviews.data.response.movie.MovieResponse
 import com.github.androidpirate.capsulereviews.data.response.movies.MoviesResponse
+import com.github.androidpirate.capsulereviews.data.response.tvShow.TvShowResponse
+import com.github.androidpirate.capsulereviews.data.response.tvShows.TvShowsResponse
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
+import retrofit2.http.Path
 
 interface MovieDbService {
-    // Popular Movies
-    // https://api.themoviedb.org/3/movie/popular?api_key=16c6cda19ab9c4b72bfc817f9dadcc23&page={page_no}
+    /******************************
+     *    Movies Endpoints
+     ******************************/
     @GET("movie/popular")
     suspend fun getPopularMovies(): MoviesResponse
-    // Top Rated Movies
-    // https://api.themoviedb.org/3/movie/top_rated?api_key=16c6cda19ab9c4b72bfc817f9dadcc23&page={page_no}
+
     @GET("movie/top_rated")
     suspend fun getTopRatedMovies(): MoviesResponse
-    // Now Playing Movies
-    // https://api.themoviedb.org/3/movie/now_playing?api_key=16c6cda19ab9c4b72bfc817f9dadcc23&page={page_no}
+
     @GET("movie/now_playing")
     suspend fun getNowPlayingMovies(): MoviesResponse
-    // Upcoming Movies
-    // https://api.themoviedb.org/3/movie/upcoming?api_key=16c6cda19ab9c4b72bfc817f9dadcc23&page={page_no}
+
     @GET("movie/upcoming")
     suspend fun getUpcomingMovies(): MoviesResponse
-    // Trending Movies
-    // https://api.themoviedb.org/3/trending/movie/week?api_key=16c6cda19ab9c4b72bfc817f9dadcc23&page={page_no}
+
     @GET("trending/movie/week")
     suspend fun getTrendingMovies(): MoviesResponse
-    // Movie Details
-    // https://api.themoviedb.org/3/movie/{movie_id}?api_key=16c6cda19ab9c4b72bfc817f9dadcc23
+
+    @GET("movie/{movie_id}/similar")
+    suspend fun getSimilarMovies(@Path("movie_id") movieId: Int): MoviesResponse
+
+    @GET("movie/{movie_id}")
+    suspend fun getMovieDetails(@Path("movie_id") movieId: Int): MovieResponse
+
     // Movie Trailers Endpoint
     // https://api.themoviedb.org/3/movie/{movie_id}/videos?api_key=16c6cda19ab9c4b72bfc817f9dadcc23
     // https://www.youtube.com/watch?v={key}
-    // Get Similar Movies
-    // https://api.themoviedb.org/3/movie/{movie_id}/videos?api_key=16c6cda19ab9c4b72bfc817f9dadcc23
+    // TODO 3: Videos require a VideosResponseType
+
+    /******************************
+     *    Tv Shows Endpoints
+     ******************************/
+    @GET("tv/popular")
+    suspend fun getPopularTvShows(): TvShowsResponse
+
+    @GET("tv/top_rated")
+    suspend fun getTopRatedTvShows(): TvShowsResponse
+
+    @GET("trending/tv/week")
+    suspend fun getTrendingTvShows(): TvShowsResponse
+
+    @GET("tv/{tv_id}")
+    suspend fun getTvShowDetails(@Path("tv_id") tvId: Int): TvShowResponse
+
     companion object {
         operator fun invoke(): MovieDbService {
             val requestInterceptor = Interceptor { chain ->
