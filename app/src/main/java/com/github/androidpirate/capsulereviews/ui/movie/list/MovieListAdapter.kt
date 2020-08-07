@@ -55,6 +55,7 @@ class MovieListAdapter(private val clickListener: ItemClickListener):
 
         private fun setMovieThumbnail(posterPath: String) {
             Glide.with(itemView.context)
+                // TODO 4: Take care of the base URL when saving data into local db
                 .load("https://image.tmdb.org/t/p/w185/" + posterPath)
                 .into(itemView.ivListItem)
         }
