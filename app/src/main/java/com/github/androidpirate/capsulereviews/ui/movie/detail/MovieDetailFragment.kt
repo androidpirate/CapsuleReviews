@@ -29,6 +29,8 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.lang.StringBuilder
+import java.text.DecimalFormat
+import java.text.NumberFormat
 
 class MovieDetailFragment : Fragment(), ItemClickListener {
     private val args: MovieDetailFragmentArgs by navArgs()
@@ -86,8 +88,8 @@ class MovieDetailFragment : Fragment(), ItemClickListener {
         genres.text = formatGenres(movie.genres)
         runTime.text = formatRunTime(movie.runtime)
         overview.text = movie.overview
-        budget.text = movie.budget.toString()
-        revenue.text = movie.revenue.toString()
+        budget.text = formatBudget(movie.budget)
+        revenue.text = formatRevenue(movie.revenue)
         adapter.submitList(similarMovies)
         rvSimilar.addItemDecoration(GridSpacingItemDecoration(3, 0, true))
         rvSimilar.adapter = adapter
@@ -117,6 +119,16 @@ class MovieDetailFragment : Fragment(), ItemClickListener {
             movieGenres += "${genres[i].name}, "
         }
         return movieGenres
+    }
+
+    private fun formatBudget(budget: Int): String {
+        val formatter = DecimalFormat("#,###")
+        return "$ ${formatter.format(budget)}"
+    }
+
+    private fun formatRevenue(revenue: Int): String {
+        val formatter = DecimalFormat("#,###")
+        return "$ ${formatter.format(revenue)}"
     }
 
     override fun <T> onItemClick(item: T) {
