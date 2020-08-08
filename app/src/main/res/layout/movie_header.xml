@@ -8,11 +8,12 @@
     <ImageView
         android:id="@+id/movieHeaderBg"
         android:layout_width="@dimen/match_constraint"
-        android:layout_height="350dp"
+        android:layout_height="330dp"
         android:src="@drawable/ic_image_placeholder"
         android:contentDescription="@string/movie_header_background_image_description"
         android:scaleType="center"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/movieTitle"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 
