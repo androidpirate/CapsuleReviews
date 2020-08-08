@@ -45,6 +45,13 @@ class TvListAdapter(private val clickListener: ItemClickListener):
         }
     }
 
+    override fun getItemCount(): Int {
+        if(currentList.size > ITEM_COUNT_LIMIT) {
+            return ITEM_COUNT_LIMIT
+        }
+        return currentList.size
+    }
+
     class TvShowHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
 
         fun onBindTvShow(show: TvShowsListItem, clickListener: ItemClickListener) {
@@ -58,5 +65,9 @@ class TvListAdapter(private val clickListener: ItemClickListener):
                 .load("https://image.tmdb.org/t/p/w185/" + posterPath)
                 .into(itemView.ivListItem)
         }
+    }
+
+    companion object {
+        const val ITEM_COUNT_LIMIT = 20
     }
 }
