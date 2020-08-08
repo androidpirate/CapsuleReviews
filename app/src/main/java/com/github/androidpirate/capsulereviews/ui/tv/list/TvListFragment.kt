@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import com.github.androidpirate.capsulereviews.R
 import com.github.androidpirate.capsulereviews.data.api.MovieDbService
+import com.github.androidpirate.capsulereviews.data.response.tvShows.TvShowsListItem
 import com.github.androidpirate.capsulereviews.util.ItemClickListener
 import kotlinx.android.synthetic.main.fragment_tv_list.*
 import kotlinx.coroutines.Dispatchers
@@ -59,6 +60,7 @@ class TvListFragment : Fragment(), ItemClickListener{
     }
 
     override fun <T> onItemClick(item: T) {
-        findNavController().navigate(R.id.action_tv_list_toDetail)
+        val action = TvListFragmentDirections.actionTvListToDetail((item as TvShowsListItem).id)
+        findNavController().navigate(action)
     }
 }

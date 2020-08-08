@@ -6,7 +6,7 @@
     android:layout_height="match_parent">
 
     <ImageView
-        android:id="@+id/movieHeaderBg"
+        android:id="@+id/tvHeaderBg"
         android:layout_width="@dimen/match_constraint"
         android:layout_height="@dimen/match_constraint"
         android:src="@drawable/ic_image_placeholder"

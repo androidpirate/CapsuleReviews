@@ -10,6 +10,8 @@ data class TvShowResponse(
     val createdBy: List<CreatedBy>,
     @SerializedName("episode_run_time")
     val episodeRunTime: List<Int>,
+    @SerializedName("first_air_date")
+    val releaseDate: String,
     @SerializedName("genres")
     val genres: List<Genre>,
     @SerializedName("id")

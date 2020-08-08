@@ -54,6 +54,9 @@ interface MovieDbService {
     @GET("trending/tv/week")
     suspend fun getTrendingTvShows(): TvShowsResponse
 
+    @GET("tv/{tv_id}/similar")
+    suspend fun getSimilarTvShows(@Path("tv_id") tvId: Int): TvShowsResponse
+
     @GET("tv/{tv_id}")
     suspend fun getTvShowDetails(@Path("tv_id") tvId: Int): TvShowResponse
 
