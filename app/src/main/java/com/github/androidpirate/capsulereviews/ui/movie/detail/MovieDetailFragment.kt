@@ -82,13 +82,12 @@ class MovieDetailFragment : Fragment(), ItemClickListener {
         movieTagLine.text = movie.tagline
         // TODO 5: Content rating requires a ReleasesResponse
         releaseDate.text = formatReleaseDate(movie.releaseDate)
-//        releaseDate.text = movie.releaseDate
         var movieGenres: String ?= null
         for(movieGenre in movie.genres) {
             movieGenres = "${movieGenre.name}, "
         }
         genres.text = movieGenres
-        runTime.text = movie.runtime.toString()
+        runTime.text = formatRunTime(movie.runtime)
         overview.text = movie.overview
         budget.text = movie.budget.toString()
         revenue.text = movie.revenue.toString()
@@ -103,6 +102,12 @@ class MovieDetailFragment : Fragment(), ItemClickListener {
         val month = dateArray[1]
         val day = dateArray[2]
         return "$day/$month/$year"
+    }
+
+    private fun formatRunTime(runTime: Int): String {
+        val hour = runTime / 60
+        val minute = runTime % 60
+        return "$hour h $minute m"
     }
 
     override fun <T> onItemClick(item: T) {
