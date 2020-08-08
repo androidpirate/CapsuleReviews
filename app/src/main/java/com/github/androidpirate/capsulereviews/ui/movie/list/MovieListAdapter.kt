@@ -11,7 +11,6 @@ import com.github.androidpirate.capsulereviews.data.response.movies.MoviesListIt
 import com.github.androidpirate.capsulereviews.util.ItemClickListener
 import com.github.androidpirate.capsulereviews.util.MovieDiffCallback
 import java.lang.IllegalArgumentException
-import kotlinx.android.synthetic.main.*
 import kotlinx.android.synthetic.main.list_item.view.*
 
 class MovieListAdapter(private val clickListener: ItemClickListener):
@@ -46,7 +45,14 @@ class MovieListAdapter(private val clickListener: ItemClickListener):
         }
     }
 
-    class MovieHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
+    override fun getItemCount(): Int {
+        if(currentList.size > ITEM_COUNT_LIMIT) {
+            return ITEM_COUNT_LIMIT
+        }
+        return currentList.size
+    }
+
+    inner class MovieHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
 
         fun onBindMovie(movie: MoviesListItem, clickListener: ItemClickListener) {
             setMovieThumbnail(movie.posterPath)
@@ -59,5 +65,9 @@ class MovieListAdapter(private val clickListener: ItemClickListener):
                 .load("https://image.tmdb.org/t/p/w185/" + posterPath)
                 .into(itemView.ivListItem)
         }
+    }
+
+    companion object {
+        const val ITEM_COUNT_LIMIT = 12
     }
 }
