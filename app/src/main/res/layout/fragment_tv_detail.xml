@@ -5,7 +5,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="@dimen/padding_16"
     tools:context=".ui.tv.detail.TvDetailFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -26,7 +25,7 @@
             android:layout_width="@dimen/match_constraint"
             android:layout_height="wrap_content"
             layout="@layout/tv_summary"
-            android:layout_marginTop="@dimen/margin_16"
+            android:layout_margin="@dimen/margin_16"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tvHeader"/>
@@ -36,7 +35,7 @@
             android:layout_width="@dimen/match_constraint"
             android:layout_height="wrap_content"
             layout="@layout/detail_action_bar"
-            android:layout_marginTop="@dimen/margin_32"
+            android:layout_margin="@dimen/margin_16"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tvSummary"/>
@@ -46,6 +45,7 @@
             android:layout_width="@dimen/match_constraint"
             android:layout_height="wrap_content"
             layout="@layout/tv_info"
+            android:layout_margin="@dimen/margin_16"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/actionBar"/>
@@ -55,6 +55,7 @@
             android:layout_width="@dimen/match_constraint"
             android:layout_height="wrap_content"
             layout="@layout/detail_similar"
+            android:layout_margin="@dimen/margin_16"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tvInfo"/>

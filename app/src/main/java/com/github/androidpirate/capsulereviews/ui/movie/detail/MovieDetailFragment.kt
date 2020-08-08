@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions.bitmapTransform
 import com.github.androidpirate.capsulereviews.R
 import com.github.androidpirate.capsulereviews.data.api.MovieDbService
 import com.github.androidpirate.capsulereviews.data.response.movie.MovieResponse
@@ -15,7 +16,9 @@ import com.github.androidpirate.capsulereviews.data.response.movies.MoviesListIt
 import com.github.androidpirate.capsulereviews.ui.movie.list.MovieListAdapter
 import com.github.androidpirate.capsulereviews.util.GridSpacingItemDecoration
 import com.github.androidpirate.capsulereviews.util.ItemClickListener
+import jp.wasabeef.glide.transformations.BlurTransformation
 import kotlinx.android.synthetic.main.detail_similar.*
+import kotlinx.android.synthetic.main.fragment_movie_detail.*
 import kotlinx.android.synthetic.main.movie_header.*
 import kotlinx.android.synthetic.main.movie_info.*
 import kotlinx.android.synthetic.main.movie_summary.*
@@ -62,6 +65,10 @@ class MovieDetailFragment : Fragment(), ItemClickListener {
             Glide.with(requireContext())
                 .load("https://image.tmdb.org/t/p/w185/" + movie.posterPath)
                 .into(moviePoster)
+            Glide.with(requireContext())
+                .load("https://image.tmdb.org/t/p/w185/" + movie.posterPath)
+                .apply(bitmapTransform(BlurTransformation(100)))
+                .into(movieHeaderBg)
             movieTitle.text = movie.title
             movieTagLine.text = movie.tagline
             // TODO 5: Content rating requires a ReleasesResponse
