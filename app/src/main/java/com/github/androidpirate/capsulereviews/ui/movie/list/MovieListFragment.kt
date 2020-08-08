@@ -61,12 +61,10 @@ class MovieListFragment : Fragment(), ItemClickListener {
                 withContext(Dispatchers.IO) { apiService.getNowPlayingMovies().moviesListItems }
             )
             upcomingMoviesAdapter.submitList(
-                withContext(Dispatchers.IO) { apiService.getUpcomingMovies().moviesListItems
-                }
+                withContext(Dispatchers.IO) { apiService.getUpcomingMovies().moviesListItems }
             )
             trendingMoviesAdapter.submitList(
-                withContext(Dispatchers.IO) {apiService.getTrendingMovies().moviesListItems
-                }
+                withContext(Dispatchers.IO) {apiService.getTrendingMovies().moviesListItems }
             )
         }
         rvPopular.adapter = popularMoviesAdapter

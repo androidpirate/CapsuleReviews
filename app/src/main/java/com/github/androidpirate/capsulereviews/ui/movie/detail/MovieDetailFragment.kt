@@ -1,6 +1,7 @@
 package com.github.androidpirate.capsulereviews.ui.movie.detail
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -26,11 +27,13 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.lang.StringBuilder
 
 class MovieDetailFragment : Fragment(), ItemClickListener {
     private val args: MovieDetailFragmentArgs by navArgs()
     private lateinit var movie: MovieResponse
     private lateinit var adapter: MovieListAdapter
+    private lateinit var similarMovies: List<MoviesListItem>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,31 +63,46 @@ class MovieDetailFragment : Fragment(), ItemClickListener {
                 movie = apiService.getMovieDetails(args.movieId)
             }
             withContext(Dispatchers.IO) {
-                adapter.submitList(apiService.getSimilarMovies(args.movieId).moviesListItems)
+                similarMovies = apiService.getSimilarMovies(args.movieId).moviesListItems
             }
-            Glide.with(requireContext())
-                .load("https://image.tmdb.org/t/p/w185/" + movie.posterPath)
-                .into(moviePoster)
-            Glide.with(requireContext())
-                .load("https://image.tmdb.org/t/p/w185/" + movie.posterPath)
-                .apply(bitmapTransform(BlurTransformation(100)))
-                .into(movieHeaderBg)
-            movieTitle.text = movie.title
-            movieTagLine.text = movie.tagline
-            // TODO 5: Content rating requires a ReleasesResponse
-            releaseDate.text = movie.releaseDate
-            var movieGenres: String ?= null
-            for(movieGenre in movie.genres) {
-                movieGenres = "${movieGenre.name}, "
-            }
-            genres.text = movieGenres
-            runTime.text = movie.runtime.toString()
-            overview.text = movie.overview
-            budget.text = movie.budget.toString()
-            revenue.text = movie.revenue.toString()
-            rvSimilar.addItemDecoration(GridSpacingItemDecoration(3, 0, true))
-            rvSimilar.adapter = adapter
+            setupViews()
         }
+
+    }
+
+    private fun setupViews() {
+        Glide.with(requireContext())
+            .load("https://image.tmdb.org/t/p/w185/" + movie.posterPath)
+            .into(moviePoster)
+        Glide.with(requireContext())
+            .load("https://image.tmdb.org/t/p/w185/" + movie.posterPath)
+            .apply(bitmapTransform(BlurTransformation(100)))
+            .into(movieHeaderBg)
+        movieTitle.text = movie.title
+        movieTagLine.text = movie.tagline
+        // TODO 5: Content rating requires a ReleasesResponse
+        releaseDate.text = formatReleaseDate(movie.releaseDate)
+//        releaseDate.text = movie.releaseDate
+        var movieGenres: String ?= null
+        for(movieGenre in movie.genres) {
+            movieGenres = "${movieGenre.name}, "
+        }
+        genres.text = movieGenres
+        runTime.text = movie.runtime.toString()
+        overview.text = movie.overview
+        budget.text = movie.budget.toString()
+        revenue.text = movie.revenue.toString()
+        adapter.submitList(similarMovies)
+        rvSimilar.addItemDecoration(GridSpacingItemDecoration(3, 0, true))
+        rvSimilar.adapter = adapter
+    }
+
+    private fun formatReleaseDate(releaseDate: String): String {
+        val dateArray = releaseDate.split("-")
+        val year = dateArray[0]
+        val month = dateArray[1]
+        val day = dateArray[2]
+        return "$day/$month/$year"
     }
 
     override fun <T> onItemClick(item: T) {
