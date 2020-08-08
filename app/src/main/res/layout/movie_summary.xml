@@ -15,8 +15,20 @@
         android:textSize="18sp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/separator_1"
+        app:layout_constraintHorizontal_bias="0.5" />
+
+    <ImageView
+        android:id="@+id/separator_1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/dot_separator_description"
+        android:src="@drawable/custom_dot_separator"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/contentRating"
         app:layout_constraintEnd_toStartOf="@+id/releaseDate"
-        app:layout_constraintHorizontal_bias="0.5"/>
+        app:layout_constraintStart_toEndOf="@+id/contentRating"
+        app:layout_constraintHorizontal_bias="0.5" />
 
     <TextView
         android:id="@+id/releaseDate"
@@ -27,46 +39,21 @@
         android:textColor="#FDFDFD"
         android:textSize="18sp"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/contentRating"
-        app:layout_constraintEnd_toStartOf="@+id/separator_1"
-        app:layout_constraintHorizontal_bias="0.5"/>
-
-    <ImageView
-        android:id="@+id/separator_1"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:src="@drawable/custom_dot_separator"
-        android:contentDescription="@string/dot_separator_description"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/releaseDate"
-        app:layout_constraintEnd_toStartOf="@+id/genres"
-        app:layout_constraintHorizontal_bias="0.5"/>
-
-    <TextView
-        android:id="@+id/genres"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:text="Drama, Fantasy, Action"
-        android:textColor="#FDFDFD"
-        android:textSize="18sp"
         app:layout_constraintEnd_toStartOf="@+id/separator_2"
         app:layout_constraintStart_toEndOf="@+id/separator_1"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"/>
+        app:layout_constraintHorizontal_bias="0.5" />
 
     <ImageView
         android:id="@+id/separator_2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/custom_dot_separator"
         android:contentDescription="@string/dot_separator_description"
+        android:src="@drawable/custom_dot_separator"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/genres"
+        app:layout_constraintBottom_toBottomOf="@id/contentRating"
         app:layout_constraintEnd_toStartOf="@+id/runTime"
-        app:layout_constraintHorizontal_bias="0.5"/>
+        app:layout_constraintStart_toEndOf="@+id/releaseDate"
+        app:layout_constraintHorizontal_bias="0.5" />
 
     <TextView
         android:id="@+id/runTime"
@@ -76,9 +63,22 @@
         android:text="2h 1m"
         android:textColor="#FDFDFD"
         android:textSize="18sp"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/separator_2"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"/>
+        app:layout_constraintStart_toEndOf="@+id/separator_2"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintHorizontal_bias="0.5" />
+
+    <TextView
+        android:id="@+id/genres"
+        android:layout_width="@dimen/match_constraint"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:text="Drama, Fantasy, Action"
+        android:textColor="#FDFDFD"
+        android:textSize="18sp"
+        android:layout_marginTop="@dimen/margin_16"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/contentRating" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

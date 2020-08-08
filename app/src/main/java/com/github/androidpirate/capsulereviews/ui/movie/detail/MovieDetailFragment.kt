@@ -12,6 +12,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions.bitmapTransform
 import com.github.androidpirate.capsulereviews.R
 import com.github.androidpirate.capsulereviews.data.api.MovieDbService
+import com.github.androidpirate.capsulereviews.data.response.movie.Genre
 import com.github.androidpirate.capsulereviews.data.response.movie.MovieResponse
 import com.github.androidpirate.capsulereviews.data.response.movies.MoviesListItem
 import com.github.androidpirate.capsulereviews.ui.movie.list.MovieListAdapter
@@ -82,11 +83,7 @@ class MovieDetailFragment : Fragment(), ItemClickListener {
         movieTagLine.text = movie.tagline
         // TODO 5: Content rating requires a ReleasesResponse
         releaseDate.text = formatReleaseDate(movie.releaseDate)
-        var movieGenres: String ?= null
-        for(movieGenre in movie.genres) {
-            movieGenres = "${movieGenre.name}, "
-        }
-        genres.text = movieGenres
+        genres.text = formatGenres(movie.genres)
         runTime.text = formatRunTime(movie.runtime)
         overview.text = movie.overview
         budget.text = movie.budget.toString()
@@ -108,6 +105,18 @@ class MovieDetailFragment : Fragment(), ItemClickListener {
         val hour = runTime / 60
         val minute = runTime % 60
         return "$hour h $minute m"
+    }
+
+    private fun formatGenres(genres: List<Genre>): String {
+        var movieGenres: String = ""
+        for(i in genres.indices) {
+            if(i == genres.size - 1) {
+                movieGenres += genres[i].name
+                break
+            }
+            movieGenres += "${genres[i].name}, "
+        }
+        return movieGenres
     }
 
     override fun <T> onItemClick(item: T) {
