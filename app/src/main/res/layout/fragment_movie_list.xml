@@ -17,6 +17,7 @@
             layout="@layout/movie_showcase"
             android:layout_width="match_parent"
             android:layout_height="500dp"
+            android:layout_marginBottom="@dimen/margin_16"
             app:layout_constraintBottom_toTopOf="@id/popularTitle"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
@@ -32,7 +33,7 @@
             android:textSize="@dimen/list_title"
             android:textStyle="bold"
             android:textColor="#FDFDFD"
-            android:layout_marginTop="@dimen/margin_16"
+            android:layout_marginTop="@dimen/margin_32"
             android:layout_marginBottom="@dimen/margin_16"
             android:layout_marginStart="@dimen/margin_16"
             app:layout_constraintStart_toStartOf="parent"
@@ -47,9 +48,11 @@
             android:orientation="horizontal"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             android:nestedScrollingEnabled="false"
+            android:layout_marginTop="@dimen/margin_16"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/popularTitle"
+            app:layout_constraintBottom_toTopOf="@id/topRatedTitle"
             tools:listitem="@layout/list_item"/>
 
         <TextView
@@ -60,7 +63,7 @@
             android:textSize="@dimen/list_title"
             android:textStyle="bold"
             android:textColor="#FDFDFD"
-            android:layout_marginTop="@dimen/margin_16"
+            android:layout_marginTop="@dimen/margin_32"
             android:layout_marginBottom="@dimen/margin_16"
             android:layout_marginStart="@dimen/margin_16"
             app:layout_constraintStart_toStartOf="parent"
@@ -75,9 +78,11 @@
             android:orientation="horizontal"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             android:nestedScrollingEnabled="false"
+            android:layout_marginTop="@dimen/margin_16"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/topRatedTitle"
+            app:layout_constraintBottom_toTopOf="@id/nowPlayingTitle"
             tools:listitem="@layout/list_item"/>
 
         <TextView
@@ -88,7 +93,7 @@
             android:textSize="@dimen/list_title"
             android:textStyle="bold"
             android:textColor="#FDFDFD"
-            android:layout_marginTop="@dimen/margin_16"
+            android:layout_marginTop="@dimen/margin_32"
             android:layout_marginBottom="@dimen/margin_16"
             android:layout_marginStart="@dimen/margin_16"
             app:layout_constraintStart_toStartOf="parent"
@@ -103,9 +108,11 @@
             android:orientation="horizontal"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             android:nestedScrollingEnabled="false"
+            android:layout_marginTop="@dimen/margin_16"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/nowPlayingTitle"
+            app:layout_constraintBottom_toTopOf="@id/upcomingTitle"
             tools:listitem="@layout/list_item"/>
 
         <TextView
@@ -116,7 +123,7 @@
             android:textSize="@dimen/list_title"
             android:textStyle="bold"
             android:textColor="#FDFDFD"
-            android:layout_marginTop="@dimen/margin_16"
+            android:layout_marginTop="@dimen/margin_32"
             android:layout_marginBottom="@dimen/margin_16"
             android:layout_marginStart="@dimen/margin_16"
             app:layout_constraintStart_toStartOf="parent"
@@ -131,9 +138,11 @@
             android:orientation="horizontal"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             android:nestedScrollingEnabled="false"
+            android:layout_marginTop="@dimen/margin_16"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/upcomingTitle"
+            app:layout_constraintBottom_toTopOf="@id/trendingTitle"
             tools:listitem="@layout/list_item"/>
 
         <TextView
@@ -144,7 +153,7 @@
             android:textSize="@dimen/list_title"
             android:textStyle="bold"
             android:textColor="#FDFDFD"
-            android:layout_marginTop="@dimen/margin_16"
+            android:layout_marginTop="@dimen/margin_32"
             android:layout_marginBottom="@dimen/margin_16"
             android:layout_marginStart="@dimen/margin_16"
             app:layout_constraintStart_toStartOf="parent"
@@ -159,9 +168,11 @@
             android:orientation="horizontal"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             android:nestedScrollingEnabled="false"
+            android:layout_marginTop="@dimen/margin_16"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/trendingTitle"
+            app:layout_constraintBottom_toBottomOf="parent"
             tools:listitem="@layout/list_item"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
