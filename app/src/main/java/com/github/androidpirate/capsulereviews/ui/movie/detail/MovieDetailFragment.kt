@@ -1,13 +1,13 @@
 package com.github.androidpirate.capsulereviews.ui.movie.detail
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import androidx.recyclerview.widget.GridLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions.bitmapTransform
 import com.github.androidpirate.capsulereviews.R
@@ -15,12 +15,11 @@ import com.github.androidpirate.capsulereviews.data.api.MovieDbService
 import com.github.androidpirate.capsulereviews.data.response.movie.Genre
 import com.github.androidpirate.capsulereviews.data.response.movie.MovieResponse
 import com.github.androidpirate.capsulereviews.data.response.movies.MoviesListItem
-import com.github.androidpirate.capsulereviews.ui.movie.list.MovieListAdapter
+import com.github.androidpirate.capsulereviews.ui.adapter.ListItemAdapter
 import com.github.androidpirate.capsulereviews.util.GridSpacingItemDecoration
 import com.github.androidpirate.capsulereviews.util.ItemClickListener
 import jp.wasabeef.glide.transformations.BlurTransformation
 import kotlinx.android.synthetic.main.detail_similar.*
-import kotlinx.android.synthetic.main.fragment_movie_detail.*
 import kotlinx.android.synthetic.main.movie_header.*
 import kotlinx.android.synthetic.main.movie_info.*
 import kotlinx.android.synthetic.main.movie_summary.*
@@ -28,14 +27,12 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.lang.StringBuilder
 import java.text.DecimalFormat
-import java.text.NumberFormat
 
 class MovieDetailFragment : Fragment(), ItemClickListener {
     private val args: MovieDetailFragmentArgs by navArgs()
     private lateinit var movie: MovieResponse
-    private lateinit var adapter: MovieListAdapter
+    private lateinit var adapter: ListItemAdapter<MoviesListItem>
     private lateinit var similarMovies: List<MoviesListItem>
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -60,7 +57,8 @@ class MovieDetailFragment : Fragment(), ItemClickListener {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         val apiService: MovieDbService = MovieDbService()
-        adapter = MovieListAdapter(this)
+        val fragmentName = MovieDetailFragment::class.simpleName
+        adapter = ListItemAdapter(MovieDetailFragment::class.simpleName,this)
         GlobalScope.launch(Dispatchers.Main) {
             withContext(Dispatchers.IO) {
                 movie = apiService.getMovieDetails(args.movieId)
@@ -70,7 +68,6 @@ class MovieDetailFragment : Fragment(), ItemClickListener {
             }
             setupViews()
         }
-
     }
 
     private fun setupViews() {
@@ -91,7 +88,8 @@ class MovieDetailFragment : Fragment(), ItemClickListener {
         budget.text = formatBudget(movie.budget)
         revenue.text = formatRevenue(movie.revenue)
         adapter.submitList(similarMovies)
-        rvSimilar.addItemDecoration(GridSpacingItemDecoration(3, 0, true))
+        rvSimilar.layoutManager = GridLayoutManager(requireContext(), 3)
+        rvSimilar.addItemDecoration(GridSpacingItemDecoration(4, 30, true))
         rvSimilar.adapter = adapter
     }
 

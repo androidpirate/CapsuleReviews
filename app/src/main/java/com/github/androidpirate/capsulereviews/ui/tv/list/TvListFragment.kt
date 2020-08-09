@@ -9,6 +9,7 @@ import androidx.navigation.fragment.findNavController
 import com.github.androidpirate.capsulereviews.R
 import com.github.androidpirate.capsulereviews.data.api.MovieDbService
 import com.github.androidpirate.capsulereviews.data.response.tvShows.TvShowsListItem
+import com.github.androidpirate.capsulereviews.ui.adapter.ListItemAdapter
 import com.github.androidpirate.capsulereviews.util.ItemClickListener
 import kotlinx.android.synthetic.main.fragment_tv_list.*
 import kotlinx.coroutines.Dispatchers
@@ -17,9 +18,9 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class TvListFragment : Fragment(), ItemClickListener{
-    private lateinit var popularShowsAdapter: TvListAdapter
-    private lateinit var topRatedShowsAdapter: TvListAdapter
-    private lateinit var trendingShowsAdapter: TvListAdapter
+    private lateinit var popularShowsAdapter: ListItemAdapter<TvShowsListItem>
+    private lateinit var topRatedShowsAdapter: ListItemAdapter<TvShowsListItem>
+    private lateinit var trendingShowsAdapter: ListItemAdapter<TvShowsListItem>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,9 +40,9 @@ class TvListFragment : Fragment(), ItemClickListener{
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        popularShowsAdapter = TvListAdapter(this)
-        topRatedShowsAdapter = TvListAdapter(this)
-        trendingShowsAdapter = TvListAdapter(this)
+        popularShowsAdapter = ListItemAdapter(TvListFragment::class.simpleName, this)
+        topRatedShowsAdapter = ListItemAdapter(TvListFragment::class.simpleName, this)
+        trendingShowsAdapter = ListItemAdapter(TvListFragment::class.simpleName, this)
         val apiService = MovieDbService()
         GlobalScope.launch(Dispatchers.Main) {
             popularShowsAdapter.submitList(

@@ -11,6 +11,7 @@ import com.github.androidpirate.capsulereviews.R
 import com.github.androidpirate.capsulereviews.data.api.MovieDbService
 import com.github.androidpirate.capsulereviews.data.response.movie.MovieResponse
 import com.github.androidpirate.capsulereviews.data.response.movies.MoviesListItem
+import com.github.androidpirate.capsulereviews.ui.adapter.ListItemAdapter
 import com.github.androidpirate.capsulereviews.util.ItemClickListener
 import kotlinx.android.synthetic.main.fragment_movie_list.*
 import kotlinx.coroutines.Dispatchers
@@ -19,11 +20,11 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class MovieListFragment : Fragment(), ItemClickListener {
-    private lateinit var popularMoviesAdapter: MovieListAdapter
-    private lateinit var topRatedMoviesAdapter: MovieListAdapter
-    private lateinit var nowPlayingMoviesAdapter: MovieListAdapter
-    private lateinit var upcomingMoviesAdapter: MovieListAdapter
-    private lateinit var trendingMoviesAdapter: MovieListAdapter
+    private lateinit var popularMoviesAdapter: ListItemAdapter<MoviesListItem>
+    private lateinit var topRatedMoviesAdapter: ListItemAdapter<MoviesListItem>
+    private lateinit var nowPlayingMoviesAdapter: ListItemAdapter<MoviesListItem>
+    private lateinit var upcomingMoviesAdapter: ListItemAdapter<MoviesListItem>
+    private lateinit var trendingMoviesAdapter: ListItemAdapter<MoviesListItem>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,11 +44,11 @@ class MovieListFragment : Fragment(), ItemClickListener {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        popularMoviesAdapter = MovieListAdapter(this)
-        topRatedMoviesAdapter = MovieListAdapter(this)
-        nowPlayingMoviesAdapter = MovieListAdapter(this)
-        upcomingMoviesAdapter = MovieListAdapter(this)
-        trendingMoviesAdapter = MovieListAdapter(this)
+        popularMoviesAdapter = ListItemAdapter(MovieListFragment::class.simpleName, this)
+        topRatedMoviesAdapter = ListItemAdapter(MovieListFragment::class.simpleName, this)
+        nowPlayingMoviesAdapter = ListItemAdapter(MovieListFragment::class.simpleName, this)
+        upcomingMoviesAdapter = ListItemAdapter(MovieListFragment::class.simpleName, this)
+        trendingMoviesAdapter = ListItemAdapter(MovieListFragment::class.simpleName, this)
         val apiService = MovieDbService()
         GlobalScope.launch(Dispatchers.Main ) {
 

@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import androidx.recyclerview.widget.GridLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.github.androidpirate.capsulereviews.R
@@ -17,10 +18,11 @@ import com.github.androidpirate.capsulereviews.data.response.tvShow.Network
 
 import com.github.androidpirate.capsulereviews.data.response.tvShow.TvShowResponse
 import com.github.androidpirate.capsulereviews.data.response.tvShows.TvShowsListItem
-import com.github.androidpirate.capsulereviews.ui.movie.detail.MovieDetailFragmentArgs
-import com.github.androidpirate.capsulereviews.ui.tv.list.TvListAdapter
+import com.github.androidpirate.capsulereviews.ui.adapter.ListItemAdapter
+import com.github.androidpirate.capsulereviews.util.GridSpacingItemDecoration
+import com.github.androidpirate.capsulereviews.util.ItemClickListener
 import jp.wasabeef.glide.transformations.BlurTransformation
-import kotlinx.android.synthetic.main.movie_header.*
+import kotlinx.android.synthetic.main.detail_similar.*
 import kotlinx.android.synthetic.main.tv_header.*
 import kotlinx.android.synthetic.main.tv_header.btUp
 import kotlinx.android.synthetic.main.tv_info.*
@@ -30,11 +32,11 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class TvDetailFragment : Fragment() {
+class TvDetailFragment : Fragment(), ItemClickListener {
     private val args: TvDetailFragmentArgs by navArgs()
     private lateinit var tvShow: TvShowResponse
-    private lateinit var adapter: TvListAdapter
-    private lateinit var similarTvShow: List<TvShowsListItem>
+    private lateinit var adapter: ListItemAdapter<TvShowsListItem>
+    private lateinit var tvSimilarShows: List<TvShowsListItem>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -58,12 +60,13 @@ class TvDetailFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         val apiService = MovieDbService()
+        adapter = ListItemAdapter(TvDetailFragment::class.simpleName, this)
         GlobalScope.launch(Dispatchers.Main) {
             withContext(Dispatchers.IO) {
                 tvShow = apiService.getTvShowDetails(args.showId)
             }
             withContext(Dispatchers.IO) {
-                similarTvShow = apiService.getSimilarTvShows(args.showId).tvShowsListItems
+                tvSimilarShows = apiService.getSimilarTvShows(args.showId).tvShowsListItems
             }
             setupViews()
         }
@@ -89,6 +92,10 @@ class TvDetailFragment : Fragment() {
         runTime.text = formatRunTime(tvShow.episodeRunTime[0])
         type.text = tvShow.type
         network.text = formatNetworks(tvShow.networks)
+        adapter.submitList(tvSimilarShows)
+        rvSimilar.layoutManager = GridLayoutManager(requireContext(), 3)
+        rvSimilar.addItemDecoration(GridSpacingItemDecoration(4, 30, true))
+        rvSimilar.adapter = adapter
     }
 
     private fun formatReleaseDate(releaseDate: String): String {
@@ -137,5 +144,9 @@ class TvDetailFragment : Fragment() {
 
     private fun formatRunTime(runTime: Int): String {
         return "$runTime mins"
+    }
+
+    override fun <T> onItemClick(item: T) {
+        TODO("Not yet implemented")
     }
 }
