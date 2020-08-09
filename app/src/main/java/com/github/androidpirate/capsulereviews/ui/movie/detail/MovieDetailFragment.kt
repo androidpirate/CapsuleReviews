@@ -19,6 +19,7 @@ import com.github.androidpirate.capsulereviews.ui.adapter.ListItemAdapter
 import com.github.androidpirate.capsulereviews.util.GridSpacingItemDecoration
 import com.github.androidpirate.capsulereviews.util.ItemClickListener
 import jp.wasabeef.glide.transformations.BlurTransformation
+import kotlinx.android.synthetic.main.detail_action_bar.*
 import kotlinx.android.synthetic.main.detail_similar.*
 import kotlinx.android.synthetic.main.movie_header.*
 import kotlinx.android.synthetic.main.movie_info.*
@@ -83,6 +84,7 @@ class MovieDetailFragment : Fragment(), ItemClickListener {
         // TODO 5: Content rating requires a ReleasesResponse
         releaseDate.text = formatReleaseDate(movie.releaseDate)
         genres.text = formatGenres(movie.genres)
+        userRating.text = movie.voteAverage.toString()
         runTime.text = formatRunTime(movie.runtime)
         overview.text = movie.overview
         budget.text = formatBudget(movie.budget)

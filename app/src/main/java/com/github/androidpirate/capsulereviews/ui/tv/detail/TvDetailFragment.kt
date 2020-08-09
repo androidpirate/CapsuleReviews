@@ -22,6 +22,7 @@ import com.github.androidpirate.capsulereviews.ui.adapter.ListItemAdapter
 import com.github.androidpirate.capsulereviews.util.GridSpacingItemDecoration
 import com.github.androidpirate.capsulereviews.util.ItemClickListener
 import jp.wasabeef.glide.transformations.BlurTransformation
+import kotlinx.android.synthetic.main.detail_action_bar.*
 import kotlinx.android.synthetic.main.detail_similar.*
 import kotlinx.android.synthetic.main.tv_header.*
 import kotlinx.android.synthetic.main.tv_header.btUp
@@ -84,6 +85,7 @@ class TvDetailFragment : Fragment(), ItemClickListener {
         // TODO 6: Content rating requires a ReleasesResponse
         releaseDate.text = formatReleaseDate(tvShow.releaseDate)
         genres.text = formatGenres(tvShow.genres)
+        userRating.text = tvShow.voteAverage.toString()
         status.text = tvShow.status
         createdBy.text = formatCreatedBy(tvShow.createdBy)
         overview.text = tvShow.overview
