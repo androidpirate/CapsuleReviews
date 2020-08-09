@@ -1,5 +1,7 @@
 package com.github.androidpirate.capsulereviews.ui.movie.detail
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -89,6 +91,7 @@ class MovieDetailFragment : Fragment(), ItemClickListener {
         overview.text = movie.overview
         budget.text = formatBudget(movie.budget)
         revenue.text = formatRevenue(movie.revenue)
+        setIMDBLink(movie.imdbId)
         adapter.submitList(similarMovies)
         rvSimilar.layoutManager = GridLayoutManager(requireContext(), 3)
         rvSimilar.addItemDecoration(GridSpacingItemDecoration(4, 30, true))
@@ -129,6 +132,16 @@ class MovieDetailFragment : Fragment(), ItemClickListener {
     private fun formatRevenue(revenue: Int): String {
         val formatter = DecimalFormat("#,###")
         return "$ ${formatter.format(revenue)}"
+    }
+
+    private fun setIMDBLink(endpoint: String) {
+        val imdbBaseURL = "https://www.imdb.com/title/"
+        val imdbEndpoint = "${imdbBaseURL + endpoint}/"
+        imdbLink.setOnClickListener {
+            val uri = Uri.parse(imdbEndpoint);
+            val intent = Intent(Intent.ACTION_VIEW, uri);
+            startActivity(intent);
+        }
     }
 
     override fun <T> onItemClick(item: T) {
