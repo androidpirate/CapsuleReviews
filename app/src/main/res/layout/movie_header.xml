@@ -2,6 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -42,7 +43,7 @@
         android:id="@+id/movieTitle"
         android:layout_width="@dimen/match_constraint"
         android:layout_height="wrap_content"
-        android:text="Movie Title"
+        tools:text="Movie Title"
         android:textColor="#FDFDFD"
         android:textSize="32sp"
         android:textStyle="bold"
@@ -55,7 +56,7 @@
         android:id="@+id/movieTagLine"
         android:layout_width="@dimen/match_constraint"
         android:layout_height="wrap_content"
-        android:text="&quot;One man, one desire...He has no choice.&quot;"
+        tools:text="&quot;One man, one desire...He has no choice.&quot;"
         android:textColor="#FDFDFD"
         android:textSize="22sp"
         android:textStyle="bold|italic"

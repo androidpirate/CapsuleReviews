@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
@@ -9,7 +11,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
-        android:text="R"
+        tools:text="R"
         android:textColor="#FDFDFD"
         android:textSize="18sp"
         app:layout_constraintEnd_toStartOf="@+id/separator_1"
@@ -34,7 +36,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
-        android:text="1994"
+        tools:text="1994"
         android:textColor="#FDFDFD"
         android:textSize="18sp"
         app:layout_constraintEnd_toStartOf="@+id/separator_2"
@@ -59,7 +61,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
-        android:text="Ongoing"
+        tools:text="Ongoing"
         android:textColor="#FDFDFD"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -67,19 +69,17 @@
         app:layout_constraintStart_toEndOf="@+id/separator_2"
         app:layout_constraintTop_toTopOf="parent" />
 
-
     <TextView
         android:id="@+id/genres"
         android:layout_width="@dimen/match_constraint"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
-        android:text="Comedy, Drama"
+        tools:text="Comedy, Drama"
         android:textColor="#FDFDFD"
         android:textSize="18sp"
         android:layout_marginTop="@dimen/margin_16"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/contentRating" />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>
