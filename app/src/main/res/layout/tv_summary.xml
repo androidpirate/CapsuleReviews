@@ -7,31 +7,6 @@
     android:layout_height="wrap_content">
 
     <TextView
-        android:id="@+id/contentRating"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        tools:text="R"
-        android:textColor="#FDFDFD"
-        android:textSize="18sp"
-        app:layout_constraintEnd_toStartOf="@+id/separator_1"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <ImageView
-        android:id="@+id/separator_1"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:contentDescription="@string/dot_separator_description"
-        android:src="@drawable/custom_dot_separator"
-        app:layout_constraintBottom_toBottomOf="@id/contentRating"
-        app:layout_constraintEnd_toStartOf="@+id/releaseDate"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/contentRating"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
         android:id="@+id/releaseDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -39,10 +14,11 @@
         tools:text="1994"
         android:textColor="#FDFDFD"
         android:textSize="18sp"
+        android:layout_marginStart="@dimen/margin_64"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/separator_2"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/separator_1"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintHorizontal_bias="0.5" />
 
     <ImageView
         android:id="@+id/separator_2"
@@ -50,11 +26,11 @@
         android:layout_height="wrap_content"
         android:contentDescription="@string/dot_separator_description"
         android:src="@drawable/custom_dot_separator"
-        app:layout_constraintBottom_toBottomOf="@id/contentRating"
+        app:layout_constraintBottom_toBottomOf="@id/releaseDate"
         app:layout_constraintEnd_toStartOf="@+id/status"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/releaseDate"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"/>
 
     <TextView
         android:id="@+id/status"
@@ -64,10 +40,11 @@
         tools:text="Ongoing"
         android:textColor="#FDFDFD"
         android:textSize="18sp"
+        android:layout_marginEnd="@dimen/margin_64"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/separator_2"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"/>
 
     <TextView
         android:id="@+id/genres"
@@ -80,6 +57,6 @@
         android:layout_marginTop="@dimen/margin_16"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/contentRating" />
+        app:layout_constraintTop_toBottomOf="@id/releaseDate"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
