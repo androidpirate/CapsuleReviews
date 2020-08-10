@@ -16,7 +16,7 @@ import kotlinx.android.synthetic.main.similar_list_item.view.*
 import java.lang.IllegalArgumentException
 
 class ListItemAdapter<T>(private val fragmentType: String?, private val clickListener: ItemClickListener)
-    : ListAdapter<T, ListItemAdapter<T>.ListItemHolder>(ListItemDiffCallback()){
+    : ListAdapter<T, ListItemAdapter<T>.ListItemHolder>(ListItemDiffCallback<T>(fragmentType)){
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListItemHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
