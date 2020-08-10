@@ -5,6 +5,7 @@ import com.github.androidpirate.capsulereviews.data.response.movie.MovieResponse
 import com.github.androidpirate.capsulereviews.data.response.movies.MoviesResponse
 import com.github.androidpirate.capsulereviews.data.response.tvShow.TvShowResponse
 import com.github.androidpirate.capsulereviews.data.response.tvShows.TvShowsResponse
+import com.github.androidpirate.capsulereviews.data.response.videos.VideosResponse
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
@@ -37,10 +38,8 @@ interface MovieDbService {
     @GET("movie/{movie_id}")
     suspend fun getMovieDetails(@Path("movie_id") movieId: Int): MovieResponse
 
-    // Movie Trailers Endpoint
-    // https://api.themoviedb.org/3/movie/{movie_id}/videos?api_key=16c6cda19ab9c4b72bfc817f9dadcc23
-    // https://www.youtube.com/watch?v={key}
-    // TODO 3: Videos require a VideosResponseType
+    @GET("movie/{movie_id}/videos")
+    suspend fun getMovieVideos(@Path("movie_id") movieId: Int): VideosResponse
 
     /******************************
      *    Tv Shows Endpoints
@@ -59,6 +58,9 @@ interface MovieDbService {
 
     @GET("tv/{tv_id}")
     suspend fun getTvShowDetails(@Path("tv_id") tvId: Int): TvShowResponse
+
+    @GET("tv/{tv_id}/videos")
+    suspend fun getTvShowVideos(@Path("tv_id") tvId: Int): VideosResponse
 
     companion object {
         operator fun invoke(): MovieDbService {

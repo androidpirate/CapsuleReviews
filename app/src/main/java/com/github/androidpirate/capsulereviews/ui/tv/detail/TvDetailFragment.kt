@@ -1,5 +1,7 @@
 package com.github.androidpirate.capsulereviews.ui.tv.detail
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -18,6 +20,7 @@ import com.github.androidpirate.capsulereviews.data.response.tvShow.Network
 
 import com.github.androidpirate.capsulereviews.data.response.tvShow.TvShowResponse
 import com.github.androidpirate.capsulereviews.data.response.tvShows.TvShowsListItem
+import com.github.androidpirate.capsulereviews.data.response.videos.VideosListItem
 import com.github.androidpirate.capsulereviews.ui.adapter.ListItemAdapter
 import com.github.androidpirate.capsulereviews.util.GridSpacingItemDecoration
 import com.github.androidpirate.capsulereviews.util.ItemClickListener
@@ -36,6 +39,7 @@ import kotlinx.coroutines.withContext
 class TvDetailFragment : Fragment(), ItemClickListener {
     private val args: TvDetailFragmentArgs by navArgs()
     private lateinit var tvShow: TvShowResponse
+    private lateinit var videos: List<VideosListItem>
     private lateinit var adapter: ListItemAdapter<TvShowsListItem>
     private lateinit var tvSimilarShows: List<TvShowsListItem>
 
@@ -69,6 +73,9 @@ class TvDetailFragment : Fragment(), ItemClickListener {
             withContext(Dispatchers.IO) {
                 tvSimilarShows = apiService.getSimilarTvShows(args.showId).tvShowsListItems
             }
+            withContext(Dispatchers.IO) {
+                videos = apiService.getTvShowVideos(args.showId).videosListItems
+            }
             setupViews()
         }
     }
@@ -94,6 +101,7 @@ class TvDetailFragment : Fragment(), ItemClickListener {
         runTime.text = formatRunTime(tvShow.episodeRunTime[0])
         type.text = tvShow.type
         network.text = formatNetworks(tvShow.networks)
+        setTrailerLink()
         adapter.submitList(tvSimilarShows)
         rvSimilar.layoutManager = GridLayoutManager(requireContext(), 3)
         rvSimilar.addItemDecoration(
@@ -147,6 +155,23 @@ class TvDetailFragment : Fragment(), ItemClickListener {
 
     private fun formatRunTime(runTime: Int): String {
         return "$runTime mins"
+    }
+
+    private fun setTrailerLink() {
+        var videoKey = ""
+        for(video in videos) {
+            if( video.site == "YouTube" && video.type == "Opening Credits") {
+                videoKey = video.key
+                break;
+            }
+        }
+        val youTubeBaseURL = "https://www.youtube.com/watch?v="
+        val trailerEndpoint = youTubeBaseURL + videoKey
+        btPlay.setOnClickListener {
+            val uri = Uri.parse(trailerEndpoint)
+            val intent = Intent(Intent.ACTION_VIEW, uri)
+            startActivity(intent)
+        }
     }
 
     override fun <T> onItemClick(item: T) {

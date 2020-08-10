@@ -17,6 +17,8 @@ import com.github.androidpirate.capsulereviews.data.api.MovieDbService
 import com.github.androidpirate.capsulereviews.data.response.movie.Genre
 import com.github.androidpirate.capsulereviews.data.response.movie.MovieResponse
 import com.github.androidpirate.capsulereviews.data.response.movies.MoviesListItem
+import com.github.androidpirate.capsulereviews.data.response.videos.VideosListItem
+import com.github.androidpirate.capsulereviews.data.response.videos.VideosResponse
 import com.github.androidpirate.capsulereviews.ui.adapter.ListItemAdapter
 import com.github.androidpirate.capsulereviews.ui.movie.list.MovieListFragmentDirections
 import com.github.androidpirate.capsulereviews.util.GridSpacingItemDecoration
@@ -36,6 +38,7 @@ import java.text.DecimalFormat
 class MovieDetailFragment : Fragment(), ItemClickListener {
     private val args: MovieDetailFragmentArgs by navArgs()
     private lateinit var movie: MovieResponse
+    private lateinit var videos: List<VideosListItem>
     private lateinit var adapter: ListItemAdapter<MoviesListItem>
     private lateinit var similarMovies: List<MoviesListItem>
 
@@ -70,6 +73,9 @@ class MovieDetailFragment : Fragment(), ItemClickListener {
             withContext(Dispatchers.IO) {
                 similarMovies = apiService.getSimilarMovies(args.movieId).moviesListItems
             }
+            withContext(Dispatchers.IO) {
+                videos = apiService.getMovieVideos(args.movieId).videosListItems
+            }
             setupViews()
         }
     }
@@ -93,6 +99,7 @@ class MovieDetailFragment : Fragment(), ItemClickListener {
         budget.text = formatBudget(movie.budget)
         revenue.text = formatRevenue(movie.revenue)
         setIMDBLink(movie.imdbId)
+        setTrailerLink()
         adapter.submitList(similarMovies)
         rvSimilar.layoutManager = GridLayoutManager(requireContext(), 3)
         rvSimilar.addItemDecoration(GridSpacingItemDecoration(4, 30, true))
@@ -142,6 +149,23 @@ class MovieDetailFragment : Fragment(), ItemClickListener {
             val uri = Uri.parse(imdbEndpoint);
             val intent = Intent(Intent.ACTION_VIEW, uri);
             startActivity(intent);
+        }
+    }
+
+    private fun setTrailerLink() {
+        var videoKey = ""
+        for(video in videos) {
+            if( video.site == "YouTube" && video.type == "Trailer") {
+                videoKey = video.key
+                break;
+            }
+        }
+        val youTubeBaseURL = "https://www.youtube.com/watch?v="
+        val trailerEndpoint = youTubeBaseURL + videoKey
+        btPlay.setOnClickListener {
+            val uri = Uri.parse(trailerEndpoint)
+            val intent = Intent(Intent.ACTION_VIEW, uri)
+            startActivity(intent)
         }
     }
 
