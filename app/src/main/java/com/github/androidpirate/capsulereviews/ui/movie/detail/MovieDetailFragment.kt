@@ -148,9 +148,13 @@ class MovieDetailFragment : Fragment(), ItemClickListener {
         val imdbBaseURL = "https://www.imdb.com/title/"
         val imdbEndpoint = "${imdbBaseURL + endpoint}/"
         imdbLink.setOnClickListener {
-            val uri = Uri.parse(imdbEndpoint);
-            val intent = Intent(Intent.ACTION_VIEW, uri);
-            startActivity(intent);
+            if(imdbEndpoint != imdbBaseURL) {
+                val uri = Uri.parse(imdbEndpoint);
+                val intent = Intent(Intent.ACTION_VIEW, uri);
+                startActivity(intent);
+            } else {
+                Toast.makeText(context, "Link not available.", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 
