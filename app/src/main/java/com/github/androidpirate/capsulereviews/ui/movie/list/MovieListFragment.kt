@@ -39,6 +39,7 @@ class MovieListFragment : Fragment(), ItemClickListener {
     private lateinit var trendingMovies: List<MoviesListItem>
     private lateinit var showCaseMovie: MoviesListItem
     private lateinit var showCaseVideos: List<VideosListItem>
+    private var videoKey: String ?= null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -76,6 +77,12 @@ class MovieListFragment : Fragment(), ItemClickListener {
             }
             withContext(Dispatchers.IO) {
                 showCaseVideos = apiService.getMovieVideos(showCaseMovie.id).videosListItems
+                for(video in showCaseVideos) {
+                    if(video.site == "YouTube" && video.type == "Trailer") {
+                        videoKey = video.key
+                        break
+                    }
+                }
             }
             setShowCaseMovie()
             setupViews()
@@ -110,19 +117,14 @@ class MovieListFragment : Fragment(), ItemClickListener {
             onItemClick(showCaseMovie)
         }
 
-        var videoKey = ""
         for(video in showCaseVideos) {
-            if( video.site == "YouTube" && video.type == "Trailer") {
-                videoKey = video.key
-                break;
+            val youTubeBaseURL = "https://www.youtube.com/watch?v="
+            val trailerEndpoint = youTubeBaseURL + videoKey
+            scPlay.setOnClickListener {
+                val uri = Uri.parse(trailerEndpoint)
+                val intent = Intent(Intent.ACTION_VIEW, uri)
+                startActivity(intent)
             }
-        }
-        val youTubeBaseURL = "https://www.youtube.com/watch?v="
-        val trailerEndpoint = youTubeBaseURL + videoKey
-        scPlay.setOnClickListener {
-            val uri = Uri.parse(trailerEndpoint)
-            val intent = Intent(Intent.ACTION_VIEW, uri)
-            startActivity(intent)
         }
     }
 

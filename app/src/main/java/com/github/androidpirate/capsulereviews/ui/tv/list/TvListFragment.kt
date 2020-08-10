@@ -65,9 +65,9 @@ class TvListFragment : Fragment(), ItemClickListener{
             withContext(Dispatchers.IO) {
                 showCaseVideos = apiService.getTvShowVideos(showCaseTvShow.id).videosListItems
                 for(video in showCaseVideos) {
-                    if( video.site == "YouTube" && video.type == "Trailer") {
+                    if(video.site == "YouTube" && video.type == "Trailer") {
                         videoKey = video.key
-                        break;
+                        break
                     }
                 }
             }
