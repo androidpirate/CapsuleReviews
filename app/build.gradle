@@ -25,8 +25,12 @@ android {
     }
 
     buildTypes.each {
-        it.buildConfigField 'String', 'MOVIE_DB_API_TOKEN', TheMovieDBApiToken
+        it.buildConfigField 'String', 'MOVIE_DB_API_TOKEN', MovieDBApiToken
         it.buildConfigField 'String', 'MOVIE_DB_BASE_URL', MovieDBBaseURL
+        it.buildConfigField 'String', 'MOVIE_DB_LANG_VALUE', MovieDBLangValue
+        it.buildConfigField 'String', 'MOVIE_DB_ORIG_LANG_VALUE', MovieDBOriginalLangValue
+        it.buildConfigField 'String', 'IMDB_BASE_URL', IMDBBaseURL
+        it.buildConfigField 'String', 'YOUTUBE_BASE_URL', YouTubeBaseURL
     }
 
     compileOptions {
