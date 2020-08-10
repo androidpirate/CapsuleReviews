@@ -125,12 +125,12 @@ class MovieDetailFragment : Fragment(), ItemClickListener {
         return movieGenres
     }
 
-    private fun formatBudget(budget: Int): String {
+    private fun formatBudget(budget: Long): String {
         val formatter = DecimalFormat("#,###")
         return "$ ${formatter.format(budget)}"
     }
 
-    private fun formatRevenue(revenue: Int): String {
+    private fun formatRevenue(revenue: Long): String {
         val formatter = DecimalFormat("#,###")
         return "$ ${formatter.format(revenue)}"
     }
