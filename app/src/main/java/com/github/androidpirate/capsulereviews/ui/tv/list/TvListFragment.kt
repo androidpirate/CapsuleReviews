@@ -19,11 +19,15 @@ import kotlinx.coroutines.withContext
 
 class TvListFragment : Fragment(), ItemClickListener{
     private lateinit var popularShowsAdapter: ListItemAdapter<TvShowsListItem>
+    private lateinit var popularShows: List<TvShowsListItem>
     private lateinit var topRatedShowsAdapter: ListItemAdapter<TvShowsListItem>
+    private lateinit var topRatedShows: List<TvShowsListItem>
     private lateinit var trendingShowsAdapter: ListItemAdapter<TvShowsListItem>
+    private lateinit var trendingShows: List<TvShowsListItem>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setupAdapters()
     }
 
     override fun onCreateView(
@@ -40,9 +44,6 @@ class TvListFragment : Fragment(), ItemClickListener{
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        popularShowsAdapter = ListItemAdapter(TvListFragment::class.simpleName, this)
-        topRatedShowsAdapter = ListItemAdapter(TvListFragment::class.simpleName, this)
-        trendingShowsAdapter = ListItemAdapter(TvListFragment::class.simpleName, this)
         val apiService = MovieDbService()
         GlobalScope.launch(Dispatchers.Main) {
             popularShowsAdapter.submitList(
@@ -58,6 +59,12 @@ class TvListFragment : Fragment(), ItemClickListener{
         rvPopular.adapter = popularShowsAdapter
         rvTopRated.adapter = topRatedShowsAdapter
         rvTrending.adapter = trendingShowsAdapter
+    }
+
+    private fun setupAdapters() {
+        popularShowsAdapter = ListItemAdapter(TvListFragment::class.simpleName, this)
+        topRatedShowsAdapter = ListItemAdapter(TvListFragment::class.simpleName, this)
+        trendingShowsAdapter = ListItemAdapter(TvListFragment::class.simpleName, this)
     }
 
     override fun <T> onItemClick(item: T) {
