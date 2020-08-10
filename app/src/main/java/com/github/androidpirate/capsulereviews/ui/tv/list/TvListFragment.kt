@@ -7,8 +7,10 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
+import com.github.androidpirate.capsulereviews.BuildConfig
 import com.github.androidpirate.capsulereviews.R
 import com.github.androidpirate.capsulereviews.data.api.MovieDbService
 import com.github.androidpirate.capsulereviews.data.response.tvShows.TvShowsListItem
@@ -84,8 +86,8 @@ class TvListFragment : Fragment(), ItemClickListener{
 
     private fun setShowCaseTvShow() {
         Glide.with(this)
-            // TODO 4: Take care of the base URL when saving data into local db
-            .load("https://image.tmdb.org/t/p/w342/" + showCaseTvShow.posterPath)
+            .load(BuildConfig.MOVIE_DB_IMAGE_BASE_URL + "w342/" + showCaseTvShow.posterPath)
+            .placeholder(R.drawable.ic_image_placeholder)
             .into(scPoster)
         scTitle.text = showCaseTvShow.name
 
@@ -98,11 +100,18 @@ class TvListFragment : Fragment(), ItemClickListener{
         }
 
         scPlay.setOnClickListener {
-            val youTubeBaseURL = "https://www.youtube.com/watch?v="
-            val trailerEndpoint = youTubeBaseURL + videoKey
-            val uri = Uri.parse(trailerEndpoint)
-            val intent = Intent(Intent.ACTION_VIEW, uri)
-            startActivity(intent)
+            val trailerEndpoint = BuildConfig.YOUTUBE_BASE_URL + videoKey
+            if(trailerEndpoint != BuildConfig.YOUTUBE_BASE_URL) {
+                val uri = Uri.parse(trailerEndpoint)
+                val intent = Intent(Intent.ACTION_VIEW, uri)
+                startActivity(intent)
+            } else {
+                Toast.makeText(
+                    context,
+                    getString(R.string.video_no_available_toast_content),
+                    Toast.LENGTH_SHORT)
+                    .show()
+            }
         }
     }
 

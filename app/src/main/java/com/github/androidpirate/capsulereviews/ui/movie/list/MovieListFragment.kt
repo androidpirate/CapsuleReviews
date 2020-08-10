@@ -7,9 +7,11 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
+import com.github.androidpirate.capsulereviews.BuildConfig
 import com.github.androidpirate.capsulereviews.R
 import com.github.androidpirate.capsulereviews.data.api.MovieDbService
 import com.github.androidpirate.capsulereviews.data.response.movies.MoviesListItem
@@ -104,8 +106,8 @@ class MovieListFragment : Fragment(), ItemClickListener {
 
     private fun setShowCaseMovie() {
         Glide.with(requireContext())
-            // TODO 4: Take care of the base URL when saving data into local db
-            .load("https://image.tmdb.org/t/p/w342/" + showCaseMovie.posterPath)
+            .load(BuildConfig.MOVIE_DB_IMAGE_BASE_URL + "w342/" + showCaseMovie.posterPath)
+            .placeholder(R.drawable.ic_image_placeholder)
             .into(scPoster)
         scTitle.text = showCaseMovie.title
 
@@ -118,12 +120,19 @@ class MovieListFragment : Fragment(), ItemClickListener {
         }
 
         for(video in showCaseVideos) {
-            val youTubeBaseURL = "https://www.youtube.com/watch?v="
-            val trailerEndpoint = youTubeBaseURL + videoKey
+            val trailerEndpoint = BuildConfig.YOUTUBE_BASE_URL + videoKey
             scPlay.setOnClickListener {
-                val uri = Uri.parse(trailerEndpoint)
-                val intent = Intent(Intent.ACTION_VIEW, uri)
-                startActivity(intent)
+                if(trailerEndpoint != BuildConfig.YOUTUBE_BASE_URL) {
+                    val uri = Uri.parse(trailerEndpoint)
+                    val intent = Intent(Intent.ACTION_VIEW, uri)
+                    startActivity(intent)
+                } else {
+                    Toast.makeText(
+                        context,
+                        getString(R.string.video_no_available_toast_content),
+                        Toast.LENGTH_SHORT)
+                        .show()
+                }
             }
         }
     }

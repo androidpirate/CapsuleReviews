@@ -13,6 +13,7 @@ import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.GridLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions.bitmapTransform
+import com.github.androidpirate.capsulereviews.BuildConfig
 import com.github.androidpirate.capsulereviews.R
 import com.github.androidpirate.capsulereviews.data.api.MovieDbService
 import com.github.androidpirate.capsulereviews.data.response.movie.Genre
@@ -79,15 +80,16 @@ class MovieDetailFragment : Fragment(), ItemClickListener {
 
     private fun setupViews() {
         Glide.with(requireContext())
-            .load("https://image.tmdb.org/t/p/w185/" + movie.posterPath)
+            .load(BuildConfig.MOVIE_DB_IMAGE_BASE_URL + "w185/" + movie.posterPath)
+            .placeholder(R.drawable.ic_image_placeholder)
             .into(moviePoster)
         Glide.with(requireContext())
-            .load("https://image.tmdb.org/t/p/w185/" + movie.posterPath)
+            .load(BuildConfig.MOVIE_DB_IMAGE_BASE_URL + "w185/" + movie.posterPath)
+            .placeholder(R.drawable.ic_image_placeholder)
             .apply(bitmapTransform(BlurTransformation(100)))
             .into(movieHeaderBg)
         movieTitle.text = movie.title
         movieTagLine.text = movie.tagline
-        // TODO 5: Content rating requires a ReleasesResponse
         releaseDate.text = formatReleaseDate(movie.releaseDate)
         genres.text = formatGenres(movie.genres)
         userRating.text = movie.voteAverage.toString()
@@ -145,15 +147,18 @@ class MovieDetailFragment : Fragment(), ItemClickListener {
     }
 
     private fun setIMDBLink(endpoint: String) {
-        val imdbBaseURL = "https://www.imdb.com/title/"
-        val imdbEndpoint = "${imdbBaseURL + endpoint}/"
+        val imdbEndpoint = BuildConfig.IMDB_BASE_URL + endpoint
         imdbLink.setOnClickListener {
-            if(imdbEndpoint != imdbBaseURL) {
+            if(imdbEndpoint != BuildConfig.IMDB_BASE_URL) {
                 val uri = Uri.parse(imdbEndpoint);
                 val intent = Intent(Intent.ACTION_VIEW, uri);
                 startActivity(intent);
             } else {
-                Toast.makeText(context, "Link not available.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    context,
+                    getString(R.string.link_not_available_toast_content),
+                    Toast.LENGTH_SHORT)
+                    .show()
             }
         }
     }
@@ -166,15 +171,18 @@ class MovieDetailFragment : Fragment(), ItemClickListener {
                 break;
             }
         }
-        val youTubeBaseURL = "https://www.youtube.com/watch?v="
-        val trailerEndpoint = youTubeBaseURL + videoKey
+        val trailerEndpoint = BuildConfig.YOUTUBE_BASE_URL + videoKey
         btPlay.setOnClickListener {
             if(videoKey != "") {
                 val uri = Uri.parse(trailerEndpoint)
                 val intent = Intent(Intent.ACTION_VIEW, uri)
                 startActivity(intent)
             } else {
-                Toast.makeText(context, "Video not available.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    context,
+                    getString(R.string.video_no_available_toast_content),
+                    Toast.LENGTH_SHORT)
+                    .show()
             }
         }
     }
