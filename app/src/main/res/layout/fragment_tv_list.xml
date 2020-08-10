@@ -38,7 +38,7 @@
             android:layout_marginStart="@dimen/margin_16"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/movieShowcase"
+            app:layout_constraintTop_toBottomOf="@id/tvShowCase"
             app:layout_constraintBottom_toTopOf="@id/rvPopular"/>
 
         <androidx.recyclerview.widget.RecyclerView

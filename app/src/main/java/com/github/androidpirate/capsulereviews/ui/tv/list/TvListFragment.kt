@@ -1,21 +1,27 @@
 package com.github.androidpirate.capsulereviews.ui.tv.list
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
+import com.bumptech.glide.Glide
 import com.github.androidpirate.capsulereviews.R
 import com.github.androidpirate.capsulereviews.data.api.MovieDbService
 import com.github.androidpirate.capsulereviews.data.response.tvShows.TvShowsListItem
+import com.github.androidpirate.capsulereviews.data.response.videos.VideosListItem
 import com.github.androidpirate.capsulereviews.ui.adapter.ListItemAdapter
 import com.github.androidpirate.capsulereviews.util.ItemClickListener
 import kotlinx.android.synthetic.main.fragment_tv_list.*
+import kotlinx.android.synthetic.main.tv_showcase.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import kotlin.random.Random
 
 class TvListFragment : Fragment(), ItemClickListener{
     private lateinit var popularShowsAdapter: ListItemAdapter<TvShowsListItem>
@@ -24,6 +30,9 @@ class TvListFragment : Fragment(), ItemClickListener{
     private lateinit var topRatedShows: List<TvShowsListItem>
     private lateinit var trendingShowsAdapter: ListItemAdapter<TvShowsListItem>
     private lateinit var trendingShows: List<TvShowsListItem>
+    private lateinit var showCaseTvShow: TvShowsListItem
+    private lateinit var showCaseVideos: List<VideosListItem>
+    private var videoKey: String ?= null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,7 +59,19 @@ class TvListFragment : Fragment(), ItemClickListener{
             }
             withContext(Dispatchers.IO) {
                trendingShows = apiService.getTrendingTvShows().tvShowsListItems
+                val randomItemNo = Random.nextInt(0 , 19)
+                showCaseTvShow = trendingShows[randomItemNo]
             }
+            withContext(Dispatchers.IO) {
+                showCaseVideos = apiService.getTvShowVideos(showCaseTvShow.id).videosListItems
+                for(video in showCaseVideos) {
+                    if( video.site == "YouTube" && video.type == "Trailer") {
+                        videoKey = video.key
+                        break;
+                    }
+                }
+            }
+            setShowCaseTvShow()
             setupViews()
         }
     }
@@ -59,6 +80,30 @@ class TvListFragment : Fragment(), ItemClickListener{
         popularShowsAdapter = ListItemAdapter(TvListFragment::class.simpleName, this)
         topRatedShowsAdapter = ListItemAdapter(TvListFragment::class.simpleName, this)
         trendingShowsAdapter = ListItemAdapter(TvListFragment::class.simpleName, this)
+    }
+
+    private fun setShowCaseTvShow() {
+        Glide.with(this)
+            // TODO 4: Take care of the base URL when saving data into local db
+            .load("https://image.tmdb.org/t/p/w342/" + showCaseTvShow.posterPath)
+            .into(scPoster)
+        scTitle.text = showCaseTvShow.name
+
+        scAddFavorite.setOnClickListener {
+            // TODO 7: Implement adding to favorites here
+        }
+
+        scInfo.setOnClickListener {
+            onItemClick(showCaseTvShow)
+        }
+
+        scPlay.setOnClickListener {
+            val youTubeBaseURL = "https://www.youtube.com/watch?v="
+            val trailerEndpoint = youTubeBaseURL + videoKey
+            val uri = Uri.parse(trailerEndpoint)
+            val intent = Intent(Intent.ACTION_VIEW, uri)
+            startActivity(intent)
+        }
     }
 
     private fun setupViews() {

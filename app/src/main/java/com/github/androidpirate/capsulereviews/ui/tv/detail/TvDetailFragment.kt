@@ -106,7 +106,9 @@ class TvDetailFragment : Fragment(), ItemClickListener {
         overview.text = tvShow.overview
         seasons.text = tvShow.numberOfSeasons.toString()
         episodes.text = tvShow.numberOfEpisodes.toString()
-        runTime.text = formatRunTime(tvShow.episodeRunTime[0])
+        if(tvShow.episodeRunTime.isNotEmpty()) {
+            runTime.text = formatRunTime(tvShow.episodeRunTime[0])
+        }
         type.text = tvShow.type
         network.text = formatNetworks(tvShow.networks)
         setIMDBLink(externalIDs.imdbId)
