@@ -29,6 +29,11 @@ class MovieListFragment : Fragment(), ItemClickListener {
     private lateinit var trendingMoviesAdapter: ListItemAdapter<MoviesListItem>
     private lateinit var trendingMovies: List<MoviesListItem>
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setupAdapters()
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -39,19 +44,9 @@ class MovieListFragment : Fragment(), ItemClickListener {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        popularMoviesAdapter = ListItemAdapter(
-            MovieListFragment::class.simpleName, this)
-        topRatedMoviesAdapter = ListItemAdapter(
-            MovieListFragment::class.simpleName, this)
-        nowPlayingMoviesAdapter = ListItemAdapter(
-            MovieListFragment::class.simpleName, this)
-        upcomingMoviesAdapter = ListItemAdapter(
-            MovieListFragment::class.simpleName, this)
-        trendingMoviesAdapter = ListItemAdapter(
-            MovieListFragment::class.simpleName, this)
+
         val apiService = MovieDbService()
         GlobalScope.launch(Dispatchers.Main ) {
-
             withContext(Dispatchers.IO) {
                 popularMovies = apiService.getPopularMovies().moviesListItems
             }
@@ -69,6 +64,19 @@ class MovieListFragment : Fragment(), ItemClickListener {
             }
             setupViews()
         }
+    }
+
+    private fun setupAdapters() {
+        popularMoviesAdapter = ListItemAdapter(
+            MovieListFragment::class.simpleName, this)
+        topRatedMoviesAdapter = ListItemAdapter(
+            MovieListFragment::class.simpleName, this)
+        nowPlayingMoviesAdapter = ListItemAdapter(
+            MovieListFragment::class.simpleName, this)
+        upcomingMoviesAdapter = ListItemAdapter(
+            MovieListFragment::class.simpleName, this)
+        trendingMoviesAdapter = ListItemAdapter(
+            MovieListFragment::class.simpleName, this)
     }
 
     private fun setupViews() {

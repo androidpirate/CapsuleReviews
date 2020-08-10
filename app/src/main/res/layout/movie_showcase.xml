@@ -45,7 +45,7 @@
         android:id="@+id/scSubtitle"
         android:layout_width="@dimen/match_constraint"
         android:layout_height="wrap_content"
-        android:text="Subtitle"
+        android:text="Trending Now"
         android:textSize="18sp"
         android:textColor="#FDFDFD"
         android:gravity="center_horizontal"
