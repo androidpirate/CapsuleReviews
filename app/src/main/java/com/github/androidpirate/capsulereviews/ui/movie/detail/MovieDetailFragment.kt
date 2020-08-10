@@ -126,13 +126,21 @@ class MovieDetailFragment : Fragment(), ItemClickListener {
     }
 
     private fun formatBudget(budget: Long): String {
-        val formatter = DecimalFormat("#,###")
-        return "$ ${formatter.format(budget)}"
+        return if(budget != 0L) {
+            val formatter = DecimalFormat("#,###")
+            "$ ${formatter.format(budget)}"
+        } else {
+            "No data."
+        }
     }
 
     private fun formatRevenue(revenue: Long): String {
-        val formatter = DecimalFormat("#,###")
-        return "$ ${formatter.format(revenue)}"
+        return if(revenue != 0L) {
+            val formatter = DecimalFormat("#,###")
+            "$ ${formatter.format(revenue)}"
+        } else {
+            "No data."
+        }
     }
 
     private fun setIMDBLink(endpoint: String) {
