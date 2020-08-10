@@ -56,6 +56,9 @@
         <action
             android:id="@+id/action_movie_detail_toList"
             app:destination="@id/movieListFragment"/>
+        <action
+            android:id="@+id/action_movieDetailFragment_self"
+            app:destination="@id/movieDetailFragment" />
     </fragment>
 
     <fragment
@@ -70,6 +73,9 @@
         <action
             android:id="@+id/action_tv_detail_toList"
             app:destination="@id/tvListFragment"/>
+        <action
+            android:id="@+id/action_tvDetailFragment_self"
+            app:destination="@id/tvDetailFragment" />
     </fragment>
 
 </navigation>

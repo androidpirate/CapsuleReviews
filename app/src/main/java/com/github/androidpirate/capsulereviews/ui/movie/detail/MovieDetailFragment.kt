@@ -18,6 +18,7 @@ import com.github.androidpirate.capsulereviews.data.response.movie.Genre
 import com.github.androidpirate.capsulereviews.data.response.movie.MovieResponse
 import com.github.androidpirate.capsulereviews.data.response.movies.MoviesListItem
 import com.github.androidpirate.capsulereviews.ui.adapter.ListItemAdapter
+import com.github.androidpirate.capsulereviews.ui.movie.list.MovieListFragmentDirections
 import com.github.androidpirate.capsulereviews.util.GridSpacingItemDecoration
 import com.github.androidpirate.capsulereviews.util.ItemClickListener
 import jp.wasabeef.glide.transformations.BlurTransformation
@@ -145,6 +146,8 @@ class MovieDetailFragment : Fragment(), ItemClickListener {
     }
 
     override fun <T> onItemClick(item: T) {
-        TODO("Not yet implemented")
+        val action = MovieDetailFragmentDirections
+            .actionMovieDetailFragmentSelf((item as MoviesListItem).id)
+        findNavController().navigate(action)
     }
 }

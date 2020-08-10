@@ -96,7 +96,8 @@ class TvDetailFragment : Fragment(), ItemClickListener {
         network.text = formatNetworks(tvShow.networks)
         adapter.submitList(tvSimilarShows)
         rvSimilar.layoutManager = GridLayoutManager(requireContext(), 3)
-        rvSimilar.addItemDecoration(GridSpacingItemDecoration(4, 30, true))
+        rvSimilar.addItemDecoration(
+            GridSpacingItemDecoration(4, 30, true))
         rvSimilar.adapter = adapter
     }
 
@@ -149,6 +150,8 @@ class TvDetailFragment : Fragment(), ItemClickListener {
     }
 
     override fun <T> onItemClick(item: T) {
-        TODO("Not yet implemented")
+        val action = TvDetailFragmentDirections
+            .actionTvDetailFragmentSelf((item as TvShowsListItem).id)
+        findNavController().navigate(action)
     }
 }
