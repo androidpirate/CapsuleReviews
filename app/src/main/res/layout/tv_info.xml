@@ -172,4 +172,26 @@
         app:layout_constraintTop_toBottomOf="@id/type"
         app:layout_constraintStart_toEndOf="@id/networkTitle"/>
 
+    <TextView
+        android:id="@+id/imdbLink"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="See on IMDB"
+        android:textColor="@color/colorAccent"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:layout_marginTop="@dimen/margin_32"
+        app:layout_constraintTop_toBottomOf="@id/network"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_next"
+        android:contentDescription="@string/next_icon_description"
+        android:layout_marginTop="@dimen/margin_32"
+        android:layout_marginStart="@dimen/margin_8"
+        app:layout_constraintStart_toEndOf="@id/imdbLink"
+        app:layout_constraintTop_toBottomOf="@id/network"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

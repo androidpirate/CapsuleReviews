@@ -4,6 +4,7 @@ import com.github.androidpirate.capsulereviews.BuildConfig
 import com.github.androidpirate.capsulereviews.data.response.movie.MovieResponse
 import com.github.androidpirate.capsulereviews.data.response.movies.MoviesResponse
 import com.github.androidpirate.capsulereviews.data.response.tvShow.TvShowResponse
+import com.github.androidpirate.capsulereviews.data.response.tvShow.external_ids.TvShowExternalIDs
 import com.github.androidpirate.capsulereviews.data.response.tvShows.TvShowsResponse
 import com.github.androidpirate.capsulereviews.data.response.videos.VideosResponse
 import okhttp3.Interceptor
@@ -61,6 +62,9 @@ interface MovieDbService {
 
     @GET("tv/{tv_id}/videos")
     suspend fun getTvShowVideos(@Path("tv_id") tvId: Int): VideosResponse
+
+    @GET("tv/{tv_id}/external_ids")
+    suspend fun getTvShowExternalIDs(@Path("tv_id") tvId: Int) : TvShowExternalIDs
 
     companion object {
         operator fun invoke(): MovieDbService {

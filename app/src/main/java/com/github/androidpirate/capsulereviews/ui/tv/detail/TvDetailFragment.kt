@@ -19,6 +19,7 @@ import com.github.androidpirate.capsulereviews.data.response.tvShow.Genre
 import com.github.androidpirate.capsulereviews.data.response.tvShow.Network
 
 import com.github.androidpirate.capsulereviews.data.response.tvShow.TvShowResponse
+import com.github.androidpirate.capsulereviews.data.response.tvShow.external_ids.TvShowExternalIDs
 import com.github.androidpirate.capsulereviews.data.response.tvShows.TvShowsListItem
 import com.github.androidpirate.capsulereviews.data.response.videos.VideosListItem
 import com.github.androidpirate.capsulereviews.ui.adapter.ListItemAdapter
@@ -27,9 +28,12 @@ import com.github.androidpirate.capsulereviews.util.ItemClickListener
 import jp.wasabeef.glide.transformations.BlurTransformation
 import kotlinx.android.synthetic.main.detail_action_bar.*
 import kotlinx.android.synthetic.main.detail_similar.*
+import kotlinx.android.synthetic.main.movie_info.*
 import kotlinx.android.synthetic.main.tv_header.*
 import kotlinx.android.synthetic.main.tv_header.btUp
 import kotlinx.android.synthetic.main.tv_info.*
+import kotlinx.android.synthetic.main.tv_info.imdbLink
+import kotlinx.android.synthetic.main.tv_info.overview
 import kotlinx.android.synthetic.main.tv_summary.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -39,6 +43,7 @@ import kotlinx.coroutines.withContext
 class TvDetailFragment : Fragment(), ItemClickListener {
     private val args: TvDetailFragmentArgs by navArgs()
     private lateinit var tvShow: TvShowResponse
+    private lateinit var externalIDs: TvShowExternalIDs
     private lateinit var videos: List<VideosListItem>
     private lateinit var adapter: ListItemAdapter<TvShowsListItem>
     private lateinit var tvSimilarShows: List<TvShowsListItem>
@@ -71,6 +76,9 @@ class TvDetailFragment : Fragment(), ItemClickListener {
                 tvShow = apiService.getTvShowDetails(args.showId)
             }
             withContext(Dispatchers.IO) {
+                externalIDs = apiService.getTvShowExternalIDs(args.showId)
+            }
+            withContext(Dispatchers.IO) {
                 tvSimilarShows = apiService.getSimilarTvShows(args.showId).tvShowsListItems
             }
             withContext(Dispatchers.IO) {
@@ -101,6 +109,7 @@ class TvDetailFragment : Fragment(), ItemClickListener {
         runTime.text = formatRunTime(tvShow.episodeRunTime[0])
         type.text = tvShow.type
         network.text = formatNetworks(tvShow.networks)
+        setIMDBLink(externalIDs.imdbId)
         setTrailerLink()
         adapter.submitList(tvSimilarShows)
         rvSimilar.layoutManager = GridLayoutManager(requireContext(), 3)
@@ -155,6 +164,16 @@ class TvDetailFragment : Fragment(), ItemClickListener {
 
     private fun formatRunTime(runTime: Int): String {
         return "$runTime mins"
+    }
+
+    private fun setIMDBLink(imdbId: String) {
+        val imdbBaseURL = "https://www.imdb.com/title/"
+        val imdbEndpoint = "${imdbBaseURL + imdbId}/"
+        imdbLink.setOnClickListener {
+            val uri = Uri.parse(imdbEndpoint);
+            val intent = Intent(Intent.ACTION_VIEW, uri);
+            startActivity(intent);
+        }
     }
 
     private fun setTrailerLink() {
