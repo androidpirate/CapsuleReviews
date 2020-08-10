@@ -28,7 +28,6 @@ import com.github.androidpirate.capsulereviews.util.ItemClickListener
 import jp.wasabeef.glide.transformations.BlurTransformation
 import kotlinx.android.synthetic.main.detail_action_bar.*
 import kotlinx.android.synthetic.main.detail_similar.*
-import kotlinx.android.synthetic.main.movie_info.*
 import kotlinx.android.synthetic.main.tv_header.*
 import kotlinx.android.synthetic.main.tv_header.btUp
 import kotlinx.android.synthetic.main.tv_info.*
@@ -46,11 +45,7 @@ class TvDetailFragment : Fragment(), ItemClickListener {
     private lateinit var externalIDs: TvShowExternalIDs
     private lateinit var videos: List<VideosListItem>
     private lateinit var adapter: ListItemAdapter<TvShowsListItem>
-    private lateinit var tvSimilarShows: List<TvShowsListItem>
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
+    private lateinit var similarShows: List<TvShowsListItem>
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -79,7 +74,7 @@ class TvDetailFragment : Fragment(), ItemClickListener {
                 externalIDs = apiService.getTvShowExternalIDs(args.showId)
             }
             withContext(Dispatchers.IO) {
-                tvSimilarShows = apiService.getSimilarTvShows(args.showId).tvShowsListItems
+                similarShows = apiService.getSimilarTvShows(args.showId).tvShowsListItems
             }
             withContext(Dispatchers.IO) {
                 videos = apiService.getTvShowVideos(args.showId).videosListItems
@@ -113,11 +108,7 @@ class TvDetailFragment : Fragment(), ItemClickListener {
         network.text = formatNetworks(tvShow.networks)
         setIMDBLink(externalIDs.imdbId)
         setTrailerLink()
-        adapter.submitList(tvSimilarShows)
-        rvSimilar.layoutManager = GridLayoutManager(requireContext(), 3)
-        rvSimilar.addItemDecoration(
-            GridSpacingItemDecoration(4, 30, true))
-        rvSimilar.adapter = adapter
+        setSimilarShows()
     }
 
     private fun formatReleaseDate(releaseDate: String): String {
@@ -192,6 +183,19 @@ class TvDetailFragment : Fragment(), ItemClickListener {
             val uri = Uri.parse(trailerEndpoint)
             val intent = Intent(Intent.ACTION_VIEW, uri)
             startActivity(intent)
+        }
+    }
+
+    private fun setSimilarShows() {
+        if(similarShows.isEmpty()) {
+            emptyListMessage.visibility = View.VISIBLE
+            rvSimilar.visibility = View.INVISIBLE
+        } else {
+            adapter.submitList(similarShows)
+            rvSimilar.layoutManager = GridLayoutManager(requireContext(), 3)
+            rvSimilar.addItemDecoration(
+                GridSpacingItemDecoration(4, 30, true))
+            rvSimilar.adapter = adapter
         }
     }
 

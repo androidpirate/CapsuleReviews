@@ -87,7 +87,7 @@
         android:id="@+id/scPlay"
         android:layout_width="60dp"
         android:layout_height="40dp"
-        android:contentDescription="@string/showcase_plat_description"
+        android:contentDescription="@string/play_showcase_movie_description"
         android:background="@drawable/custom_rectangular_background"
         android:src="@drawable/ic_filled_play_black"
         app:layout_constraintTop_toBottomOf="@id/scSubtitle"

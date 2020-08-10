@@ -42,10 +42,6 @@ class MovieDetailFragment : Fragment(), ItemClickListener {
     private lateinit var adapter: ListItemAdapter<MoviesListItem>
     private lateinit var similarMovies: List<MoviesListItem>
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -100,10 +96,7 @@ class MovieDetailFragment : Fragment(), ItemClickListener {
         revenue.text = formatRevenue(movie.revenue)
         setIMDBLink(movie.imdbId)
         setTrailerLink()
-        adapter.submitList(similarMovies)
-        rvSimilar.layoutManager = GridLayoutManager(requireContext(), 3)
-        rvSimilar.addItemDecoration(GridSpacingItemDecoration(4, 30, true))
-        rvSimilar.adapter = adapter
+        setSimilarMovies()
     }
 
     private fun formatReleaseDate(releaseDate: String): String {
@@ -166,6 +159,18 @@ class MovieDetailFragment : Fragment(), ItemClickListener {
             val uri = Uri.parse(trailerEndpoint)
             val intent = Intent(Intent.ACTION_VIEW, uri)
             startActivity(intent)
+        }
+    }
+
+    private fun setSimilarMovies() {
+        if(similarMovies.isEmpty()) {
+            emptyListMessage.visibility = View.VISIBLE
+            rvSimilar.visibility = View.INVISIBLE
+        } else {
+            adapter.submitList(similarMovies)
+            rvSimilar.layoutManager = GridLayoutManager(requireContext(), 3)
+            rvSimilar.addItemDecoration(GridSpacingItemDecoration(4, 30, true))
+            rvSimilar.adapter = adapter
         }
     }
 

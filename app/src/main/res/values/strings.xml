@@ -14,7 +14,7 @@
     <string name="trending_movies_title">Trending Movies</string>
     <string name="showcase_movie_poster_description">Showcase movie poster.</string>
     <string name="showcase_add_to_favorite_description">Add showcase movie to favorites button.</string>
-    <string name="showcase_plat_description">Play showcase movie trailer.</string>
+    <string name="play_showcase_movie_description">Play showcase movie trailer.</string>
     <string name="showcase_goto_details_description">Go to showcase movie details.</string>
     <string name="list_item_preview_description">List item preview.</string>
     <string name="movie_poster_description">Movie Poster</string>
@@ -24,12 +24,6 @@
     <string name="top_rated_tv_title">Top Rated TV</string>
     <string name="trending_tv_title">Trending TV</string>
     <!-- Movie Detail resources -->
-    <!-- TODO 1: Get rid of lorem ipsum text before publishing -->
-    <string name="lorem_ipsum_text">Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-        sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Dictum varius duis
-        at consectetur. Auctor urna nunc id cursus metus. Augue neque gravida in fermentum.
-        Ac turpis egestas maecenas pharetra convallis. Elit at imperdiet dui accumsan sit amet
-        nulla. In metus vulputate eu scelerisque felis imperdiet proin fermentum leo.</string>
     <string name="rating_icon_description">Rating icon.</string>
     <string name="next_icon_description">Next icon.</string>
     <string name="dot_separator_description">Dot separator.</string>
@@ -38,4 +32,5 @@
     <string name="et_search_hint_content">Search for a keyword</string>
     <string name="movie_header_background_image_description">Movie header background image.</string>
     <string name="play_showcase_tv_show_description">Play showcase tv show trailer.</string>
+    <string name="empty_similar_list_message">Looks like there is nothing quiet like this yet!</string>
 </resources>
