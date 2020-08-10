@@ -181,7 +181,7 @@ class TvDetailFragment : Fragment(), ItemClickListener {
     private fun setTrailerLink() {
         var videoKey = ""
         for(video in videos) {
-            if( video.site == "YouTube" && video.type == "Opening Credits") {
+            if( video.site == "YouTube" && video.type == "Trailer") {
                 videoKey = video.key
                 break;
             }
