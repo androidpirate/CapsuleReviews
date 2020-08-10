@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.GridLayoutManager
@@ -164,9 +165,13 @@ class MovieDetailFragment : Fragment(), ItemClickListener {
         val youTubeBaseURL = "https://www.youtube.com/watch?v="
         val trailerEndpoint = youTubeBaseURL + videoKey
         btPlay.setOnClickListener {
-            val uri = Uri.parse(trailerEndpoint)
-            val intent = Intent(Intent.ACTION_VIEW, uri)
-            startActivity(intent)
+            if(videoKey != "") {
+                val uri = Uri.parse(trailerEndpoint)
+                val intent = Intent(Intent.ACTION_VIEW, uri)
+                startActivity(intent)
+            } else {
+                Toast.makeText(context, "Video not available.", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 
