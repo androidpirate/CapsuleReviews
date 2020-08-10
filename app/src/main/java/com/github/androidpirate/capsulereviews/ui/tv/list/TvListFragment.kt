@@ -38,33 +38,36 @@ class TvListFragment : Fragment(), ItemClickListener{
         return inflater.inflate(R.layout.fragment_tv_list, container, false)
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-    }
-
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         val apiService = MovieDbService()
         GlobalScope.launch(Dispatchers.Main) {
-            popularShowsAdapter.submitList(
-                withContext(Dispatchers.IO) { apiService.getPopularTvShows().tvShowsListItems }
-            )
-            topRatedShowsAdapter.submitList(
-                withContext(Dispatchers.IO) {apiService.getTopRatedTvShows().tvShowsListItems}
-            )
-            trendingShowsAdapter.submitList(
-                withContext(Dispatchers.IO) {apiService.getTrendingTvShows().tvShowsListItems}
-            )
+            withContext(Dispatchers.IO) {
+                popularShows = apiService.getPopularTvShows().tvShowsListItems
+            }
+            withContext(Dispatchers.IO) {
+                topRatedShows = apiService.getTopRatedTvShows().tvShowsListItems
+            }
+            withContext(Dispatchers.IO) {
+               trendingShows = apiService.getTrendingTvShows().tvShowsListItems
+            }
+            setupViews()
         }
-        rvPopular.adapter = popularShowsAdapter
-        rvTopRated.adapter = topRatedShowsAdapter
-        rvTrending.adapter = trendingShowsAdapter
     }
 
     private fun setupAdapters() {
         popularShowsAdapter = ListItemAdapter(TvListFragment::class.simpleName, this)
         topRatedShowsAdapter = ListItemAdapter(TvListFragment::class.simpleName, this)
         trendingShowsAdapter = ListItemAdapter(TvListFragment::class.simpleName, this)
+    }
+
+    private fun setupViews() {
+        popularShowsAdapter.submitList(popularShows)
+        topRatedShowsAdapter.submitList(topRatedShows)
+        trendingShowsAdapter.submitList(trendingShows)
+        rvPopular.adapter = popularShowsAdapter
+        rvTopRated.adapter = topRatedShowsAdapter
+        rvTrending.adapter = trendingShowsAdapter
     }
 
     override fun <T> onItemClick(item: T) {
