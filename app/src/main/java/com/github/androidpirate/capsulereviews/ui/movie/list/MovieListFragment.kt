@@ -1,21 +1,30 @@
 package com.github.androidpirate.capsulereviews.ui.movie.list
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.bumptech.glide.Glide
 import com.github.androidpirate.capsulereviews.R
 import com.github.androidpirate.capsulereviews.data.api.MovieDbService
 import com.github.androidpirate.capsulereviews.data.response.movies.MoviesListItem
+import com.github.androidpirate.capsulereviews.data.response.videos.VideosListItem
 import com.github.androidpirate.capsulereviews.ui.adapter.ListItemAdapter
 import com.github.androidpirate.capsulereviews.util.ItemClickListener
+import kotlinx.android.synthetic.main.detail_action_bar.*
 import kotlinx.android.synthetic.main.fragment_movie_list.*
+import kotlinx.android.synthetic.main.list_item.view.*
+import kotlinx.android.synthetic.main.movie_showcase.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import kotlin.random.Random
 
 class MovieListFragment : Fragment(), ItemClickListener {
     private lateinit var popularMoviesAdapter: ListItemAdapter<MoviesListItem>
@@ -28,6 +37,8 @@ class MovieListFragment : Fragment(), ItemClickListener {
     private lateinit var upcomingMovies: List<MoviesListItem>
     private lateinit var trendingMoviesAdapter: ListItemAdapter<MoviesListItem>
     private lateinit var trendingMovies: List<MoviesListItem>
+    private lateinit var showCaseMovie: MoviesListItem
+    private lateinit var showCaseVideos: List<VideosListItem>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,7 +55,6 @@ class MovieListFragment : Fragment(), ItemClickListener {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-
         val apiService = MovieDbService()
         GlobalScope.launch(Dispatchers.Main ) {
             withContext(Dispatchers.IO) {
@@ -61,7 +71,13 @@ class MovieListFragment : Fragment(), ItemClickListener {
             }
             withContext(Dispatchers.IO) {
                 trendingMovies = apiService.getTrendingMovies().moviesListItems
+                val randomItemNo = Random.nextInt(0 , 19)
+                showCaseMovie = trendingMovies[randomItemNo]
             }
+            withContext(Dispatchers.IO) {
+                showCaseVideos = apiService.getMovieVideos(showCaseMovie.id).videosListItems
+            }
+            setShowCaseMovie()
             setupViews()
         }
     }
@@ -77,6 +93,37 @@ class MovieListFragment : Fragment(), ItemClickListener {
             MovieListFragment::class.simpleName, this)
         trendingMoviesAdapter = ListItemAdapter(
             MovieListFragment::class.simpleName, this)
+    }
+
+    private fun setShowCaseMovie() {
+        Glide.with(requireContext())
+            // TODO 4: Take care of the base URL when saving data into local db
+            .load("https://image.tmdb.org/t/p/w342/" + showCaseMovie.posterPath)
+            .into(scPoster)
+        scTitle.text = showCaseMovie.title
+
+        scAddFavorite.setOnClickListener {
+            // TODO 7: Implement adding to favorites here
+        }
+
+        scInfo.setOnClickListener {
+            onItemClick(showCaseMovie)
+        }
+
+        var videoKey = ""
+        for(video in showCaseVideos) {
+            if( video.site == "YouTube" && video.type == "Trailer") {
+                videoKey = video.key
+                break;
+            }
+        }
+        val youTubeBaseURL = "https://www.youtube.com/watch?v="
+        val trailerEndpoint = youTubeBaseURL + videoKey
+        scPlay.setOnClickListener {
+            val uri = Uri.parse(trailerEndpoint)
+            val intent = Intent(Intent.ACTION_VIEW, uri)
+            startActivity(intent)
+        }
     }
 
     private fun setupViews() {
