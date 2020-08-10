@@ -19,7 +19,6 @@
         android:contentDescription="@string/showcase_movie_poster_description"
         android:src="@drawable/ic_image_placeholder"
         android:scaleType="fitXY"
-        tools:scaleType="fitCenter"
         tools:srcCompat="@drawable/ic_image_placeholder"
         app:layout_constraintTop_toBottomOf="@id/movieToolbar"
         app:layout_constraintBottom_toBottomOf="parent"/>
