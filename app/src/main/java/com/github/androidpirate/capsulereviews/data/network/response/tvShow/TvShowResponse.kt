@@ -1,9 +1,11 @@
 package com.github.androidpirate.capsulereviews.data.network.response.tvShow
 
 
+import androidx.annotation.Nullable
 import com.google.gson.annotations.SerializedName
 
 data class TvShowResponse(
+    @Nullable
     @SerializedName("backdrop_path")
     val backdropPath: String,
     @SerializedName("created_by")
@@ -38,6 +40,7 @@ data class TvShowResponse(
     val overview: String,
     @SerializedName("popularity")
     val popularity: Double,
+    @Nullable
     @SerializedName("poster_path")
     val posterPath: String,
     @SerializedName("status")

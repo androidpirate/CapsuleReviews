@@ -1,11 +1,11 @@
 package com.github.androidpirate.capsulereviews.data.network.response.multiSearch
 
 
+import androidx.annotation.Nullable
 import com.google.gson.annotations.SerializedName
 
 data class Result(
-    @SerializedName("adult")
-    val adult: Boolean,
+    @Nullable
     @SerializedName("backdrop_path")
     val backdropPath: String,
     @SerializedName("first_air_date")
@@ -18,10 +18,6 @@ data class Result(
     val mediaType: String,
     @SerializedName("name")
     val name: String,
-    @SerializedName("origin_country")
-    val originCountry: List<String>,
-    @SerializedName("original_language")
-    val originalLanguage: String,
     @SerializedName("original_name")
     val originalName: String,
     @SerializedName("original_title")
@@ -30,6 +26,7 @@ data class Result(
     val overview: String,
     @SerializedName("popularity")
     val popularity: Double,
+    @Nullable
     @SerializedName("poster_path")
     val posterPath: String,
     @SerializedName("release_date")
