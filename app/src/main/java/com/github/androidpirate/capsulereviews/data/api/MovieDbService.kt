@@ -3,6 +3,7 @@ package com.github.androidpirate.capsulereviews.data.api
 import com.github.androidpirate.capsulereviews.BuildConfig
 import com.github.androidpirate.capsulereviews.data.network.response.movie.MovieResponse
 import com.github.androidpirate.capsulereviews.data.network.response.movies.MoviesResponse
+import com.github.androidpirate.capsulereviews.data.network.response.multiSearch.MultiSearchResponse
 import com.github.androidpirate.capsulereviews.data.network.response.tvShow.TvShowResponse
 import com.github.androidpirate.capsulereviews.data.network.response.tvShow.external_ids.TvShowExternalIDs
 import com.github.androidpirate.capsulereviews.data.network.response.tvShows.TvShowsResponse
@@ -13,6 +14,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Path
+import retrofit2.http.Query
 
 interface MovieDbService {
     /******************************
@@ -65,6 +67,12 @@ interface MovieDbService {
 
     @GET("tv/{tv_id}/external_ids")
     suspend fun getTvShowExternalIDs(@Path("tv_id") tvId: Int) : TvShowExternalIDs
+
+    /******************************
+     *    Multi Search Endpoints
+     ******************************/
+    @GET("search/multi")
+    suspend fun getSearchResults(@Query("query") query: String): MultiSearchResponse
 
     companion object {
         operator fun invoke(): MovieDbService {
