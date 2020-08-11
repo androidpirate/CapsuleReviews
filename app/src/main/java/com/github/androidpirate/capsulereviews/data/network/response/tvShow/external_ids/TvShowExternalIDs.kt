@@ -1,4 +1,4 @@
-package com.github.androidpirate.capsulereviews.data.response.tvShow.external_ids
+package com.github.androidpirate.capsulereviews.data.network.response.tvShow.external_ids
 
 
 import com.google.gson.annotations.SerializedName

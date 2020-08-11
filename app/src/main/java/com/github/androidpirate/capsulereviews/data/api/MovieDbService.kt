@@ -1,12 +1,12 @@
 package com.github.androidpirate.capsulereviews.data.api
 
 import com.github.androidpirate.capsulereviews.BuildConfig
-import com.github.androidpirate.capsulereviews.data.response.movie.MovieResponse
-import com.github.androidpirate.capsulereviews.data.response.movies.MoviesResponse
-import com.github.androidpirate.capsulereviews.data.response.tvShow.TvShowResponse
-import com.github.androidpirate.capsulereviews.data.response.tvShow.external_ids.TvShowExternalIDs
-import com.github.androidpirate.capsulereviews.data.response.tvShows.TvShowsResponse
-import com.github.androidpirate.capsulereviews.data.response.videos.VideosResponse
+import com.github.androidpirate.capsulereviews.data.network.response.movie.MovieResponse
+import com.github.androidpirate.capsulereviews.data.network.response.movies.MoviesResponse
+import com.github.androidpirate.capsulereviews.data.network.response.tvShow.TvShowResponse
+import com.github.androidpirate.capsulereviews.data.network.response.tvShow.external_ids.TvShowExternalIDs
+import com.github.androidpirate.capsulereviews.data.network.response.tvShows.TvShowsResponse
+import com.github.androidpirate.capsulereviews.data.network.response.videos.VideosResponse
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit

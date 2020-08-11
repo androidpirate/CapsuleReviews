@@ -1,4 +1,4 @@
-package com.github.androidpirate.capsulereviews.data.response.videos
+package com.github.androidpirate.capsulereviews.data.network.response.videos
 
 
 import com.google.gson.annotations.SerializedName

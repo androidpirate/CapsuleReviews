@@ -13,8 +13,8 @@ import com.bumptech.glide.Glide
 import com.github.androidpirate.capsulereviews.BuildConfig
 import com.github.androidpirate.capsulereviews.R
 import com.github.androidpirate.capsulereviews.data.api.MovieDbService
-import com.github.androidpirate.capsulereviews.data.response.tvShows.TvShowsListItem
-import com.github.androidpirate.capsulereviews.data.response.videos.VideosListItem
+import com.github.androidpirate.capsulereviews.data.network.response.tvShows.TvShowsListItem
+import com.github.androidpirate.capsulereviews.data.network.response.videos.VideosListItem
 import com.github.androidpirate.capsulereviews.ui.adapter.ListItemAdapter
 import com.github.androidpirate.capsulereviews.util.ItemClickListener
 import kotlinx.android.synthetic.main.fragment_tv_list.*

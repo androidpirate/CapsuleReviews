@@ -1,13 +1,13 @@
-package com.github.androidpirate.capsulereviews.data.response.movies
+package com.github.androidpirate.capsulereviews.data.network.response.multiSearch
 
 
 import com.google.gson.annotations.SerializedName
 
-data class MoviesResponse(
+data class MultiSearchResponse(
     @SerializedName("page")
     val page: Int,
     @SerializedName("results")
-    val moviesListItems: List<MoviesListItem>,
+    val results: List<Result>,
     @SerializedName("total_pages")
     val totalPages: Int,
     @SerializedName("total_results")

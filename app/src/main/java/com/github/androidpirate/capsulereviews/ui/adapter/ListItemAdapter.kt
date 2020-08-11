@@ -7,8 +7,8 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.github.androidpirate.capsulereviews.R
-import com.github.androidpirate.capsulereviews.data.response.movies.MoviesListItem
-import com.github.androidpirate.capsulereviews.data.response.tvShows.TvShowsListItem
+import com.github.androidpirate.capsulereviews.data.network.response.movies.MoviesListItem
+import com.github.androidpirate.capsulereviews.data.network.response.tvShows.TvShowsListItem
 import com.github.androidpirate.capsulereviews.util.ItemClickListener
 import com.github.androidpirate.capsulereviews.util.ListItemDiffCallback
 import kotlinx.android.synthetic.main.list_item.view.*

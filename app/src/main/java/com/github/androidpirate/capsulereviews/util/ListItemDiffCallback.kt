@@ -1,10 +1,10 @@
 package com.github.androidpirate.capsulereviews.util
 
 import androidx.recyclerview.widget.DiffUtil
-import com.github.androidpirate.capsulereviews.data.response.movie.MovieResponse
-import com.github.androidpirate.capsulereviews.data.response.movies.MoviesListItem
-import com.github.androidpirate.capsulereviews.data.response.tvShow.TvShowResponse
-import com.github.androidpirate.capsulereviews.data.response.tvShows.TvShowsListItem
+import com.github.androidpirate.capsulereviews.data.network.response.movie.MovieResponse
+import com.github.androidpirate.capsulereviews.data.network.response.movies.MoviesListItem
+import com.github.androidpirate.capsulereviews.data.network.response.tvShow.TvShowResponse
+import com.github.androidpirate.capsulereviews.data.network.response.tvShows.TvShowsListItem
 import java.lang.IllegalArgumentException
 
 class ListItemDiffCallback<T>(val fragmentType: String?): DiffUtil.ItemCallback<T> () {

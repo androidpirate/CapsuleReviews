@@ -3,7 +3,6 @@ package com.github.androidpirate.capsulereviews.ui.movie.list
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,13 +13,11 @@ import com.bumptech.glide.Glide
 import com.github.androidpirate.capsulereviews.BuildConfig
 import com.github.androidpirate.capsulereviews.R
 import com.github.androidpirate.capsulereviews.data.api.MovieDbService
-import com.github.androidpirate.capsulereviews.data.response.movies.MoviesListItem
-import com.github.androidpirate.capsulereviews.data.response.videos.VideosListItem
+import com.github.androidpirate.capsulereviews.data.network.response.movies.MoviesListItem
+import com.github.androidpirate.capsulereviews.data.network.response.videos.VideosListItem
 import com.github.androidpirate.capsulereviews.ui.adapter.ListItemAdapter
 import com.github.androidpirate.capsulereviews.util.ItemClickListener
-import kotlinx.android.synthetic.main.detail_action_bar.*
 import kotlinx.android.synthetic.main.fragment_movie_list.*
-import kotlinx.android.synthetic.main.list_item.view.*
 import kotlinx.android.synthetic.main.movie_showcase.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
