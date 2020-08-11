@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView
+<androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -7,61 +7,78 @@
     android:layout_height="match_parent"
     tools:context=".ui.tv.detail.TvDetailFragment">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/container"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
 
-        <include
-            android:id="@+id/tvHeader"
-            android:layout_width="@dimen/match_constraint"
-            android:layout_height="wrap_content"
-            layout="@layout/tv_header"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-        <include
-            android:id="@+id/tvSummary"
-            android:layout_width="@dimen/match_constraint"
-            android:layout_height="wrap_content"
-            layout="@layout/tv_summary"
-            android:layout_margin="@dimen/margin_16"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvHeader"/>
+            <include
+                android:id="@+id/tvHeader"
+                android:layout_width="@dimen/match_constraint"
+                android:layout_height="wrap_content"
+                layout="@layout/tv_header"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
 
-        <include
-            android:id="@+id/actionBar"
-            android:layout_width="@dimen/match_constraint"
-            android:layout_height="wrap_content"
-            layout="@layout/detail_action_bar"
-            android:layout_margin="@dimen/margin_16"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tvSummary"/>
+            <include
+                android:id="@+id/tvSummary"
+                android:layout_width="@dimen/match_constraint"
+                android:layout_height="wrap_content"
+                layout="@layout/tv_summary"
+                android:layout_margin="@dimen/margin_16"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvHeader"/>
 
-        <include
-            android:id="@+id/tvInfo"
-            android:layout_width="@dimen/match_constraint"
-            android:layout_height="wrap_content"
-            layout="@layout/tv_info"
-            android:layout_margin="@dimen/margin_16"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/actionBar"/>
+            <include
+                android:id="@+id/actionBar"
+                android:layout_width="@dimen/match_constraint"
+                android:layout_height="wrap_content"
+                layout="@layout/detail_action_bar"
+                android:layout_margin="@dimen/margin_16"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvSummary"/>
 
-        <include
-            android:id="@+id/tvSimilar"
-            android:layout_width="@dimen/match_constraint"
-            android:layout_height="wrap_content"
-            layout="@layout/detail_similar"
-            android:layout_margin="@dimen/margin_16"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tvInfo"/>
+            <include
+                android:id="@+id/tvInfo"
+                android:layout_width="@dimen/match_constraint"
+                android:layout_height="wrap_content"
+                layout="@layout/tv_info"
+                android:layout_margin="@dimen/margin_16"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/actionBar"/>
 
-        <!-- TODO 2: Might include a layout to display more videos here -->
+            <include
+                android:id="@+id/tvSimilar"
+                android:layout_width="@dimen/match_constraint"
+                android:layout_height="wrap_content"
+                layout="@layout/detail_similar"
+                android:layout_margin="@dimen/margin_16"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvInfo"/>
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-</androidx.core.widget.NestedScrollView>
+    </androidx.core.widget.NestedScrollView>
+
+    <include
+        android:id="@+id/loadingScreen"
+        layout="@layout/loading_screen"
+        android:layout_width="@dimen/match_constraint"
+        android:layout_height="@dimen/match_constraint"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+

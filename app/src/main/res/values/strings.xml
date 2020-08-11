@@ -35,4 +35,5 @@
     <string name="empty_similar_list_message">Looks like there is nothing quiet like this yet!</string>
     <string name="video_no_available_toast_content">Video not available.</string>
     <string name="link_not_available_toast_content">Link not available.</string>
+    <string name="progress_bar_text_content">Loading</string>
 </resources>

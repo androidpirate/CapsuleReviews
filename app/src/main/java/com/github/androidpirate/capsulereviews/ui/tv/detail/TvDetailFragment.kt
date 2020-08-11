@@ -29,6 +29,7 @@ import com.github.androidpirate.capsulereviews.util.ItemClickListener
 import jp.wasabeef.glide.transformations.BlurTransformation
 import kotlinx.android.synthetic.main.detail_action_bar.*
 import kotlinx.android.synthetic.main.detail_similar.*
+import kotlinx.android.synthetic.main.fragment_tv_detail.*
 import kotlinx.android.synthetic.main.tv_header.*
 import kotlinx.android.synthetic.main.tv_header.btUp
 import kotlinx.android.synthetic.main.tv_info.*
@@ -48,6 +49,11 @@ class TvDetailFragment : Fragment(), ItemClickListener {
     private lateinit var adapter: ListItemAdapter<TvShowsListItem>
     private lateinit var similarShows: List<TvShowsListItem>
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        adapter = ListItemAdapter(TvDetailFragment::class.simpleName, this)
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -66,8 +72,9 @@ class TvDetailFragment : Fragment(), ItemClickListener {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         val apiService = MovieDbService()
-        adapter = ListItemAdapter(TvDetailFragment::class.simpleName, this)
         GlobalScope.launch(Dispatchers.Main) {
+            container.visibility = View.GONE
+            loadingScreen.visibility = View.VISIBLE
             withContext(Dispatchers.IO) {
                 tvShow = apiService.getTvShowDetails(args.showId)
             }
@@ -88,12 +95,12 @@ class TvDetailFragment : Fragment(), ItemClickListener {
         Glide.with(requireContext())
             .load(BuildConfig.MOVIE_DB_IMAGE_BASE_URL + "w185/" + tvShow.posterPath)
             .placeholder(R.drawable.ic_image_placeholder)
-            .into(tvPoster)
+            .apply(RequestOptions.bitmapTransform(BlurTransformation(100)))
+            .into(tvHeaderBg)
         Glide.with(requireContext())
             .load(BuildConfig.MOVIE_DB_IMAGE_BASE_URL + "w185/" + tvShow.posterPath)
             .placeholder(R.drawable.ic_image_placeholder)
-            .apply(RequestOptions.bitmapTransform(BlurTransformation(100)))
-            .into(tvHeaderBg)
+            .into(tvPoster)
         tvTitle.text = tvShow.name
         releaseDate.text = formatReleaseDate(tvShow.releaseDate)
         genres.text = formatGenres(tvShow.genres)
@@ -111,6 +118,8 @@ class TvDetailFragment : Fragment(), ItemClickListener {
         setIMDBLink(externalIDs.imdbId)
         setTrailerLink()
         setSimilarShows()
+        loadingScreen.visibility = View.GONE
+        container.visibility = View.VISIBLE
     }
 
     private fun formatReleaseDate(releaseDate: String): String {

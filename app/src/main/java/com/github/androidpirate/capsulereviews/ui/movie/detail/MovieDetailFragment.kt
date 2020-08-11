@@ -28,6 +28,7 @@ import com.github.androidpirate.capsulereviews.util.ItemClickListener
 import jp.wasabeef.glide.transformations.BlurTransformation
 import kotlinx.android.synthetic.main.detail_action_bar.*
 import kotlinx.android.synthetic.main.detail_similar.*
+import kotlinx.android.synthetic.main.fragment_movie_detail.*
 import kotlinx.android.synthetic.main.movie_header.*
 import kotlinx.android.synthetic.main.movie_info.*
 import kotlinx.android.synthetic.main.movie_summary.*
@@ -43,6 +44,11 @@ class MovieDetailFragment : Fragment(), ItemClickListener {
     private lateinit var videos: List<VideosListItem>
     private lateinit var adapter: ListItemAdapter<MoviesListItem>
     private lateinit var similarMovies: List<MoviesListItem>
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        adapter = ListItemAdapter(MovieDetailFragment::class.simpleName,this)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -62,9 +68,9 @@ class MovieDetailFragment : Fragment(), ItemClickListener {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         val apiService: MovieDbService = MovieDbService()
-        val fragmentName = MovieDetailFragment::class.simpleName
-        adapter = ListItemAdapter(MovieDetailFragment::class.simpleName,this)
         GlobalScope.launch(Dispatchers.Main) {
+            container.visibility = View.GONE
+            loadingScreen.visibility = View.VISIBLE
             withContext(Dispatchers.IO) {
                 movie = apiService.getMovieDetails(args.movieId)
             }
@@ -82,12 +88,12 @@ class MovieDetailFragment : Fragment(), ItemClickListener {
         Glide.with(requireContext())
             .load(BuildConfig.MOVIE_DB_IMAGE_BASE_URL + "w185/" + movie.posterPath)
             .placeholder(R.drawable.ic_image_placeholder)
-            .into(moviePoster)
+            .apply(bitmapTransform(BlurTransformation(100)))
+            .into(movieHeaderBg)
         Glide.with(requireContext())
             .load(BuildConfig.MOVIE_DB_IMAGE_BASE_URL + "w185/" + movie.posterPath)
             .placeholder(R.drawable.ic_image_placeholder)
-            .apply(bitmapTransform(BlurTransformation(100)))
-            .into(movieHeaderBg)
+            .into(moviePoster)
         movieTitle.text = movie.title
         movieTagLine.text = movie.tagline
         releaseDate.text = formatReleaseDate(movie.releaseDate)
@@ -100,6 +106,8 @@ class MovieDetailFragment : Fragment(), ItemClickListener {
         setIMDBLink(movie.imdbId)
         setTrailerLink()
         setSimilarMovies()
+        loadingScreen.visibility = View.GONE
+        container.visibility = View.VISIBLE
     }
 
     private fun formatReleaseDate(releaseDate: String): String {

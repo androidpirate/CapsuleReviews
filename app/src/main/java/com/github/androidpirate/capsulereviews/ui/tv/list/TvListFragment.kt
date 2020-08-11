@@ -53,6 +53,9 @@ class TvListFragment : Fragment(), ItemClickListener{
         super.onActivityCreated(savedInstanceState)
         val apiService = MovieDbService()
         GlobalScope.launch(Dispatchers.Main) {
+            container.visibility = View.GONE
+            loadingScreen.visibility = View.VISIBLE
+
             withContext(Dispatchers.IO) {
                 popularShows = apiService.getPopularTvShows().tvShowsListItems
             }
@@ -122,6 +125,8 @@ class TvListFragment : Fragment(), ItemClickListener{
         rvPopular.adapter = popularShowsAdapter
         rvTopRated.adapter = topRatedShowsAdapter
         rvTrending.adapter = trendingShowsAdapter
+        loadingScreen.visibility = View.GONE
+        container.visibility = View.VISIBLE
     }
 
     override fun <T> onItemClick(item: T) {
