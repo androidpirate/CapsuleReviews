@@ -1,9 +1,9 @@
-package com.github.androidpirate.capsulereviews.data.network.response.tvShow
+package com.github.androidpirate.capsulereviews.data.network.response.genre
 
 
 import com.google.gson.annotations.SerializedName
 
-data class Genre(
+data class NetworkGenre(
     @SerializedName("id")
     val id: Int,
     @SerializedName("name")

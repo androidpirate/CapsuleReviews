@@ -13,8 +13,8 @@ import com.bumptech.glide.Glide
 import com.github.androidpirate.capsulereviews.BuildConfig
 import com.github.androidpirate.capsulereviews.R
 import com.github.androidpirate.capsulereviews.data.api.MovieDbService
-import com.github.androidpirate.capsulereviews.data.network.response.movies.MoviesListItem
-import com.github.androidpirate.capsulereviews.data.network.response.videos.VideosListItem
+import com.github.androidpirate.capsulereviews.data.network.response.movies.NetworkMoviesListItem
+import com.github.androidpirate.capsulereviews.data.network.response.videos.NetworkVideosListItem
 import com.github.androidpirate.capsulereviews.ui.adapter.ListItemAdapter
 import com.github.androidpirate.capsulereviews.util.ItemClickListener
 import kotlinx.android.synthetic.main.fragment_movie_list.*
@@ -26,18 +26,18 @@ import kotlinx.coroutines.withContext
 import kotlin.random.Random
 
 class MovieListFragment : Fragment(), ItemClickListener {
-    private lateinit var popularMoviesAdapter: ListItemAdapter<MoviesListItem>
-    private lateinit var popularMovies: List<MoviesListItem>
-    private lateinit var topRatedMoviesAdapter: ListItemAdapter<MoviesListItem>
-    private lateinit var topRatedMovies: List<MoviesListItem>
-    private lateinit var nowPlayingMoviesAdapter: ListItemAdapter<MoviesListItem>
-    private lateinit var nowPlayingMovies: List<MoviesListItem>
-    private lateinit var upcomingMoviesAdapter: ListItemAdapter<MoviesListItem>
-    private lateinit var upcomingMovies: List<MoviesListItem>
-    private lateinit var trendingMoviesAdapter: ListItemAdapter<MoviesListItem>
-    private lateinit var trendingMovies: List<MoviesListItem>
-    private lateinit var showCaseMovie: MoviesListItem
-    private lateinit var showCaseVideos: List<VideosListItem>
+    private lateinit var popularNetworkMoviesAdapter: ListItemAdapter<NetworkMoviesListItem>
+    private lateinit var popularMovies: List<NetworkMoviesListItem>
+    private lateinit var topRatedNetworkMoviesAdapter: ListItemAdapter<NetworkMoviesListItem>
+    private lateinit var topRatedMovies: List<NetworkMoviesListItem>
+    private lateinit var nowPlayingNetworkMoviesAdapter: ListItemAdapter<NetworkMoviesListItem>
+    private lateinit var nowPlayingMovies: List<NetworkMoviesListItem>
+    private lateinit var upcomingNetworkMoviesAdapter: ListItemAdapter<NetworkMoviesListItem>
+    private lateinit var upcomingMovies: List<NetworkMoviesListItem>
+    private lateinit var trendingNetworkMoviesAdapter: ListItemAdapter<NetworkMoviesListItem>
+    private lateinit var trendingMovies: List<NetworkMoviesListItem>
+    private lateinit var showCaseMovie: NetworkMoviesListItem
+    private lateinit var showCaseVideos: List<NetworkVideosListItem>
     private var videoKey: String ?= null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -61,24 +61,24 @@ class MovieListFragment : Fragment(), ItemClickListener {
             loadingScreen.visibility = View.VISIBLE
 
             withContext(Dispatchers.IO) {
-                popularMovies = apiService.getPopularMovies().moviesListItems
+                popularMovies = apiService.getPopularMovies().networkMoviesListItems
             }
             withContext(Dispatchers.IO) {
-                topRatedMovies = apiService.getTopRatedMovies().moviesListItems
+                topRatedMovies = apiService.getTopRatedMovies().networkMoviesListItems
             }
             withContext(Dispatchers.IO) {
-                nowPlayingMovies = apiService.getNowPlayingMovies().moviesListItems
+                nowPlayingMovies = apiService.getNowPlayingMovies().networkMoviesListItems
             }
             withContext(Dispatchers.IO) {
-                upcomingMovies = apiService.getUpcomingMovies().moviesListItems
+                upcomingMovies = apiService.getUpcomingMovies().networkMoviesListItems
             }
             withContext(Dispatchers.IO) {
-                trendingMovies = apiService.getTrendingMovies().moviesListItems
+                trendingMovies = apiService.getTrendingMovies().networkMoviesListItems
                 val randomItemNo = Random.nextInt(0 , 19)
                 showCaseMovie = trendingMovies[randomItemNo]
             }
             withContext(Dispatchers.IO) {
-                showCaseVideos = apiService.getMovieVideos(showCaseMovie.id).videosListItems
+                showCaseVideos = apiService.getMovieVideos(showCaseMovie.id).networkVideosListItems
                 for(video in showCaseVideos) {
                     if(video.site == "YouTube" && video.type == "Trailer") {
                         videoKey = video.key
@@ -92,15 +92,15 @@ class MovieListFragment : Fragment(), ItemClickListener {
     }
 
     private fun setupAdapters() {
-        popularMoviesAdapter = ListItemAdapter(
+        popularNetworkMoviesAdapter = ListItemAdapter(
             MovieListFragment::class.simpleName, this)
-        topRatedMoviesAdapter = ListItemAdapter(
+        topRatedNetworkMoviesAdapter = ListItemAdapter(
             MovieListFragment::class.simpleName, this)
-        nowPlayingMoviesAdapter = ListItemAdapter(
+        nowPlayingNetworkMoviesAdapter = ListItemAdapter(
             MovieListFragment::class.simpleName, this)
-        upcomingMoviesAdapter = ListItemAdapter(
+        upcomingNetworkMoviesAdapter = ListItemAdapter(
             MovieListFragment::class.simpleName, this)
-        trendingMoviesAdapter = ListItemAdapter(
+        trendingNetworkMoviesAdapter = ListItemAdapter(
             MovieListFragment::class.simpleName, this)
     }
 
@@ -138,23 +138,23 @@ class MovieListFragment : Fragment(), ItemClickListener {
     }
 
     private fun setupViews() {
-        popularMoviesAdapter.submitList(popularMovies)
-        rvPopular.adapter = popularMoviesAdapter
-        topRatedMoviesAdapter.submitList(topRatedMovies)
-        rvTopRated.adapter = topRatedMoviesAdapter
-        nowPlayingMoviesAdapter.submitList(nowPlayingMovies)
-        rvNowPlaying.adapter = nowPlayingMoviesAdapter
-        upcomingMoviesAdapter.submitList(upcomingMovies)
-        rvUpcoming.adapter = upcomingMoviesAdapter
-        trendingMoviesAdapter.submitList(trendingMovies)
-        rvTrending.adapter = trendingMoviesAdapter
+        popularNetworkMoviesAdapter.submitList(popularMovies)
+        rvPopular.adapter = popularNetworkMoviesAdapter
+        topRatedNetworkMoviesAdapter.submitList(topRatedMovies)
+        rvTopRated.adapter = topRatedNetworkMoviesAdapter
+        nowPlayingNetworkMoviesAdapter.submitList(nowPlayingMovies)
+        rvNowPlaying.adapter = nowPlayingNetworkMoviesAdapter
+        upcomingNetworkMoviesAdapter.submitList(upcomingMovies)
+        rvUpcoming.adapter = upcomingNetworkMoviesAdapter
+        trendingNetworkMoviesAdapter.submitList(trendingMovies)
+        rvTrending.adapter = trendingNetworkMoviesAdapter
         loadingScreen.visibility = View.GONE
         container.visibility = View.VISIBLE
     }
 
     override fun <T> onItemClick(item: T) {
         val action = MovieListFragmentDirections
-            .actionMovieListToDetail((item as MoviesListItem).id)
+            .actionMovieListToDetail((item as NetworkMoviesListItem).id)
         findNavController().navigate(action)
     }
 }

@@ -16,10 +16,10 @@ import com.bumptech.glide.request.RequestOptions.bitmapTransform
 import com.github.androidpirate.capsulereviews.BuildConfig
 import com.github.androidpirate.capsulereviews.R
 import com.github.androidpirate.capsulereviews.data.api.MovieDbService
-import com.github.androidpirate.capsulereviews.data.network.response.movie.Genre
-import com.github.androidpirate.capsulereviews.data.network.response.movie.MovieResponse
-import com.github.androidpirate.capsulereviews.data.network.response.movies.MoviesListItem
-import com.github.androidpirate.capsulereviews.data.network.response.videos.VideosListItem
+import com.github.androidpirate.capsulereviews.data.network.response.genre.NetworkGenre
+import com.github.androidpirate.capsulereviews.data.network.response.movie.NetworkMovie
+import com.github.androidpirate.capsulereviews.data.network.response.movies.NetworkMoviesListItem
+import com.github.androidpirate.capsulereviews.data.network.response.videos.NetworkVideosListItem
 import com.github.androidpirate.capsulereviews.ui.adapter.ListItemAdapter
 import com.github.androidpirate.capsulereviews.util.GridSpacingItemDecoration
 import com.github.androidpirate.capsulereviews.util.ItemClickListener
@@ -38,10 +38,10 @@ import java.text.DecimalFormat
 
 class MovieDetailFragment : Fragment(), ItemClickListener {
     private val args: MovieDetailFragmentArgs by navArgs()
-    private lateinit var movie: MovieResponse
-    private lateinit var videos: List<VideosListItem>
-    private lateinit var adapter: ListItemAdapter<MoviesListItem>
-    private lateinit var similarMovies: List<MoviesListItem>
+    private lateinit var networkMovie: NetworkMovie
+    private lateinit var videos: List<NetworkVideosListItem>
+    private lateinit var adapter: ListItemAdapter<NetworkMoviesListItem>
+    private lateinit var similarMovies: List<NetworkMoviesListItem>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -70,13 +70,13 @@ class MovieDetailFragment : Fragment(), ItemClickListener {
             container.visibility = View.GONE
             loadingScreen.visibility = View.VISIBLE
             withContext(Dispatchers.IO) {
-                movie = apiService.getMovieDetails(args.movieId)
+                networkMovie = apiService.getMovieDetails(args.movieId)
             }
             withContext(Dispatchers.IO) {
-                similarMovies = apiService.getSimilarMovies(args.movieId).moviesListItems
+                similarMovies = apiService.getSimilarMovies(args.movieId).networkMoviesListItems
             }
             withContext(Dispatchers.IO) {
-                videos = apiService.getMovieVideos(args.movieId).videosListItems
+                videos = apiService.getMovieVideos(args.movieId).networkVideosListItems
             }
             setupViews()
         }
@@ -84,24 +84,24 @@ class MovieDetailFragment : Fragment(), ItemClickListener {
 
     private fun setupViews() {
         Glide.with(requireContext())
-            .load(BuildConfig.MOVIE_DB_IMAGE_BASE_URL + "w185/" + movie.posterPath)
+            .load(BuildConfig.MOVIE_DB_IMAGE_BASE_URL + "w185/" + networkMovie.posterPath)
             .placeholder(R.drawable.ic_image_placeholder)
             .apply(bitmapTransform(BlurTransformation(100)))
             .into(movieHeaderBg)
         Glide.with(requireContext())
-            .load(BuildConfig.MOVIE_DB_IMAGE_BASE_URL + "w185/" + movie.posterPath)
+            .load(BuildConfig.MOVIE_DB_IMAGE_BASE_URL + "w185/" + networkMovie.posterPath)
             .placeholder(R.drawable.ic_image_placeholder)
             .into(moviePoster)
-        movieTitle.text = movie.title
-        movieTagLine.text = movie.tagline
-        releaseDate.text = formatReleaseDate(movie.releaseDate)
-        genres.text = formatGenres(movie.genres)
-        userRating.text = movie.voteAverage.toString()
-        runTime.text = formatRunTime(movie.runtime)
-        overview.text = movie.overview
-        budget.text = formatBudget(movie.budget)
-        revenue.text = formatRevenue(movie.revenue)
-        setIMDBLink(movie.imdbId)
+        movieTitle.text = networkMovie.title
+        movieTagLine.text = networkMovie.tagLine
+        releaseDate.text = formatReleaseDate(networkMovie.releaseDate)
+        genres.text = formatGenres(networkMovie.networkGenres)
+        userRating.text = networkMovie.voteAverage.toString()
+        runTime.text = formatRunTime(networkMovie.runtime)
+        overview.text = networkMovie.overview
+        budget.text = formatBudget(networkMovie.budget)
+        revenue.text = formatRevenue(networkMovie.revenue)
+        setIMDBLink(networkMovie.imdbId)
         setTrailerLink()
         setSimilarMovies()
         loadingScreen.visibility = View.GONE
@@ -122,14 +122,14 @@ class MovieDetailFragment : Fragment(), ItemClickListener {
         return "$hour h $minute m"
     }
 
-    private fun formatGenres(genres: List<Genre>): String {
+    private fun formatGenres(networkGenres: List<NetworkGenre>): String {
         var movieGenres: String = ""
-        for(i in genres.indices) {
-            if(i == genres.size - 1) {
-                movieGenres += genres[i].name
+        for(i in networkGenres.indices) {
+            if(i == networkGenres.size - 1) {
+                movieGenres += networkGenres[i].name
                 break
             }
-            movieGenres += "${genres[i].name}, "
+            movieGenres += "${networkGenres[i].name}, "
         }
         return movieGenres
     }
@@ -207,7 +207,7 @@ class MovieDetailFragment : Fragment(), ItemClickListener {
 
     override fun <T> onItemClick(item: T) {
         val action = MovieDetailFragmentDirections
-            .actionMovieDetailFragmentSelf((item as MoviesListItem).id)
+            .actionMovieDetailFragmentSelf((item as NetworkMoviesListItem).id)
         findNavController().navigate(action)
     }
 }

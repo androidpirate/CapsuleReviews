@@ -3,11 +3,11 @@ package com.github.androidpirate.capsulereviews.data.network.response.multiSearc
 
 import com.google.gson.annotations.SerializedName
 
-data class MultiSearchResponse(
+data class NetworkMultiSearchResponse(
     @SerializedName("page")
     val page: Int,
     @SerializedName("results")
-    val results: List<Result>,
+    val networkMultiSearchListItems: List<NetworkMultiSearchListItem>,
     @SerializedName("total_pages")
     val totalPages: Int,
     @SerializedName("total_results")

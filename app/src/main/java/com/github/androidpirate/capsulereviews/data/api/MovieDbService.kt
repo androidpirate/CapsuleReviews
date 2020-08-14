@@ -1,13 +1,13 @@
 package com.github.androidpirate.capsulereviews.data.api
 
 import com.github.androidpirate.capsulereviews.BuildConfig
-import com.github.androidpirate.capsulereviews.data.network.response.movie.MovieResponse
-import com.github.androidpirate.capsulereviews.data.network.response.movies.MoviesResponse
-import com.github.androidpirate.capsulereviews.data.network.response.multiSearch.MultiSearchResponse
-import com.github.androidpirate.capsulereviews.data.network.response.tvShow.TvShowResponse
-import com.github.androidpirate.capsulereviews.data.network.response.tvShow.external_ids.TvShowExternalIDs
-import com.github.androidpirate.capsulereviews.data.network.response.tvShows.TvShowsResponse
-import com.github.androidpirate.capsulereviews.data.network.response.videos.VideosResponse
+import com.github.androidpirate.capsulereviews.data.network.response.movie.NetworkMovie
+import com.github.androidpirate.capsulereviews.data.network.response.movies.NetworkMoviesResponse
+import com.github.androidpirate.capsulereviews.data.network.response.multiSearch.NetworkMultiSearchResponse
+import com.github.androidpirate.capsulereviews.data.network.response.tvShow.NetworkTvShow
+import com.github.androidpirate.capsulereviews.data.network.response.tvShow.external_ids.NetworkTvShowExternalIDs
+import com.github.androidpirate.capsulereviews.data.network.response.tvShows.NetworkTvShowsResponse
+import com.github.androidpirate.capsulereviews.data.network.response.videos.NetworkVideosResponse
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
@@ -21,58 +21,58 @@ interface MovieDbService {
      *    Movies Endpoints
      ******************************/
     @GET("movie/popular")
-    suspend fun getPopularMovies(): MoviesResponse
+    suspend fun getPopularMovies(): NetworkMoviesResponse
 
     @GET("movie/top_rated")
-    suspend fun getTopRatedMovies(): MoviesResponse
+    suspend fun getTopRatedMovies(): NetworkMoviesResponse
 
     @GET("movie/now_playing")
-    suspend fun getNowPlayingMovies(): MoviesResponse
+    suspend fun getNowPlayingMovies(): NetworkMoviesResponse
 
     @GET("movie/upcoming")
-    suspend fun getUpcomingMovies(): MoviesResponse
+    suspend fun getUpcomingMovies(): NetworkMoviesResponse
 
     @GET("trending/movie/week")
-    suspend fun getTrendingMovies(): MoviesResponse
+    suspend fun getTrendingMovies(): NetworkMoviesResponse
 
     @GET("movie/{movie_id}/similar")
-    suspend fun getSimilarMovies(@Path("movie_id") movieId: Int): MoviesResponse
+    suspend fun getSimilarMovies(@Path("movie_id") movieId: Int): NetworkMoviesResponse
 
     @GET("movie/{movie_id}")
-    suspend fun getMovieDetails(@Path("movie_id") movieId: Int): MovieResponse
+    suspend fun getMovieDetails(@Path("movie_id") movieId: Int): NetworkMovie
 
     @GET("movie/{movie_id}/videos")
-    suspend fun getMovieVideos(@Path("movie_id") movieId: Int): VideosResponse
+    suspend fun getMovieVideos(@Path("movie_id") movieId: Int): NetworkVideosResponse
 
     /******************************
      *    Tv Shows Endpoints
      ******************************/
     @GET("tv/popular")
-    suspend fun getPopularTvShows(): TvShowsResponse
+    suspend fun getPopularTvShows(): NetworkTvShowsResponse
 
     @GET("tv/top_rated")
-    suspend fun getTopRatedTvShows(): TvShowsResponse
+    suspend fun getTopRatedTvShows(): NetworkTvShowsResponse
 
     @GET("trending/tv/week")
-    suspend fun getTrendingTvShows(): TvShowsResponse
+    suspend fun getTrendingTvShows(): NetworkTvShowsResponse
 
     @GET("tv/{tv_id}/similar")
-    suspend fun getSimilarTvShows(@Path("tv_id") tvId: Int): TvShowsResponse
+    suspend fun getSimilarTvShows(@Path("tv_id") tvId: Int): NetworkTvShowsResponse
 
     @GET("tv/{tv_id}")
-    suspend fun getTvShowDetails(@Path("tv_id") tvId: Int): TvShowResponse
+    suspend fun getTvShowDetails(@Path("tv_id") tvId: Int): NetworkTvShow
 
     @GET("tv/{tv_id}/videos")
-    suspend fun getTvShowVideos(@Path("tv_id") tvId: Int): VideosResponse
+    suspend fun getTvShowVideos(@Path("tv_id") tvId: Int): NetworkVideosResponse
 
     @GET("tv/{tv_id}/external_ids")
-    suspend fun getTvShowExternalIDs(@Path("tv_id") tvId: Int) : TvShowExternalIDs
+    suspend fun getTvShowExternalIDs(@Path("tv_id") tvId: Int) : NetworkTvShowExternalIDs
 
     /******************************
      *    Multi Search Endpoints
      ******************************/
     @GET("search/multi")
-    suspend fun getSearchResults(@Query("query") query: String): MultiSearchResponse
+    suspend fun getSearchResults(@Query("query") query: String): NetworkMultiSearchResponse
 
     companion object {
         operator fun invoke(): MovieDbService {

@@ -3,9 +3,9 @@ package com.github.androidpirate.capsulereviews.data.network.response.videos
 
 import com.google.gson.annotations.SerializedName
 
-data class VideosResponse(
+data class NetworkVideosResponse(
     @SerializedName("id")
     val id: Int,
     @SerializedName("results")
-    val videosListItems: List<VideosListItem>
+    val networkVideosListItems: List<NetworkVideosListItem>
 )

@@ -3,11 +3,11 @@ package com.github.androidpirate.capsulereviews.data.network.response.tvShows
 
 import com.google.gson.annotations.SerializedName
 
-data class TvShowsResponse(
+data class NetworkTvShowsResponse(
     @SerializedName("page")
     val page: Int,
     @SerializedName("results")
-    val tvShowsListItems: List<TvShowsListItem>,
+    val networkTvShowsListItems: List<NetworkTvShowsListItem>,
     @SerializedName("total_pages")
     val totalPages: Int,
     @SerializedName("total_results")

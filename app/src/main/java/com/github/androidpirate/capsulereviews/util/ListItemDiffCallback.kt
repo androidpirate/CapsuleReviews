@@ -1,30 +1,30 @@
 package com.github.androidpirate.capsulereviews.util
 
 import androidx.recyclerview.widget.DiffUtil
-import com.github.androidpirate.capsulereviews.data.network.response.movie.MovieResponse
-import com.github.androidpirate.capsulereviews.data.network.response.movies.MoviesListItem
-import com.github.androidpirate.capsulereviews.data.network.response.tvShow.TvShowResponse
-import com.github.androidpirate.capsulereviews.data.network.response.tvShows.TvShowsListItem
+import com.github.androidpirate.capsulereviews.data.network.response.movie.NetworkMovie
+import com.github.androidpirate.capsulereviews.data.network.response.movies.NetworkMoviesListItem
+import com.github.androidpirate.capsulereviews.data.network.response.tvShow.NetworkTvShow
+import com.github.androidpirate.capsulereviews.data.network.response.tvShows.NetworkTvShowsListItem
 import java.lang.IllegalArgumentException
 
 class ListItemDiffCallback<T>(val fragmentType: String?): DiffUtil.ItemCallback<T> () {
 
     override fun areItemsTheSame(oldItem: T, newItem: T): Boolean {
         return when(fragmentType) {
-            MOVIE_LIST -> (oldItem as MoviesListItem).id == (newItem as MoviesListItem).id
-            MOVIE_DETAIL -> (oldItem as MovieResponse).id == (newItem as MovieResponse).id
-            TV_LIST -> (oldItem as TvShowsListItem).id == (newItem as TvShowsListItem).id
-            TV_DETAIL -> (oldItem as TvShowResponse).id == (newItem as TvShowResponse).id
+            MOVIE_LIST -> (oldItem as NetworkMoviesListItem).id == (newItem as NetworkMoviesListItem).id
+            MOVIE_DETAIL -> (oldItem as NetworkMovie).id == (newItem as NetworkMovie).id
+            TV_LIST -> (oldItem as NetworkTvShowsListItem).id == (newItem as NetworkTvShowsListItem).id
+            TV_DETAIL -> (oldItem as NetworkTvShow).id == (newItem as NetworkTvShow).id
             else -> throw IllegalArgumentException("Unknown fragment type: $fragmentType")
         }
     }
 
     override fun areContentsTheSame(oldItem: T, newItem: T): Boolean {
         return when(fragmentType) {
-            MOVIE_LIST -> (oldItem as MoviesListItem).title == (newItem as MoviesListItem).title
-            MOVIE_DETAIL -> (oldItem as MovieResponse).title == (newItem as MovieResponse).title
-            TV_LIST -> (oldItem as TvShowsListItem).name == (newItem as TvShowsListItem).name
-            TV_DETAIL -> (oldItem as TvShowResponse).name == (newItem as TvShowResponse).name
+            MOVIE_LIST -> (oldItem as NetworkMoviesListItem).title == (newItem as NetworkMoviesListItem).title
+            MOVIE_DETAIL -> (oldItem as NetworkMovie).title == (newItem as NetworkMovie).title
+            TV_LIST -> (oldItem as NetworkTvShowsListItem).name == (newItem as NetworkTvShowsListItem).name
+            TV_DETAIL -> (oldItem as NetworkTvShow).name == (newItem as NetworkTvShow).name
             else -> throw IllegalArgumentException("Unknown fragment type: $fragmentType")
         }
     }

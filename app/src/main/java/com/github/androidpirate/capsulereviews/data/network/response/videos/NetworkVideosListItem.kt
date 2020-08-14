@@ -3,7 +3,7 @@ package com.github.androidpirate.capsulereviews.data.network.response.videos
 
 import com.google.gson.annotations.SerializedName
 
-data class VideosListItem(
+data class NetworkVideosListItem(
     @SerializedName("id")
     val id: String,
     @SerializedName("iso_3166_1")

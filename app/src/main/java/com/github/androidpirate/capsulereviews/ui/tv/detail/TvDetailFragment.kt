@@ -16,13 +16,13 @@ import com.bumptech.glide.request.RequestOptions
 import com.github.androidpirate.capsulereviews.BuildConfig
 import com.github.androidpirate.capsulereviews.R
 import com.github.androidpirate.capsulereviews.data.api.MovieDbService
-import com.github.androidpirate.capsulereviews.data.network.response.tvShow.CreatedBy
-import com.github.androidpirate.capsulereviews.data.network.response.tvShow.Genre
-import com.github.androidpirate.capsulereviews.data.network.response.tvShow.Network
-import com.github.androidpirate.capsulereviews.data.network.response.tvShow.TvShowResponse
-import com.github.androidpirate.capsulereviews.data.network.response.tvShow.external_ids.TvShowExternalIDs
-import com.github.androidpirate.capsulereviews.data.network.response.tvShows.TvShowsListItem
-import com.github.androidpirate.capsulereviews.data.network.response.videos.VideosListItem
+import com.github.androidpirate.capsulereviews.data.network.response.genre.NetworkGenre
+import com.github.androidpirate.capsulereviews.data.network.response.tvShow.NetworkCreatedBy
+import com.github.androidpirate.capsulereviews.data.network.response.tvShow.NetworkNetworkInfo
+import com.github.androidpirate.capsulereviews.data.network.response.tvShow.NetworkTvShow
+import com.github.androidpirate.capsulereviews.data.network.response.tvShow.external_ids.NetworkTvShowExternalIDs
+import com.github.androidpirate.capsulereviews.data.network.response.tvShows.NetworkTvShowsListItem
+import com.github.androidpirate.capsulereviews.data.network.response.videos.NetworkVideosListItem
 import com.github.androidpirate.capsulereviews.ui.adapter.ListItemAdapter
 import com.github.androidpirate.capsulereviews.util.GridSpacingItemDecoration
 import com.github.androidpirate.capsulereviews.util.ItemClickListener
@@ -43,11 +43,11 @@ import kotlinx.coroutines.withContext
 
 class TvDetailFragment : Fragment(), ItemClickListener {
     private val args: TvDetailFragmentArgs by navArgs()
-    private lateinit var tvShow: TvShowResponse
-    private lateinit var externalIDs: TvShowExternalIDs
-    private lateinit var videos: List<VideosListItem>
-    private lateinit var adapter: ListItemAdapter<TvShowsListItem>
-    private lateinit var similarShows: List<TvShowsListItem>
+    private lateinit var networkTvShow: NetworkTvShow
+    private lateinit var externalIDsNetwork: NetworkTvShowExternalIDs
+    private lateinit var videos: List<NetworkVideosListItem>
+    private lateinit var adapter: ListItemAdapter<NetworkTvShowsListItem>
+    private lateinit var similarShows: List<NetworkTvShowsListItem>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -76,16 +76,16 @@ class TvDetailFragment : Fragment(), ItemClickListener {
             container.visibility = View.GONE
             loadingScreen.visibility = View.VISIBLE
             withContext(Dispatchers.IO) {
-                tvShow = apiService.getTvShowDetails(args.showId)
+                networkTvShow = apiService.getTvShowDetails(args.showId)
             }
             withContext(Dispatchers.IO) {
-                externalIDs = apiService.getTvShowExternalIDs(args.showId)
+                externalIDsNetwork = apiService.getTvShowExternalIDs(args.showId)
             }
             withContext(Dispatchers.IO) {
-                similarShows = apiService.getSimilarTvShows(args.showId).tvShowsListItems
+                similarShows = apiService.getSimilarTvShows(args.showId).networkTvShowsListItems
             }
             withContext(Dispatchers.IO) {
-                videos = apiService.getTvShowVideos(args.showId).videosListItems
+                videos = apiService.getTvShowVideos(args.showId).networkVideosListItems
             }
             setupViews()
         }
@@ -93,29 +93,29 @@ class TvDetailFragment : Fragment(), ItemClickListener {
 
     private fun setupViews() {
         Glide.with(requireContext())
-            .load(BuildConfig.MOVIE_DB_IMAGE_BASE_URL + "w185/" + tvShow.posterPath)
+            .load(BuildConfig.MOVIE_DB_IMAGE_BASE_URL + "w185/" + networkTvShow.posterPath)
             .placeholder(R.drawable.ic_image_placeholder)
             .apply(RequestOptions.bitmapTransform(BlurTransformation(100)))
             .into(tvHeaderBg)
         Glide.with(requireContext())
-            .load(BuildConfig.MOVIE_DB_IMAGE_BASE_URL + "w185/" + tvShow.posterPath)
+            .load(BuildConfig.MOVIE_DB_IMAGE_BASE_URL + "w185/" + networkTvShow.posterPath)
             .placeholder(R.drawable.ic_image_placeholder)
             .into(tvPoster)
-        tvTitle.text = tvShow.name
-        releaseDate.text = formatReleaseDate(tvShow.releaseDate)
-        genres.text = formatGenres(tvShow.genres)
-        userRating.text = tvShow.voteAverage.toString()
-        status.text = tvShow.status
-        createdBy.text = formatCreatedBy(tvShow.createdBy)
-        overview.text = tvShow.overview
-        seasons.text = tvShow.numberOfSeasons.toString()
-        episodes.text = tvShow.numberOfEpisodes.toString()
-        if(tvShow.episodeRunTime.isNotEmpty()) {
-            runTime.text = formatRunTime(tvShow.episodeRunTime[0])
+        tvTitle.text = networkTvShow.name
+        releaseDate.text = formatReleaseDate(networkTvShow.releaseDate)
+        genres.text = formatGenres(networkTvShow.genres)
+        userRating.text = networkTvShow.voteAverage.toString()
+        status.text = networkTvShow.status
+        createdBy.text = formatCreatedBy(networkTvShow.networkCreatedBy)
+        overview.text = networkTvShow.overview
+        seasons.text = networkTvShow.numberOfSeasons.toString()
+        episodes.text = networkTvShow.numberOfEpisodes.toString()
+        if(networkTvShow.episodeRunTime.isNotEmpty()) {
+            runTime.text = formatRunTime(networkTvShow.episodeRunTime[0])
         }
-        type.text = tvShow.type
-        network.text = formatNetworks(tvShow.networks)
-        setIMDBLink(externalIDs.imdbId)
+        type.text = networkTvShow.type
+        network.text = formatNetworks(networkTvShow.networkNetworkInfos)
+        setIMDBLink(externalIDsNetwork.imdbId)
         setTrailerLink()
         setSimilarShows()
         loadingScreen.visibility = View.GONE
@@ -130,7 +130,7 @@ class TvDetailFragment : Fragment(), ItemClickListener {
         return "$day/$month/$year"
     }
 
-    private fun formatGenres(genres: List<Genre>): String {
+    private fun formatGenres(genres: List<NetworkGenre>): String {
         var movieGenres: String = ""
         for(i in genres.indices) {
             if(i == genres.size - 1) {
@@ -142,26 +142,26 @@ class TvDetailFragment : Fragment(), ItemClickListener {
         return movieGenres
     }
 
-    private fun formatCreatedBy(createdBy: List<CreatedBy>): String {
+    private fun formatCreatedBy(networkCreatedBy: List<NetworkCreatedBy>): String {
         var creators = ""
-        for(i in createdBy.indices) {
-            if(i == createdBy.size - 1) {
-                creators += createdBy[i].name
+        for(i in networkCreatedBy.indices) {
+            if(i == networkCreatedBy.size - 1) {
+                creators += networkCreatedBy[i].name
                 break
             }
-            creators += "${createdBy[i].name}, "
+            creators += "${networkCreatedBy[i].name}, "
         }
         return creators
     }
 
-    private fun formatNetworks(networks: List<Network>): String {
+    private fun formatNetworks(networkNetworkInfos: List<NetworkNetworkInfo>): String {
         var network = ""
-        for(i in networks.indices) {
-            if(i == networks.size - 1) {
-                network += networks[i].name
+        for(i in networkNetworkInfos.indices) {
+            if(i == networkNetworkInfos.size - 1) {
+                network += networkNetworkInfos[i].name
                 break
             }
-            network += "${networks[i].name}, "
+            network += "${networkNetworkInfos[i].name}, "
         }
         return network
     }
@@ -226,7 +226,7 @@ class TvDetailFragment : Fragment(), ItemClickListener {
 
     override fun <T> onItemClick(item: T) {
         val action = TvDetailFragmentDirections
-            .actionTvDetailFragmentSelf((item as TvShowsListItem).id)
+            .actionTvDetailFragmentSelf((item as NetworkTvShowsListItem).id)
         findNavController().navigate(action)
     }
 }

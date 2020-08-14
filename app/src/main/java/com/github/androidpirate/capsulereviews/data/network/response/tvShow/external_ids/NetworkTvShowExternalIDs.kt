@@ -4,7 +4,7 @@ package com.github.androidpirate.capsulereviews.data.network.response.tvShow.ext
 import androidx.annotation.Nullable
 import com.google.gson.annotations.SerializedName
 
-data class TvShowExternalIDs(
+data class NetworkTvShowExternalIDs(
     @Nullable
     @SerializedName("id")
     val id: Int,

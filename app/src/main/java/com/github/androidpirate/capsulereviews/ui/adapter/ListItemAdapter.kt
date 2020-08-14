@@ -7,8 +7,8 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.github.androidpirate.capsulereviews.R
-import com.github.androidpirate.capsulereviews.data.network.response.movies.MoviesListItem
-import com.github.androidpirate.capsulereviews.data.network.response.tvShows.TvShowsListItem
+import com.github.androidpirate.capsulereviews.data.network.response.movies.NetworkMoviesListItem
+import com.github.androidpirate.capsulereviews.data.network.response.tvShows.NetworkTvShowsListItem
 import com.github.androidpirate.capsulereviews.util.ItemClickListener
 import com.github.androidpirate.capsulereviews.util.ListItemDiffCallback
 import kotlinx.android.synthetic.main.list_item.view.*
@@ -97,10 +97,10 @@ class ListItemAdapter<T>(private val fragmentType: String?, private val clickLis
         fun onBindItem(item: T) {
             itemView.setOnClickListener { clickListener.onItemClick(item) }
             when(fragmentType) {
-                MOVIE_LIST -> setItemThumbnail((item as MoviesListItem).posterPath)
-                MOVIE_DETAIL -> setSimilarItemThumbnail((item as MoviesListItem).posterPath)
-                TV_LIST -> setItemThumbnail((item as TvShowsListItem).posterPath)
-                TV_DETAIL -> setSimilarItemThumbnail((item as TvShowsListItem).posterPath)
+                MOVIE_LIST -> setItemThumbnail((item as NetworkMoviesListItem).posterPath)
+                MOVIE_DETAIL -> setSimilarItemThumbnail((item as NetworkMoviesListItem).posterPath)
+                TV_LIST -> setItemThumbnail((item as NetworkTvShowsListItem).posterPath)
+                TV_DETAIL -> setSimilarItemThumbnail((item as NetworkTvShowsListItem).posterPath)
                 else -> throw IllegalArgumentException("Unknown fragment type: $fragmentType")
             }
         }

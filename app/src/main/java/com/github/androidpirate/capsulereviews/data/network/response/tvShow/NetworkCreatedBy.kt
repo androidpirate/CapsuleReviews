@@ -3,13 +3,9 @@ package com.github.androidpirate.capsulereviews.data.network.response.tvShow
 
 import com.google.gson.annotations.SerializedName
 
-data class Network(
+data class NetworkCreatedBy(
     @SerializedName("id")
     val id: Int,
-    @SerializedName("logo_path")
-    val logoPath: String,
     @SerializedName("name")
-    val name: String,
-    @SerializedName("origin_country")
-    val originCountry: String
+    val name: String
 )

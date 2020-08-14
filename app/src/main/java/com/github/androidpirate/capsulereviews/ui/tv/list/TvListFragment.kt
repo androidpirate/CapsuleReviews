@@ -13,8 +13,8 @@ import com.bumptech.glide.Glide
 import com.github.androidpirate.capsulereviews.BuildConfig
 import com.github.androidpirate.capsulereviews.R
 import com.github.androidpirate.capsulereviews.data.api.MovieDbService
-import com.github.androidpirate.capsulereviews.data.network.response.tvShows.TvShowsListItem
-import com.github.androidpirate.capsulereviews.data.network.response.videos.VideosListItem
+import com.github.androidpirate.capsulereviews.data.network.response.tvShows.NetworkTvShowsListItem
+import com.github.androidpirate.capsulereviews.data.network.response.videos.NetworkVideosListItem
 import com.github.androidpirate.capsulereviews.ui.adapter.ListItemAdapter
 import com.github.androidpirate.capsulereviews.util.ItemClickListener
 import kotlinx.android.synthetic.main.fragment_tv_list.*
@@ -26,14 +26,14 @@ import kotlinx.coroutines.withContext
 import kotlin.random.Random
 
 class TvListFragment : Fragment(), ItemClickListener{
-    private lateinit var popularShowsAdapter: ListItemAdapter<TvShowsListItem>
-    private lateinit var popularShows: List<TvShowsListItem>
-    private lateinit var topRatedShowsAdapter: ListItemAdapter<TvShowsListItem>
-    private lateinit var topRatedShows: List<TvShowsListItem>
-    private lateinit var trendingShowsAdapter: ListItemAdapter<TvShowsListItem>
-    private lateinit var trendingShows: List<TvShowsListItem>
-    private lateinit var showCaseTvShow: TvShowsListItem
-    private lateinit var showCaseVideos: List<VideosListItem>
+    private lateinit var popularShowsAdapterNetwork: ListItemAdapter<NetworkTvShowsListItem>
+    private lateinit var popularShows: List<NetworkTvShowsListItem>
+    private lateinit var topRatedShowsAdapterNetwork: ListItemAdapter<NetworkTvShowsListItem>
+    private lateinit var topRatedShows: List<NetworkTvShowsListItem>
+    private lateinit var trendingShowsAdapterNetwork: ListItemAdapter<NetworkTvShowsListItem>
+    private lateinit var trendingShows: List<NetworkTvShowsListItem>
+    private lateinit var showCaseNetworkTvShow: NetworkTvShowsListItem
+    private lateinit var showCaseVideos: List<NetworkVideosListItem>
     private var videoKey: String ?= null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -57,18 +57,18 @@ class TvListFragment : Fragment(), ItemClickListener{
             loadingScreen.visibility = View.VISIBLE
 
             withContext(Dispatchers.IO) {
-                popularShows = apiService.getPopularTvShows().tvShowsListItems
+                popularShows = apiService.getPopularTvShows().networkTvShowsListItems
             }
             withContext(Dispatchers.IO) {
-                topRatedShows = apiService.getTopRatedTvShows().tvShowsListItems
+                topRatedShows = apiService.getTopRatedTvShows().networkTvShowsListItems
             }
             withContext(Dispatchers.IO) {
-               trendingShows = apiService.getTrendingTvShows().tvShowsListItems
+               trendingShows = apiService.getTrendingTvShows().networkTvShowsListItems
                 val randomItemNo = Random.nextInt(0 , 19)
-                showCaseTvShow = trendingShows[randomItemNo]
+                showCaseNetworkTvShow = trendingShows[randomItemNo]
             }
             withContext(Dispatchers.IO) {
-                showCaseVideos = apiService.getTvShowVideos(showCaseTvShow.id).videosListItems
+                showCaseVideos = apiService.getTvShowVideos(showCaseNetworkTvShow.id).networkVideosListItems
                 for(video in showCaseVideos) {
                     if(video.site == "YouTube" && video.type == "Trailer") {
                         videoKey = video.key
@@ -82,24 +82,24 @@ class TvListFragment : Fragment(), ItemClickListener{
     }
 
     private fun setupAdapters() {
-        popularShowsAdapter = ListItemAdapter(TvListFragment::class.simpleName, this)
-        topRatedShowsAdapter = ListItemAdapter(TvListFragment::class.simpleName, this)
-        trendingShowsAdapter = ListItemAdapter(TvListFragment::class.simpleName, this)
+        popularShowsAdapterNetwork = ListItemAdapter(TvListFragment::class.simpleName, this)
+        topRatedShowsAdapterNetwork = ListItemAdapter(TvListFragment::class.simpleName, this)
+        trendingShowsAdapterNetwork = ListItemAdapter(TvListFragment::class.simpleName, this)
     }
 
     private fun setShowCaseTvShow() {
         Glide.with(this)
-            .load(BuildConfig.MOVIE_DB_IMAGE_BASE_URL + "w342/" + showCaseTvShow.posterPath)
+            .load(BuildConfig.MOVIE_DB_IMAGE_BASE_URL + "w342/" + showCaseNetworkTvShow.posterPath)
             .placeholder(R.drawable.ic_image_placeholder)
             .into(scPoster)
-        scTitle.text = showCaseTvShow.name
+        scTitle.text = showCaseNetworkTvShow.name
 
         scAddFavorite.setOnClickListener {
             // TODO 7: Implement adding to favorites here
         }
 
         scInfo.setOnClickListener {
-            onItemClick(showCaseTvShow)
+            onItemClick(showCaseNetworkTvShow)
         }
 
         scPlay.setOnClickListener {
@@ -119,18 +119,18 @@ class TvListFragment : Fragment(), ItemClickListener{
     }
 
     private fun setupViews() {
-        popularShowsAdapter.submitList(popularShows)
-        topRatedShowsAdapter.submitList(topRatedShows)
-        trendingShowsAdapter.submitList(trendingShows)
-        rvPopular.adapter = popularShowsAdapter
-        rvTopRated.adapter = topRatedShowsAdapter
-        rvTrending.adapter = trendingShowsAdapter
+        popularShowsAdapterNetwork.submitList(popularShows)
+        topRatedShowsAdapterNetwork.submitList(topRatedShows)
+        trendingShowsAdapterNetwork.submitList(trendingShows)
+        rvPopular.adapter = popularShowsAdapterNetwork
+        rvTopRated.adapter = topRatedShowsAdapterNetwork
+        rvTrending.adapter = trendingShowsAdapterNetwork
         loadingScreen.visibility = View.GONE
         container.visibility = View.VISIBLE
     }
 
     override fun <T> onItemClick(item: T) {
-        val action = TvListFragmentDirections.actionTvListToDetail((item as TvShowsListItem).id)
+        val action = TvListFragmentDirections.actionTvListToDetail((item as NetworkTvShowsListItem).id)
         findNavController().navigate(action)
     }
 }
