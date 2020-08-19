@@ -15,7 +15,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.github.androidpirate.capsulereviews.BuildConfig
 import com.github.androidpirate.capsulereviews.R
-import com.github.androidpirate.capsulereviews.data.api.MovieDbService
+import com.github.androidpirate.capsulereviews.data.network.api.MovieDbService
 import com.github.androidpirate.capsulereviews.data.network.response.genre.NetworkGenre
 import com.github.androidpirate.capsulereviews.data.network.response.tvShow.NetworkCreatedBy
 import com.github.androidpirate.capsulereviews.data.network.response.tvShow.NetworkNetworkInfo

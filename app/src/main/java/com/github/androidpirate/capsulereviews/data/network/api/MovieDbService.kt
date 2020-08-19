@@ -1,4 +1,4 @@
-package com.github.androidpirate.capsulereviews.data.api
+package com.github.androidpirate.capsulereviews.data.network.api
 
 import com.github.androidpirate.capsulereviews.BuildConfig
 import com.github.androidpirate.capsulereviews.data.network.response.movie.NetworkMovie

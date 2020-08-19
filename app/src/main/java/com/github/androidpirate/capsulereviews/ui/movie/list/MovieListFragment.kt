@@ -12,7 +12,7 @@ import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.github.androidpirate.capsulereviews.BuildConfig
 import com.github.androidpirate.capsulereviews.R
-import com.github.androidpirate.capsulereviews.data.api.MovieDbService
+import com.github.androidpirate.capsulereviews.data.network.api.MovieDbService
 import com.github.androidpirate.capsulereviews.data.network.response.movies.NetworkMoviesListItem
 import com.github.androidpirate.capsulereviews.data.network.response.videos.NetworkVideosListItem
 import com.github.androidpirate.capsulereviews.ui.adapter.ListItemAdapter
