@@ -7,33 +7,52 @@ import com.github.androidpirate.capsulereviews.data.db.entity.*
 @Dao
 interface MovieListDao {
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun upsertPopularMovies(popularMovies: List<DBPopularMovie>)
+    @Query("UPDATE movies SET popular = 1 WHERE id = :movieId")
+    suspend fun updatePopularMovie(movieId: Int)
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun upsertTopRatedMovies(topRatedMovies: List<DBTopRatedMovie>)
+    @Insert
+    suspend fun insertPopularMovie(movie: DBMovie)
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun upsertNowPlayingMovies(nowPlayingMovies: List<DBNowPlayingMovie>)
+    @Query("UPDATE movies SET topRated = 1 WHERE id = :movieId")
+    suspend fun updateTopRatedMovie(movieId: Int)
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun upsertUpcomingMovies(upcomingMovies: List<DBUpcomingMovie>)
+    @Insert
+    suspend fun insertTopRatedMovie(movie: DBMovie)
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun upsertTrendingMovies(trendingMovies: List<DBTrendingMovie>)
+    @Query("UPDATE movies SET nowPlaying = 1 WHERE id = :movieId")
+    suspend fun updateNowPlayingMovie(movieId: Int)
 
-    @Query("SELECT * FROM popular_movies")
-    suspend fun getPopularMovies(): LiveData<List<DBPopularMovie>>
+    @Insert
+    suspend fun insertNowPlayingMovie(movie: DBMovie)
 
-    @Query("SELECT * FROM top_rated_movies")
-    suspend fun getTopRatedMovies(): LiveData<List<DBPopularMovie>>
+    @Query("UPDATE movies SET upcoming = 1 WHERE id = :movieId")
+    suspend fun updateUpcomingMovie(movieId: Int)
 
-    @Query("SELECT * FROM now_playing_movies")
-    suspend fun getNowPlayingMovies(): LiveData<List<DBPopularMovie>>
+    @Insert
+    suspend fun insertUpcomingMovie(movie: DBMovie)
 
-    @Query("SELECT * FROM upcoming_movies")
-    suspend fun getUpComingMovies(): LiveData<List<DBPopularMovie>>
+    @Query("UPDATE movies SET trending = 1 WHERE id = :movieId")
+    suspend fun updateTrendingMovie(movieId: Int)
 
-    @Query("SELECT * FROM trending_movies")
-    suspend fun getTrendingMovies(): LiveData<List<DBPopularMovie>>
+    @Insert
+    suspend fun insertTrendingMovie(movie: DBMovie)
+
+    @Query("SELECT EXISTS(SELECT * FROM movies WHERE id = :id)")
+    fun isRowIsExist(id : Int) : Boolean
+
+    @Query("SELECT * FROM movies WHERE popular = 1")
+    fun getPopularMovies(): LiveData<List<DBMovie>>
+
+    @Query("SELECT * FROM movies WHERE topRated = 1")
+    fun getTopRatedMovies(): LiveData<List<DBMovie>>
+
+    @Query("SELECT * FROM movies WHERE nowPlaying = 1")
+    fun getNowPlayingMovies(): LiveData<List<DBMovie>>
+
+    @Query("SELECT * FROM movies WHERE upcoming = 1")
+    fun getUpComingMovies(): LiveData<List<DBMovie>>
+
+    @Query("SELECT * FROM movies WHERE trending = 1")
+    fun getTrendingMovies(): LiveData<List<DBMovie>>
+
 }
