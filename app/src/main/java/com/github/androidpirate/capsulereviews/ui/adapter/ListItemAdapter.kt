@@ -75,24 +75,6 @@ class ListItemAdapter<T>(private val fragmentType: String?, private val clickLis
         }
     }
 
-    override fun getItemCount(): Int {
-        return if(fragmentType == MOVIE_LIST && currentList.size > ITEM_COUNT_LIMIT) {
-            ITEM_COUNT_LIMIT
-        } else if(fragmentType == MOVIE_LIST && currentList.size <= ITEM_COUNT_LIMIT) {
-            currentList.size
-        }else if(fragmentType == MOVIE_DETAIL) {
-            currentList.size
-        }else if(fragmentType == TV_LIST && currentList.size > ITEM_COUNT_LIMIT) {
-            ITEM_COUNT_LIMIT
-        } else if(fragmentType == TV_LIST && currentList.size <= ITEM_COUNT_LIMIT) {
-            currentList.size
-        }else if(fragmentType == TV_DETAIL) {
-            currentList.size
-        } else {
-            throw IllegalArgumentException("Unknown fragment type: $fragmentType")
-        }
-    }
-
     inner class ListItemHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         fun onBindItem(item: T) {
@@ -122,7 +104,6 @@ class ListItemAdapter<T>(private val fragmentType: String?, private val clickLis
     }
 
     companion object {
-        const val ITEM_COUNT_LIMIT = 12
         const val MOVIE_LIST = "MovieListFragment"
         const val TV_LIST = "TvListFragment"
         const val MOVIE_DETAIL = "MovieDetailFragment"
