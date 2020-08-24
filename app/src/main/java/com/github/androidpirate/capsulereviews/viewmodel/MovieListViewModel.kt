@@ -9,7 +9,12 @@ import kotlinx.coroutines.withContext
 
 class MovieListViewModel(private val repo: MoviesRepository): ViewModel() {
 
-    private var showCaseVideoKey: String = ""
+    val popularMovies = repo.getPopularMovies()
+    val topRatedMovies = repo.getTopRatedMovies()
+    val nowPlayingMovies = repo.getNowPlayingMovies()
+    val upcomingMovies = repo.getUpcomingMovies()
+    val trendingMovies = repo.getTrendingMovies()
+    val showcaseMovie = repo.getShowcaseMovie()
 
     init {
         viewModelScope.launch {
@@ -29,21 +34,5 @@ class MovieListViewModel(private val repo: MoviesRepository): ViewModel() {
               repo.fetchAndPersistTrendingMovies()
             }
         }
-    }
-
-    val popularMovies = repo.getPopularMovies()
-    val topRatedMovies = repo.getTopRatedMovies()
-    val nowPlayingMovies = repo.getNowPlayingMovies()
-    val upcomingMovies = repo.getUpcomingMovies()
-    val trendingMovies = repo.getTrendingMovies()
-
-    fun getShowcaseVideoKey(movieId: Int): String {
-        fetchShowcaseVideo(movieId)
-        return showCaseVideoKey
-    }
-
-    private fun fetchShowcaseVideo(movieId: Int) = viewModelScope.launch {
-        showCaseVideoKey =
-            withContext(Dispatchers.IO) { repo.getShowCaseVideoKey(movieId) }
     }
 }
