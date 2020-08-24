@@ -3,8 +3,14 @@ package com.github.androidpirate.capsulereviews.data.repo
 import androidx.lifecycle.LiveData
 import com.github.androidpirate.capsulereviews.data.db.MovieListDao
 import com.github.androidpirate.capsulereviews.data.db.entity.DBMovie
+import com.github.androidpirate.capsulereviews.data.db.entity.DBMovieShowcase
 import com.github.androidpirate.capsulereviews.data.network.api.MovieDbService
+import com.github.androidpirate.capsulereviews.data.network.response.movies.NetworkMoviesListItem
 import com.github.androidpirate.capsulereviews.data.network.response.videos.NetworkVideosListItem
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class MoviesRepository(
     private val api: MovieDbService,
@@ -29,6 +35,10 @@ class MoviesRepository(
 
     fun getTrendingMovies(): LiveData<List<DBMovie>> {
         return dao.getTrendingMovies()
+    }
+
+    fun getShowcaseMovie(): LiveData<DBMovieShowcase> {
+        return dao.getShowcaseMovie()
     }
 
     suspend fun fetchAndPersistPopularMovies() {
@@ -84,17 +94,25 @@ class MoviesRepository(
                 dao.insertTrendingMovie(it.toTrending())
             }
         }
+        persistShowcaseMovie(trendingMovies[0])
     }
 
-    suspend fun getShowCaseVideoKey(movieId: Int): String {
-        var videoKey = ""
-        val showcaseVideos = api.getMovieVideos(movieId).networkVideosListItems
-        for(video in showcaseVideos) {
-            if(video.site == "YouTube" && video.type == "Trailer") {
-                videoKey = video.key
-                break
+    suspend fun fetchMovieVideos(movieId: Int): List<NetworkVideosListItem> {
+        return api.getMovieVideos(movieId).networkVideosListItems
+    }
+
+    private suspend fun persistShowcaseMovie(showcaseMovie: NetworkMoviesListItem) {
+        val showcaseVideos = fetchMovieVideos(showcaseMovie.id)
+        val dbShowcaseMovie = showcaseMovie.toShowcase()
+        if(showcaseVideos.isNotEmpty()) {
+            for (video in showcaseVideos) {
+                if (video.site == "YouTube" && video.type == "Trailer") {
+                    dbShowcaseMovie.videoKey = video.key
+                    break
+                }
             }
         }
-        return videoKey
+        dao.insertShowcaseMovie(dbShowcaseMovie)
     }
+
 }
