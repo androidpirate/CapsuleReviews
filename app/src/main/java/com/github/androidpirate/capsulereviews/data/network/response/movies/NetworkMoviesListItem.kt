@@ -3,6 +3,7 @@ package com.github.androidpirate.capsulereviews.data.network.response.movies
 
 import androidx.annotation.Nullable
 import com.github.androidpirate.capsulereviews.data.db.entity.DBMovie
+import com.github.androidpirate.capsulereviews.data.db.entity.DBMovieShowcase
 import com.google.gson.annotations.SerializedName
 
 class NetworkMoviesListItem(
@@ -61,5 +62,12 @@ class NetworkMoviesListItem(
         this.video,
         this.voteAverage,
         trending = true
+    )
+
+    fun toShowcase() = DBMovieShowcase(
+        this.id,
+        this.title,
+        this.posterPath,
+        this.video
     )
 }

@@ -6,7 +6,10 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.github.androidpirate.capsulereviews.data.db.entity.*
 
-@Database(entities = [DBMovie::class], version = 1, exportSchema = false)
+@Database(
+    entities = [DBMovie::class, DBMovieShowcase:: class],
+    version = 1,
+    exportSchema = false)
 abstract class MoviesDatabase: RoomDatabase() {
 
     abstract fun movieListDao(): MovieListDao
