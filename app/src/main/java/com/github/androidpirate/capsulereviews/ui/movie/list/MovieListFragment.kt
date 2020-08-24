@@ -8,37 +8,29 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.github.androidpirate.capsulereviews.BuildConfig
 import com.github.androidpirate.capsulereviews.R
-import com.github.androidpirate.capsulereviews.data.network.api.MovieDbService
+import com.github.androidpirate.capsulereviews.data.db.entity.DBMovie
+import com.github.androidpirate.capsulereviews.data.db.entity.DBMovieShowcase
 import com.github.androidpirate.capsulereviews.data.network.response.movies.NetworkMoviesListItem
-import com.github.androidpirate.capsulereviews.data.network.response.videos.NetworkVideosListItem
 import com.github.androidpirate.capsulereviews.ui.adapter.ListItemAdapter
 import com.github.androidpirate.capsulereviews.util.ItemClickListener
+import com.github.androidpirate.capsulereviews.viewmodel.ViewModelFactory
+import com.github.androidpirate.capsulereviews.viewmodel.MovieListViewModel
 import kotlinx.android.synthetic.main.fragment_movie_list.*
 import kotlinx.android.synthetic.main.movie_showcase.*
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import kotlin.random.Random
 
 class MovieListFragment : Fragment(), ItemClickListener {
-    private lateinit var popularNetworkMoviesAdapter: ListItemAdapter<NetworkMoviesListItem>
-    private lateinit var popularMovies: List<NetworkMoviesListItem>
-    private lateinit var topRatedNetworkMoviesAdapter: ListItemAdapter<NetworkMoviesListItem>
-    private lateinit var topRatedMovies: List<NetworkMoviesListItem>
-    private lateinit var nowPlayingNetworkMoviesAdapter: ListItemAdapter<NetworkMoviesListItem>
-    private lateinit var nowPlayingMovies: List<NetworkMoviesListItem>
-    private lateinit var upcomingNetworkMoviesAdapter: ListItemAdapter<NetworkMoviesListItem>
-    private lateinit var upcomingMovies: List<NetworkMoviesListItem>
-    private lateinit var trendingNetworkMoviesAdapter: ListItemAdapter<NetworkMoviesListItem>
-    private lateinit var trendingMovies: List<NetworkMoviesListItem>
-    private lateinit var showCaseMovie: NetworkMoviesListItem
-    private lateinit var showCaseVideos: List<NetworkVideosListItem>
-    private var videoKey: String ?= null
+    private lateinit var popularNetworkMoviesAdapter: ListItemAdapter<DBMovie>
+    private lateinit var topRatedNetworkMoviesAdapter: ListItemAdapter<DBMovie>
+    private lateinit var nowPlayingNetworkMoviesAdapter: ListItemAdapter<DBMovie>
+    private lateinit var upcomingNetworkMoviesAdapter: ListItemAdapter<DBMovie>
+    private lateinit var trendingNetworkMoviesAdapter: ListItemAdapter<DBMovie>
+    private lateinit var viewModel: MovieListViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,40 +47,42 @@ class MovieListFragment : Fragment(), ItemClickListener {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        val apiService = MovieDbService()
-        GlobalScope.launch(Dispatchers.Main ) {
-            container.visibility = View.GONE
-            loadingScreen.visibility = View.VISIBLE
+        val factory = ViewModelFactory(requireActivity().application)
+        viewModel = ViewModelProvider(this, factory).get(MovieListViewModel::class.java)
+        displayLoadingScreen()
+    }
 
-            withContext(Dispatchers.IO) {
-                popularMovies = apiService.getPopularMovies().networkMoviesListItems
-            }
-            withContext(Dispatchers.IO) {
-                topRatedMovies = apiService.getTopRatedMovies().networkMoviesListItems
-            }
-            withContext(Dispatchers.IO) {
-                nowPlayingMovies = apiService.getNowPlayingMovies().networkMoviesListItems
-            }
-            withContext(Dispatchers.IO) {
-                upcomingMovies = apiService.getUpcomingMovies().networkMoviesListItems
-            }
-            withContext(Dispatchers.IO) {
-                trendingMovies = apiService.getTrendingMovies().networkMoviesListItems
-                val randomItemNo = Random.nextInt(0 , 19)
-                showCaseMovie = trendingMovies[randomItemNo]
-            }
-            withContext(Dispatchers.IO) {
-                showCaseVideos = apiService.getMovieVideos(showCaseMovie.id).networkVideosListItems
-                for(video in showCaseVideos) {
-                    if(video.site == "YouTube" && video.type == "Trailer") {
-                        videoKey = video.key
-                        break
-                    }
-                }
-            }
-            setShowCaseMovie()
-            setupViews()
-        }
+    override fun onStart() {
+        super.onStart()
+        viewModel.popularMovies.observe(viewLifecycleOwner, Observer {
+            popularNetworkMoviesAdapter.submitList(it)
+        })
+        viewModel.topRatedMovies.observe(viewLifecycleOwner, Observer {
+            topRatedNetworkMoviesAdapter.submitList(it)
+        })
+        viewModel.nowPlayingMovies.observe(viewLifecycleOwner, Observer {
+            nowPlayingNetworkMoviesAdapter.submitList(it)
+        })
+        viewModel.upcomingMovies.observe(viewLifecycleOwner, Observer {
+            upcomingNetworkMoviesAdapter.submitList(it)
+        })
+        viewModel.trendingMovies.observe(viewLifecycleOwner, Observer {
+            trendingNetworkMoviesAdapter.submitList(it)
+        })
+        setupViews()
+        viewModel.showcaseMovie.observe(viewLifecycleOwner, Observer { it ->
+            setShowcaseMovie(it)
+        })
+    }
+
+    private fun displayLoadingScreen() {
+        loadingScreen.visibility = View.VISIBLE
+        container.visibility = View.GONE
+    }
+
+    private fun displayContainerScreen() {
+        loadingScreen.visibility = View.GONE
+        container.visibility = View.VISIBLE
     }
 
     private fun setupAdapters() {
@@ -104,13 +98,32 @@ class MovieListFragment : Fragment(), ItemClickListener {
             MovieListFragment::class.simpleName, this)
     }
 
-    private fun setShowCaseMovie() {
+    private fun setupViews() {
+        rvPopular.adapter = popularNetworkMoviesAdapter
+        rvTopRated.adapter = topRatedNetworkMoviesAdapter
+        rvNowPlaying.adapter = nowPlayingNetworkMoviesAdapter
+        rvUpcoming.adapter = upcomingNetworkMoviesAdapter
+        rvTrending.adapter = trendingNetworkMoviesAdapter
+    }
+
+    private fun setShowcaseMovie(showCaseMovie: DBMovieShowcase?) {
+        setShowCaseMoviePoster(showCaseMovie?.posterPath)
+        setShowcaseMovieTitle(showCaseMovie?.title)
+        setShowcaseMovieClickListeners(showCaseMovie)
+    }
+
+    private fun setShowCaseMoviePoster(showCaseMoviePosterPath: String?) {
         Glide.with(requireContext())
-            .load(BuildConfig.MOVIE_DB_IMAGE_BASE_URL + "w342/" + showCaseMovie.posterPath)
+            .load(BuildConfig.MOVIE_DB_IMAGE_BASE_URL + "w342/" + showCaseMoviePosterPath)
             .placeholder(R.drawable.ic_image_placeholder)
             .into(scPoster)
-        scTitle.text = showCaseMovie.title
+    }
 
+    private fun setShowcaseMovieTitle(showcaseMovieTitle: String?) {
+        scTitle.text = showcaseMovieTitle
+    }
+
+    private fun setShowcaseMovieClickListeners(showCaseMovie: DBMovieShowcase?) {
         scAddFavorite.setOnClickListener {
             // TODO 7: Implement adding to favorites here
         }
@@ -119,37 +132,21 @@ class MovieListFragment : Fragment(), ItemClickListener {
             onItemClick(showCaseMovie)
         }
 
-        for(video in showCaseVideos) {
-            val trailerEndpoint = BuildConfig.YOUTUBE_BASE_URL + videoKey
-            scPlay.setOnClickListener {
-                if(trailerEndpoint != BuildConfig.YOUTUBE_BASE_URL) {
-                    val uri = Uri.parse(trailerEndpoint)
-                    val intent = Intent(Intent.ACTION_VIEW, uri)
-                    startActivity(intent)
-                } else {
-                    Toast.makeText(
-                        context,
-                        getString(R.string.video_no_available_toast_content),
-                        Toast.LENGTH_SHORT)
-                        .show()
-                }
+        val trailerEndpoint = BuildConfig.YOUTUBE_BASE_URL + showCaseMovie?.videoKey
+        scPlay.setOnClickListener {
+            if(trailerEndpoint != BuildConfig.YOUTUBE_BASE_URL) {
+                val uri = Uri.parse(trailerEndpoint)
+                val intent = Intent(Intent.ACTION_VIEW, uri)
+                startActivity(intent)
+            } else {
+                Toast.makeText(
+                    context,
+                    getString(R.string.video_no_available_toast_content),
+                    Toast.LENGTH_SHORT)
+                    .show()
             }
         }
-    }
-
-    private fun setupViews() {
-        popularNetworkMoviesAdapter.submitList(popularMovies)
-        rvPopular.adapter = popularNetworkMoviesAdapter
-        topRatedNetworkMoviesAdapter.submitList(topRatedMovies)
-        rvTopRated.adapter = topRatedNetworkMoviesAdapter
-        nowPlayingNetworkMoviesAdapter.submitList(nowPlayingMovies)
-        rvNowPlaying.adapter = nowPlayingNetworkMoviesAdapter
-        upcomingNetworkMoviesAdapter.submitList(upcomingMovies)
-        rvUpcoming.adapter = upcomingNetworkMoviesAdapter
-        trendingNetworkMoviesAdapter.submitList(trendingMovies)
-        rvTrending.adapter = trendingNetworkMoviesAdapter
-        loadingScreen.visibility = View.GONE
-        container.visibility = View.VISIBLE
+        displayContainerScreen()
     }
 
     override fun <T> onItemClick(item: T) {
