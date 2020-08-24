@@ -55,4 +55,9 @@ interface MovieListDao {
     @Query("SELECT * FROM movies WHERE trending = 1")
     fun getTrendingMovies(): LiveData<List<DBMovie>>
 
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertShowcaseMovie(showcaseMovie: DBMovieShowcase)
+
+    @Query("SELECT * FROM movie_showcase")
+    fun getShowcaseMovie(): LiveData<DBMovieShowcase>
 }
