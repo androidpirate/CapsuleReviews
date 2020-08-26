@@ -106,33 +106,33 @@ class MovieListFragment : Fragment(), ItemClickListener {
         rvTrending.adapter = trendingNetworkMoviesAdapter
     }
 
-    private fun setShowcaseMovie(showCaseMovie: DBMovieShowcase?) {
-        setShowCaseMoviePoster(showCaseMovie?.posterPath)
-        setShowcaseMovieTitle(showCaseMovie?.title)
+    private fun setShowcaseMovie(showCaseMovie: DBMovieShowcase) {
+        setShowCaseMoviePoster(showCaseMovie.posterPath)
+        setShowcaseMovieTitle(showCaseMovie.title)
         setShowcaseMovieClickListeners(showCaseMovie)
     }
 
-    private fun setShowCaseMoviePoster(showCaseMoviePosterPath: String?) {
+    private fun setShowCaseMoviePoster(showCaseMoviePosterPath: String) {
         Glide.with(requireContext())
             .load(BuildConfig.MOVIE_DB_IMAGE_BASE_URL + "w342/" + showCaseMoviePosterPath)
             .placeholder(R.drawable.ic_image_placeholder)
             .into(scPoster)
     }
 
-    private fun setShowcaseMovieTitle(showcaseMovieTitle: String?) {
+    private fun setShowcaseMovieTitle(showcaseMovieTitle: String) {
         scTitle.text = showcaseMovieTitle
     }
 
-    private fun setShowcaseMovieClickListeners(showCaseMovie: DBMovieShowcase?) {
+    private fun setShowcaseMovieClickListeners(showCaseMovie: DBMovieShowcase) {
         scAddFavorite.setOnClickListener {
             // TODO 7: Implement adding to favorites here
         }
 
         scInfo.setOnClickListener {
-            onItemClick(showCaseMovie)
+            onShowcaseMovieClick(showCaseMovie)
         }
 
-        val trailerEndpoint = BuildConfig.YOUTUBE_BASE_URL + showCaseMovie?.videoKey
+        val trailerEndpoint = BuildConfig.YOUTUBE_BASE_URL + showCaseMovie.videoKey
         scPlay.setOnClickListener {
             if(trailerEndpoint != BuildConfig.YOUTUBE_BASE_URL) {
                 val uri = Uri.parse(trailerEndpoint)
@@ -147,6 +147,12 @@ class MovieListFragment : Fragment(), ItemClickListener {
             }
         }
         displayContainerScreen()
+    }
+
+    private fun onShowcaseMovieClick(showCaseMovie: DBMovieShowcase) {
+        val action = MovieListFragmentDirections
+            .actionMovieListToDetail(showCaseMovie.movieId)
+        findNavController().navigate(action)
     }
 
     override fun <T> onItemClick(item: T) {
