@@ -151,7 +151,7 @@ class MovieListFragment : Fragment(), ItemClickListener {
 
     override fun <T> onItemClick(item: T) {
         val action = MovieListFragmentDirections
-            .actionMovieListToDetail((item as NetworkMoviesListItem).id)
+            .actionMovieListToDetail((item as DBMovie).id)
         findNavController().navigate(action)
     }
 }
