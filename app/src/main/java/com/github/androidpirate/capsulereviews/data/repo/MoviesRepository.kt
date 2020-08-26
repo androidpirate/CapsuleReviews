@@ -5,6 +5,7 @@ import com.github.androidpirate.capsulereviews.data.db.MovieListDao
 import com.github.androidpirate.capsulereviews.data.db.entity.DBMovie
 import com.github.androidpirate.capsulereviews.data.db.entity.DBMovieShowcase
 import com.github.androidpirate.capsulereviews.data.network.api.MovieDbService
+import com.github.androidpirate.capsulereviews.data.network.response.movie.NetworkMovie
 import com.github.androidpirate.capsulereviews.data.network.response.movies.NetworkMoviesListItem
 import com.github.androidpirate.capsulereviews.data.network.response.videos.NetworkVideosListItem
 import kotlinx.coroutines.Dispatchers
@@ -99,6 +100,14 @@ class MoviesRepository(
 
     suspend fun fetchMovieVideos(movieId: Int): List<NetworkVideosListItem> {
         return api.getMovieVideos(movieId).networkVideosListItems
+    }
+
+    suspend fun fetchMovieDetails(movieId: Int): NetworkMovie {
+        return api.getMovieDetails(movieId)
+    }
+
+    suspend fun fetchSimilarMovies(movieId: Int): List<NetworkMoviesListItem> {
+        return api.getSimilarMovies(movieId).networkMoviesListItems
     }
 
     private suspend fun persistShowcaseMovie(showcaseMovie: NetworkMoviesListItem) {

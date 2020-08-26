@@ -10,6 +10,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.GridLayoutManager
@@ -25,6 +28,8 @@ import com.github.androidpirate.capsulereviews.data.network.response.videos.Netw
 import com.github.androidpirate.capsulereviews.ui.adapter.ListItemAdapter
 import com.github.androidpirate.capsulereviews.util.GridSpacingItemDecoration
 import com.github.androidpirate.capsulereviews.util.ItemClickListener
+import com.github.androidpirate.capsulereviews.viewmodel.MovieDetailViewModel
+import com.github.androidpirate.capsulereviews.viewmodel.ViewModelFactory
 import jp.wasabeef.glide.transformations.BlurTransformation
 import kotlinx.android.synthetic.main.detail_action_bar.*
 import kotlinx.android.synthetic.main.detail_similar.*
@@ -44,6 +49,7 @@ class MovieDetailFragment : Fragment(), ItemClickListener {
     private lateinit var videos: List<NetworkVideosListItem>
     private lateinit var adapter: ListItemAdapter<NetworkMoviesListItem>
     private lateinit var similarMovies: List<NetworkMoviesListItem>
+    private lateinit var viewModel: MovieDetailViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -74,24 +80,31 @@ class MovieDetailFragment : Fragment(), ItemClickListener {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        val apiService: MovieDbService = MovieDbService()
-        GlobalScope.launch(Dispatchers.Main) {
-            container.visibility = View.GONE
-            loadingScreen.visibility = View.VISIBLE
-            withContext(Dispatchers.IO) {
-                networkMovie = apiService.getMovieDetails(args.movieId)
-            }
-            withContext(Dispatchers.IO) {
-                similarMovies = apiService.getSimilarMovies(args.movieId).networkMoviesListItems
-            }
-            withContext(Dispatchers.IO) {
-                videos = apiService.getMovieVideos(args.movieId).networkVideosListItems
-            }
-            setupViews()
-        }
+        val factory = ViewModelFactory(requireActivity().application)
+        viewModel = ViewModelProvider(this, factory).get(MovieDetailViewModel::class.java)
     }
 
-    private fun setupViews() {
+    override fun onStart() {
+        super.onStart()
+        viewModel.getMovieDetails(args.movieId).observe(viewLifecycleOwner, Observer {
+            networkMovie = it
+            setMoviePoster()
+            setMovieDetails()
+            setIMDBLink()
+        })
+        viewModel.getMovieVideos(args.movieId).observe(viewLifecycleOwner, Observer {
+            videos = it
+            setTrailerLink()
+        })
+        viewModel.getSimilarMovies(args.movieId).observe(viewLifecycleOwner, Observer {
+            similarMovies = it
+            setSimilarMovies()
+        })
+        loadingScreen.visibility = View.GONE
+        container.visibility = View.VISIBLE
+    }
+
+    private fun setMoviePoster() {
         Glide.with(requireContext())
             .load(BuildConfig.MOVIE_DB_IMAGE_BASE_URL + "w185/" + networkMovie.posterPath)
             .placeholder(R.drawable.ic_image_placeholder)
@@ -101,6 +114,9 @@ class MovieDetailFragment : Fragment(), ItemClickListener {
             .load(BuildConfig.MOVIE_DB_IMAGE_BASE_URL + "w185/" + networkMovie.posterPath)
             .placeholder(R.drawable.ic_image_placeholder)
             .into(moviePoster)
+    }
+
+    private fun setMovieDetails() {
         movieTitle.text = networkMovie.title
         movieTagLine.text = networkMovie.tagLine
         releaseDate.text = formatReleaseDate(networkMovie.releaseDate)
@@ -110,11 +126,6 @@ class MovieDetailFragment : Fragment(), ItemClickListener {
         overview.text = networkMovie.overview
         budget.text = formatBudget(networkMovie.budget)
         revenue.text = formatRevenue(networkMovie.revenue)
-        setIMDBLink(networkMovie.imdbId)
-        setTrailerLink()
-        setSimilarMovies()
-        loadingScreen.visibility = View.GONE
-        container.visibility = View.VISIBLE
     }
 
     private fun formatReleaseDate(releaseDate: String): String {
@@ -161,8 +172,8 @@ class MovieDetailFragment : Fragment(), ItemClickListener {
         }
     }
 
-    private fun setIMDBLink(endpoint: String) {
-        val imdbEndpoint = BuildConfig.IMDB_BASE_URL + endpoint
+    private fun setIMDBLink() {
+        val imdbEndpoint = BuildConfig.IMDB_BASE_URL + networkMovie.imdbId
         imdbLink.setOnClickListener {
             if(imdbEndpoint != BuildConfig.IMDB_BASE_URL) {
                 val uri = Uri.parse(imdbEndpoint);

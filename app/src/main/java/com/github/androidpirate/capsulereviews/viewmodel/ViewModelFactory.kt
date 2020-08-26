@@ -16,7 +16,14 @@ class ViewModelFactory(val application: Application): ViewModelProvider.Factory 
         MoviesDatabase.invoke(application.applicationContext).movieListDao())
 
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-        if(modelClass.isAssignableFrom(MovieListViewModel::class.java)) return MovieListViewModel(repo) as T
-        else throw IllegalStateException("No such view model class.")
+        return when {
+            modelClass.isAssignableFrom(MovieListViewModel::class.java) -> {
+                MovieListViewModel(repo) as T
+            }
+            modelClass.isAssignableFrom(MovieDetailViewModel::class.java) -> {
+                MovieDetailViewModel(repo) as T
+            }
+            else -> throw IllegalStateException("No such view model class.")
+        }
     }
 }
