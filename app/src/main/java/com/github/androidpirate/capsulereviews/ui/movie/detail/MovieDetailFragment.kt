@@ -43,6 +43,7 @@ class MovieDetailFragment : Fragment(), ItemClickListener {
     private lateinit var adapter: ListItemAdapter<NetworkMoviesListItem>
     private lateinit var similarMovies: List<NetworkMoviesListItem>
     private lateinit var viewModel: MovieDetailViewModel
+    private var flagDecoration = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -206,9 +207,16 @@ class MovieDetailFragment : Fragment(), ItemClickListener {
         } else {
             adapter.submitList(similarMovies)
             rvSimilar.layoutManager = GridLayoutManager(requireContext(), 3)
-            rvSimilar.addItemDecoration(GridSpacingItemDecoration(4, 30, true))
+            if(!flagDecoration) {
+                rvSimilar.addItemDecoration(GridSpacingItemDecoration(4, 30, true))
+                setFlagDecorationOn()
+            }
             rvSimilar.adapter = adapter
         }
+    }
+
+    private fun setFlagDecorationOn() {
+        flagDecoration = true
     }
 
     override fun <T> onItemClick(item: T) {
