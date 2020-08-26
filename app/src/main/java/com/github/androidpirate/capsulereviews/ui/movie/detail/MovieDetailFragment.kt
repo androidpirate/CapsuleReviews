@@ -3,7 +3,6 @@ package com.github.androidpirate.capsulereviews.ui.movie.detail
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -11,7 +10,6 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -20,7 +18,6 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions.bitmapTransform
 import com.github.androidpirate.capsulereviews.BuildConfig
 import com.github.androidpirate.capsulereviews.R
-import com.github.androidpirate.capsulereviews.data.network.api.MovieDbService
 import com.github.androidpirate.capsulereviews.data.network.response.genre.NetworkGenre
 import com.github.androidpirate.capsulereviews.data.network.response.movie.NetworkMovie
 import com.github.androidpirate.capsulereviews.data.network.response.movies.NetworkMoviesListItem
@@ -37,16 +34,12 @@ import kotlinx.android.synthetic.main.fragment_movie_detail.*
 import kotlinx.android.synthetic.main.movie_header.*
 import kotlinx.android.synthetic.main.movie_info.*
 import kotlinx.android.synthetic.main.movie_summary.*
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import java.text.DecimalFormat
 
 class MovieDetailFragment : Fragment(), ItemClickListener {
     private val args: MovieDetailFragmentArgs by navArgs()
     private lateinit var networkMovie: NetworkMovie
-    private lateinit var videos: List<NetworkVideosListItem>
+    private var videoKey: String = ""
     private lateinit var adapter: ListItemAdapter<NetworkMoviesListItem>
     private lateinit var similarMovies: List<NetworkMoviesListItem>
     private lateinit var viewModel: MovieDetailViewModel
@@ -92,8 +85,8 @@ class MovieDetailFragment : Fragment(), ItemClickListener {
             setMovieDetails()
             setIMDBLink()
         })
-        viewModel.getMovieVideos(args.movieId).observe(viewLifecycleOwner, Observer {
-            videos = it
+        viewModel.getMovieKey(args.movieId).observe(viewLifecycleOwner, Observer {
+            videoKey = it
             setTrailerLink()
         })
         viewModel.getSimilarMovies(args.movieId).observe(viewLifecycleOwner, Observer {
@@ -190,13 +183,6 @@ class MovieDetailFragment : Fragment(), ItemClickListener {
     }
 
     private fun setTrailerLink() {
-        var videoKey = ""
-        for(video in videos) {
-            if( video.site == "YouTube" && video.type == "Trailer") {
-                videoKey = video.key
-                break;
-            }
-        }
         val trailerEndpoint = BuildConfig.YOUTUBE_BASE_URL + videoKey
         btPlay.setOnClickListener {
             if(videoKey != "") {

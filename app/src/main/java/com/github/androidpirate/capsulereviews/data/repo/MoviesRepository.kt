@@ -8,10 +8,6 @@ import com.github.androidpirate.capsulereviews.data.network.api.MovieDbService
 import com.github.androidpirate.capsulereviews.data.network.response.movie.NetworkMovie
 import com.github.androidpirate.capsulereviews.data.network.response.movies.NetworkMoviesListItem
 import com.github.androidpirate.capsulereviews.data.network.response.videos.NetworkVideosListItem
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class MoviesRepository(
     private val api: MovieDbService,
@@ -98,8 +94,9 @@ class MoviesRepository(
         persistShowcaseMovie(trendingMovies[0])
     }
 
-    suspend fun fetchMovieVideos(movieId: Int): List<NetworkVideosListItem> {
-        return api.getMovieVideos(movieId).networkVideosListItems
+    suspend fun fetchMovieVideoKey(movieId: Int): String {
+        val videos = fetchMovieVideos(movieId)
+        return fetchMovieVideoKey(videos)
     }
 
     suspend fun fetchMovieDetails(movieId: Int): NetworkMovie {
@@ -110,18 +107,32 @@ class MoviesRepository(
         return api.getSimilarMovies(movieId).networkMoviesListItems
     }
 
+    private suspend fun fetchMovieVideos(movieId: Int): List<NetworkVideosListItem> {
+        return api.getMovieVideos(movieId).networkVideosListItems
+    }
+
     private suspend fun persistShowcaseMovie(showcaseMovie: NetworkMoviesListItem) {
         val showcaseVideos = fetchMovieVideos(showcaseMovie.id)
         val dbShowcaseMovie = showcaseMovie.toShowcase()
-        if(showcaseVideos.isNotEmpty()) {
-            for (video in showcaseVideos) {
+        dbShowcaseMovie.videoKey = fetchMovieVideoKey(showcaseVideos)
+        dao.insertShowcaseMovie(dbShowcaseMovie)
+    }
+
+    private fun fetchMovieVideoKey(videos: List<NetworkVideosListItem>): String {
+        var videoKey = EMPTY_VIDEO_KEY
+        if(videos.isNotEmpty()) {
+            for (video in videos) {
                 if (video.site == "YouTube" && video.type == "Trailer") {
-                    dbShowcaseMovie.videoKey = video.key
+                    videoKey = video.key
                     break
                 }
             }
         }
-        dao.insertShowcaseMovie(dbShowcaseMovie)
+        return videoKey
+    }
+
+    companion object {
+        const val EMPTY_VIDEO_KEY = ""
     }
 
 }

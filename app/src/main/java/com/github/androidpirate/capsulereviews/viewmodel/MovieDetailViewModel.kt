@@ -7,7 +7,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.github.androidpirate.capsulereviews.data.network.response.movie.NetworkMovie
 import com.github.androidpirate.capsulereviews.data.network.response.movies.NetworkMoviesListItem
-import com.github.androidpirate.capsulereviews.data.network.response.videos.NetworkVideosListItem
 import com.github.androidpirate.capsulereviews.data.repo.MoviesRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -16,7 +15,7 @@ import kotlinx.coroutines.withContext
 class MovieDetailViewModel(private val repo: MoviesRepository): ViewModel() {
 
     private val movieDetails = MutableLiveData<NetworkMovie>()
-    private val movieVideos = MutableLiveData<List<NetworkVideosListItem>>()
+    private val movieVideoKey = MutableLiveData<String>()
     private val similarMovies = MutableLiveData<List<NetworkMoviesListItem>>()
 
     fun getMovieDetails(movieId: Int): LiveData<NetworkMovie> {
@@ -37,12 +36,12 @@ class MovieDetailViewModel(private val repo: MoviesRepository): ViewModel() {
         return similarMovies
     }
 
-    fun getMovieVideos(movieId: Int): LiveData<List<NetworkVideosListItem>> {
+    fun getMovieKey(movieId: Int): LiveData<String> {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
-                movieVideos.postValue(repo.fetchMovieVideos(movieId))
+                movieVideoKey.postValue(repo.fetchMovieVideoKey(movieId))
             }
         }
-        return movieVideos
+        return movieVideoKey
     }
 }
