@@ -13,6 +13,7 @@ import com.github.androidpirate.capsulereviews.data.db.entity.*
 abstract class AppDatabase: RoomDatabase() {
 
     abstract fun movieListDao(): MovieListDao
+    abstract fun tvShowListDao(): TvShowListDao
 
     companion object {
         @Volatile
