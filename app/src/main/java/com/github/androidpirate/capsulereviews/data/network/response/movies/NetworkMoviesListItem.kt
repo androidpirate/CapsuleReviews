@@ -19,7 +19,7 @@ class NetworkMoviesListItem(
     @SerializedName("vote_average")
     val voteAverage: Double
 ) {
-    fun toPopularMovie() = DBMovie(
+    fun toPopular() = DBMovie(
         this.id,
         this.title,
         this.posterPath ?: EMPTY_POSTER_PATH,
