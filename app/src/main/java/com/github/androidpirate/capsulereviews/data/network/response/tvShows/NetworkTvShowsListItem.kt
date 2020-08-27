@@ -2,6 +2,7 @@ package com.github.androidpirate.capsulereviews.data.network.response.tvShows
 
 
 import androidx.annotation.Nullable
+import com.github.androidpirate.capsulereviews.data.db.entity.DBTvShow
 import com.google.gson.annotations.SerializedName
 
 data class NetworkTvShowsListItem(
@@ -14,4 +15,32 @@ data class NetworkTvShowsListItem(
     val posterPath: String,
     @SerializedName("vote_average")
     val voteAverage: Double
-)
+) {
+    fun toPopular() = DBTvShow(
+        this.id,
+        this.name,
+        this.posterPath ?: EMPTY_POSTER_PATH,
+        this.voteAverage,
+        popular = true
+    )
+
+    fun toTopRated() = DBTvShow(
+        this.id,
+        this.name,
+        this.posterPath ?: EMPTY_POSTER_PATH,
+        this.voteAverage,
+        topRated = true
+    )
+
+    fun toTrending() = DBTvShow(
+        this.id,
+        this.name,
+        this.posterPath ?: EMPTY_POSTER_PATH,
+        this.voteAverage,
+        trending = true
+    )
+
+    companion object {
+        const val EMPTY_POSTER_PATH = ""
+    }
+}
