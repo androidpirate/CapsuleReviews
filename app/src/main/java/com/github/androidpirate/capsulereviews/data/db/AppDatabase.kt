@@ -10,24 +10,24 @@ import com.github.androidpirate.capsulereviews.data.db.entity.*
     entities = [DBMovie::class, DBMovieShowcase:: class],
     version = 1,
     exportSchema = false)
-abstract class MoviesDatabase: RoomDatabase() {
+abstract class AppDatabase: RoomDatabase() {
 
     abstract fun movieListDao(): MovieListDao
 
     companion object {
         @Volatile
-        private var instance: MoviesDatabase ?= null
+        private var instance: AppDatabase ?= null
         private val LOCK = Any()
 
         operator fun invoke(context: Context) = instance ?: synchronized(LOCK) {
             instance ?: buildDatabase(context).also { instance = it }
         }
 
-        private fun buildDatabase(context: Context) : MoviesDatabase {
+        private fun buildDatabase(context: Context) : AppDatabase {
             return Room.databaseBuilder(
                         context,
-                        MoviesDatabase::class.java,
-                        "movies.db"
+                        AppDatabase::class.java,
+                        "capsule_reviews.db"
                     ).build()
         }
     }
