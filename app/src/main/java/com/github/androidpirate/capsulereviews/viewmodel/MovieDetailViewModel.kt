@@ -39,7 +39,7 @@ class MovieDetailViewModel(private val repo: MoviesRepository): ViewModel() {
     fun getMovieKey(movieId: Int): LiveData<String> {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
-                movieVideoKey.postValue(repo.fetchMovieVideoKey(movieId))
+                movieVideoKey.postValue(repo.fetchVideoKey(movieId))
             }
         }
         return movieVideoKey

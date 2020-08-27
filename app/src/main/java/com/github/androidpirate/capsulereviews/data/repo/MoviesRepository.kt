@@ -94,7 +94,7 @@ class MoviesRepository(
         persistShowcaseMovie(trendingMovies[0])
     }
 
-    suspend fun fetchMovieVideoKey(movieId: Int): String {
+    suspend fun fetchVideoKey(movieId: Int): String {
         val videos = fetchMovieVideos(movieId)
         return fetchMovieVideoKey(videos)
     }
