@@ -44,7 +44,7 @@ class MoviesRepository(
             if(dao.isRowIsExist(it.id)) {
                 dao.updatePopularMovie(it.id)
             } else {
-                dao.insertPopularMovie(it.toPopularMovie())
+                dao.insertPopularMovie(it.toPopular())
             }
         }
     }
