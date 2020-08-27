@@ -71,7 +71,9 @@ class MovieListFragment : Fragment(), ItemClickListener {
         })
         setupViews()
         viewModel.showcaseMovie.observe(viewLifecycleOwner, Observer { it ->
-            setShowcaseMovie(it)
+            if(it != null) {
+                setShowcaseMovie(it)
+            }
         })
     }
 
