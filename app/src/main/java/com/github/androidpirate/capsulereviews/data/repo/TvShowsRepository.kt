@@ -5,6 +5,7 @@ import com.github.androidpirate.capsulereviews.data.db.TvShowListDao
 import com.github.androidpirate.capsulereviews.data.db.entity.DBTvShow
 import com.github.androidpirate.capsulereviews.data.db.entity.DbTvShowShowcase
 import com.github.androidpirate.capsulereviews.data.network.api.MovieDbService
+import com.github.androidpirate.capsulereviews.data.network.response.tvShow.NetworkTvShow
 import com.github.androidpirate.capsulereviews.data.network.response.tvShows.NetworkTvShowsListItem
 import com.github.androidpirate.capsulereviews.data.network.response.videos.NetworkVideosListItem
 
@@ -65,6 +66,18 @@ class TvShowsRepository(
     suspend fun fetchVideoKey(showId: Int): String {
         val videos = fetchShowVideos(showId)
         return fetchShowVideoKey(videos)
+    }
+
+    suspend fun fetchTvShowDetails(showId: Int) : NetworkTvShow {
+        return api.getTvShowDetails(showId)
+    }
+
+    suspend fun fetchSimilarTvShows(showId: Int): List<NetworkTvShowsListItem> {
+        return api.getSimilarTvShows(showId).networkTvShowsListItems
+    }
+
+    suspend fun fetchIMDBId(showId: Int): String {
+        return api.getTvShowExternalIDs(showId).imdbId
     }
 
     private suspend fun fetchShowVideos(showId: Int) : List<NetworkVideosListItem> {
