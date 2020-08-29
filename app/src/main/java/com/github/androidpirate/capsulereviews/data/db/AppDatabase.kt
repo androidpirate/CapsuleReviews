@@ -7,7 +7,7 @@ import androidx.room.RoomDatabase
 import com.github.androidpirate.capsulereviews.data.db.entity.*
 
 @Database(
-    entities = [DBMovie::class, DBMovieShowcase:: class, DBTvShow:: class],
+    entities = [DBMovie::class, DBMovieShowcase:: class, DBTvShow:: class, DbTvShowShowcase:: class],
     version = 1,
     exportSchema = false)
 abstract class AppDatabase: RoomDatabase() {
