@@ -6,22 +6,31 @@ import androidx.lifecycle.ViewModelProvider
 import com.github.androidpirate.capsulereviews.data.db.AppDatabase
 import com.github.androidpirate.capsulereviews.data.network.api.MovieDbService
 import com.github.androidpirate.capsulereviews.data.repo.MoviesRepository
+import com.github.androidpirate.capsulereviews.data.repo.TvShowsRepository
 import java.lang.IllegalStateException
 
 @Suppress("UNCHECKED_CAST")
 class ViewModelFactory(val application: Application): ViewModelProvider.Factory {
-
-    private val repo = MoviesRepository(
-        MovieDbService.invoke(),
-        AppDatabase.invoke(application.applicationContext).movieListDao())
+    private val movieDbService = MovieDbService.invoke()
+    private val appDatabase = AppDatabase.invoke(application.applicationContext)
+    private val moviesRepo = MoviesRepository(
+        movieDbService,
+        appDatabase.movieListDao())
+    private val tvShowsRepo = TvShowsRepository(
+        movieDbService,
+        appDatabase.tvShowListDao()
+    )
 
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         return when {
             modelClass.isAssignableFrom(MovieListViewModel::class.java) -> {
-                MovieListViewModel(repo) as T
+                MovieListViewModel(moviesRepo) as T
             }
             modelClass.isAssignableFrom(MovieDetailViewModel::class.java) -> {
-                MovieDetailViewModel(repo) as T
+                MovieDetailViewModel(moviesRepo) as T
+            }
+            modelClass.isAssignableFrom(TvShowListViewModel::class.java) -> {
+                TvShowListViewModel(tvShowsRepo) as T
             }
             else -> throw IllegalStateException("No such view model class.")
         }
