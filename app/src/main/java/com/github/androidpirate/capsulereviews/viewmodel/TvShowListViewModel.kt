@@ -12,6 +12,7 @@ class TvShowListViewModel(private val repo: TvShowsRepository): ViewModel() {
     val popularTvShows = repo.getPopularTvShows()
     val topRatedTvShows = repo.getTopRatedTvShows()
     val trendingTvShows = repo.getTrendingTvShows()
+    val showcaseTvShow = repo.getShowcaseTvShow()
 
     init {
         viewModelScope.launch {
