@@ -3,7 +3,9 @@ package com.github.androidpirate.capsulereviews.data.repo
 import androidx.lifecycle.LiveData
 import com.github.androidpirate.capsulereviews.data.db.TvShowListDao
 import com.github.androidpirate.capsulereviews.data.db.entity.DBTvShow
+import com.github.androidpirate.capsulereviews.data.db.entity.DbTvShowShowcase
 import com.github.androidpirate.capsulereviews.data.network.api.MovieDbService
+import com.github.androidpirate.capsulereviews.data.network.response.tvShows.NetworkTvShowsListItem
 import com.github.androidpirate.capsulereviews.data.network.response.videos.NetworkVideosListItem
 
 class TvShowsRepository(
@@ -20,6 +22,10 @@ class TvShowsRepository(
 
     fun getTrendingTvShows(): LiveData<List<DBTvShow>> {
         return dao.getTrendingTvShows()
+    }
+
+    fun getShowcaseTvShow(): LiveData<DbTvShowShowcase> {
+        return dao.getShowcaseTvShow()
     }
 
     suspend fun fetchAndPersistPopularTvShows() {
@@ -53,6 +59,7 @@ class TvShowsRepository(
                 dao.insertTrendingTvShow(it.toTrending())
             }
         }
+        persistShowcaseTvShow(trendingShows[0])
     }
 
     suspend fun fetchVideoKey(showId: Int): String {
@@ -62,6 +69,13 @@ class TvShowsRepository(
 
     private suspend fun fetchShowVideos(showId: Int) : List<NetworkVideosListItem> {
         return api.getTvShowVideos(showId).networkVideosListItems
+    }
+
+    private suspend fun persistShowcaseTvShow(showcaseTvShow: NetworkTvShowsListItem) {
+        val showcaseVideos = fetchShowVideos(showcaseTvShow.id)
+        val dbShowcaseTvShow = showcaseTvShow.toShowcase()
+        dbShowcaseTvShow.videoKey = fetchShowVideoKey(showcaseVideos)
+        dao.insertShowcaseTvShow(dbShowcaseTvShow)
     }
 
     private fun fetchShowVideoKey(videos: List<NetworkVideosListItem>): String {
