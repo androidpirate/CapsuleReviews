@@ -58,6 +58,6 @@ interface MovieListDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertShowcaseMovie(showcaseMovie: DBMovieShowcase)
 
-    @Query("SELECT * FROM movie_showcase")
+    @Query("SELECT * FROM movieShowcase")
     fun getShowcaseMovie(): LiveData<DBMovieShowcase>
 }

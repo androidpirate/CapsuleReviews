@@ -3,7 +3,7 @@ package com.github.androidpirate.capsulereviews.data.db.entity
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "tv_shows")
+@Entity(tableName = "tvShows")
 data class DBTvShow(
     @PrimaryKey(autoGenerate = false)
     val id: Int,
