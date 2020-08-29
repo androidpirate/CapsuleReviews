@@ -3,8 +3,9 @@ package com.github.androidpirate.capsulereviews.data.db
 import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
+import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.github.androidpirate.capsulereviews.data.db.entity.DBTvShow
+import com.github.androidpirate.capsulereviews.data.db.entity.*
 
 @Dao
 interface TvShowListDao {
@@ -38,4 +39,10 @@ interface TvShowListDao {
 
     @Query("SELECT * FROM tv_shows WHERE trending = 1")
     fun getTrendingTvShows(): LiveData<List<DBTvShow>>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertShowcaseTvShow(showcaseTvShow: DbTvShowShowcase)
+
+    @Query("SELECT * FROM tv_showcase")
+    fun getShowcaseTvShow(): LiveData<DbTvShowShowcase>
 }
