@@ -15,26 +15,19 @@ import com.bumptech.glide.Glide
 import com.github.androidpirate.capsulereviews.BuildConfig
 import com.github.androidpirate.capsulereviews.R
 import com.github.androidpirate.capsulereviews.data.db.entity.DBTvShow
-import com.github.androidpirate.capsulereviews.data.network.api.MovieDbService
+import com.github.androidpirate.capsulereviews.data.db.entity.DbTvShowShowcase
 import com.github.androidpirate.capsulereviews.data.network.response.tvShows.NetworkTvShowsListItem
 import com.github.androidpirate.capsulereviews.data.network.response.videos.NetworkVideosListItem
 import com.github.androidpirate.capsulereviews.ui.adapter.ListItemAdapter
 import com.github.androidpirate.capsulereviews.util.ItemClickListener
 import com.github.androidpirate.capsulereviews.viewmodel.TvShowListViewModel
 import com.github.androidpirate.capsulereviews.viewmodel.ViewModelFactory
-import kotlinx.android.synthetic.main.fragment_movie_list.*
-import kotlinx.android.synthetic.main.fragment_tv_list.*
 import kotlinx.android.synthetic.main.fragment_tv_list.container
 import kotlinx.android.synthetic.main.fragment_tv_list.loadingScreen
 import kotlinx.android.synthetic.main.fragment_tv_list.rvPopular
 import kotlinx.android.synthetic.main.fragment_tv_list.rvTopRated
 import kotlinx.android.synthetic.main.fragment_tv_list.rvTrending
 import kotlinx.android.synthetic.main.tv_showcase.*
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import kotlin.random.Random
 
 class TvListFragment : Fragment(), ItemClickListener{
     private lateinit var popularShowsAdapter: ListItemAdapter<DBTvShow>
@@ -77,6 +70,11 @@ class TvListFragment : Fragment(), ItemClickListener{
         viewModel.trendingTvShows.observe(viewLifecycleOwner, Observer {
             trendingShowsAdapter.submitList(it)
         })
+        viewModel.showcaseTvShow.observe(viewLifecycleOwner, Observer {
+            if(it != null) {
+                setShowCaseTvShow(it)
+            }
+        })
     }
 
     override fun onStart() {
@@ -86,7 +84,7 @@ class TvListFragment : Fragment(), ItemClickListener{
 
     override fun onResume() {
         super.onResume()
-        displayContainerScreen()
+//        displayContainerScreen()
     }
 
     private fun displayLoadingScreen() {
@@ -105,23 +103,40 @@ class TvListFragment : Fragment(), ItemClickListener{
         trendingShowsAdapter = ListItemAdapter(TvListFragment::class.simpleName, this)
     }
 
-    private fun setShowCaseTvShow() {
+    private fun setShowCaseTvShow(showcaseTvShow: DbTvShowShowcase) {
+        setShowcaseTvShowPoster(showcaseTvShow.posterPath)
+        setShowCaseTvShowTitle(showcaseTvShow.title)
+        setShowCaseTvShowClickListeners(showcaseTvShow)
+    }
+
+    private fun setupViews() {
+        rvPopular.adapter = popularShowsAdapter
+        rvTopRated.adapter = topRatedShowsAdapter
+        rvTrending.adapter = trendingShowsAdapter
+    }
+
+    private fun setShowcaseTvShowPoster(showcaseTvShowPosterPath: String) {
         Glide.with(this)
-            .load(BuildConfig.MOVIE_DB_IMAGE_BASE_URL + "w342/" + showCaseNetworkTvShow.posterPath)
+            .load(BuildConfig.MOVIE_DB_IMAGE_BASE_URL + "w342/" + showcaseTvShowPosterPath)
             .placeholder(R.drawable.ic_image_placeholder)
             .into(scPoster)
-        scTitle.text = showCaseNetworkTvShow.name
+    }
 
+    private fun setShowCaseTvShowTitle(showcaseTvShowTitle: String) {
+        scTitle.text = showcaseTvShowTitle
+    }
+
+    private fun setShowCaseTvShowClickListeners(showcaseTvShow: DbTvShowShowcase) {
         scAddFavorite.setOnClickListener {
             // TODO 7: Implement adding to favorites here
         }
 
         scInfo.setOnClickListener {
-            onItemClick(showCaseNetworkTvShow)
+            onShowcaseTvShowClick(showcaseTvShow.tvShowId)
         }
 
+        val trailerEndpoint = BuildConfig.YOUTUBE_BASE_URL + showcaseTvShow.videoKey
         scPlay.setOnClickListener {
-            val trailerEndpoint = BuildConfig.YOUTUBE_BASE_URL + videoKey
             if(trailerEndpoint != BuildConfig.YOUTUBE_BASE_URL) {
                 val uri = Uri.parse(trailerEndpoint)
                 val intent = Intent(Intent.ACTION_VIEW, uri)
@@ -134,12 +149,13 @@ class TvListFragment : Fragment(), ItemClickListener{
                     .show()
             }
         }
+        displayContainerScreen()
     }
 
-    private fun setupViews() {
-        rvPopular.adapter = popularShowsAdapter
-        rvTopRated.adapter = topRatedShowsAdapter
-        rvTrending.adapter = trendingShowsAdapter
+    private fun onShowcaseTvShowClick(showcaseTvShowId: Int) {
+        val action = TvListFragmentDirections
+            .actionTvListToDetail(showcaseTvShowId)
+        findNavController().navigate(action)
     }
 
     override fun <T> onItemClick(item: T) {
