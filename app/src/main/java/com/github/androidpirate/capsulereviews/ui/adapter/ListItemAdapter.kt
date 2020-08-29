@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.github.androidpirate.capsulereviews.R
 import com.github.androidpirate.capsulereviews.data.db.entity.DBMovie
+import com.github.androidpirate.capsulereviews.data.db.entity.DBTvShow
 import com.github.androidpirate.capsulereviews.data.network.response.movies.NetworkMoviesListItem
 import com.github.androidpirate.capsulereviews.data.network.response.tvShows.NetworkTvShowsListItem
 import com.github.androidpirate.capsulereviews.util.ItemClickListener
@@ -82,7 +83,7 @@ class ListItemAdapter<T>(private val fragmentType: String?, private val clickLis
             when(fragmentType) {
                 MOVIE_LIST -> setItemThumbnail((item as DBMovie).posterPath)
                 MOVIE_DETAIL -> setSimilarItemThumbnail((item as NetworkMoviesListItem).posterPath)
-                TV_LIST -> setItemThumbnail((item as NetworkTvShowsListItem).posterPath)
+                TV_LIST -> setItemThumbnail((item as DBTvShow).posterPath)
                 TV_DETAIL -> setSimilarItemThumbnail((item as NetworkTvShowsListItem).posterPath)
                 else -> throw IllegalArgumentException("Unknown fragment type: $fragmentType")
             }
@@ -92,6 +93,7 @@ class ListItemAdapter<T>(private val fragmentType: String?, private val clickLis
             Glide.with(itemView.context)
                 // TODO 4: Take care of the base URL when saving data into local db
                 .load("https://image.tmdb.org/t/p/w185/" + posterPath)
+                .placeholder(R.drawable.ic_image_placeholder)
                 .into(itemView.ivListItem)
         }
 
