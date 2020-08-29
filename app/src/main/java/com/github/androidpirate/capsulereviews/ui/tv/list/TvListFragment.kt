@@ -17,7 +17,6 @@ import com.github.androidpirate.capsulereviews.R
 import com.github.androidpirate.capsulereviews.data.db.entity.DBTvShow
 import com.github.androidpirate.capsulereviews.data.db.entity.DbTvShowShowcase
 import com.github.androidpirate.capsulereviews.data.network.response.tvShows.NetworkTvShowsListItem
-import com.github.androidpirate.capsulereviews.data.network.response.videos.NetworkVideosListItem
 import com.github.androidpirate.capsulereviews.ui.adapter.ListItemAdapter
 import com.github.androidpirate.capsulereviews.util.ItemClickListener
 import com.github.androidpirate.capsulereviews.viewmodel.TvShowListViewModel
@@ -33,9 +32,6 @@ class TvListFragment : Fragment(), ItemClickListener{
     private lateinit var popularShowsAdapter: ListItemAdapter<DBTvShow>
     private lateinit var topRatedShowsAdapter: ListItemAdapter<DBTvShow>
     private lateinit var trendingShowsAdapter: ListItemAdapter<DBTvShow>
-    private lateinit var showCaseNetworkTvShow: NetworkTvShowsListItem
-    private lateinit var showCaseVideos: List<NetworkVideosListItem>
-    private var videoKey: String ?= null
     private lateinit var viewModel: TvShowListViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -77,16 +73,6 @@ class TvListFragment : Fragment(), ItemClickListener{
         })
     }
 
-    override fun onStart() {
-        super.onStart()
-//        setShowCaseTvShow()
-    }
-
-    override fun onResume() {
-        super.onResume()
-//        displayContainerScreen()
-    }
-
     private fun displayLoadingScreen() {
         container.visibility = View.GONE
         loadingScreen.visibility = View.VISIBLE
@@ -103,16 +89,16 @@ class TvListFragment : Fragment(), ItemClickListener{
         trendingShowsAdapter = ListItemAdapter(TvListFragment::class.simpleName, this)
     }
 
-    private fun setShowCaseTvShow(showcaseTvShow: DbTvShowShowcase) {
-        setShowcaseTvShowPoster(showcaseTvShow.posterPath)
-        setShowCaseTvShowTitle(showcaseTvShow.title)
-        setShowCaseTvShowClickListeners(showcaseTvShow)
-    }
-
     private fun setupViews() {
         rvPopular.adapter = popularShowsAdapter
         rvTopRated.adapter = topRatedShowsAdapter
         rvTrending.adapter = trendingShowsAdapter
+    }
+
+    private fun setShowCaseTvShow(showcaseTvShow: DbTvShowShowcase) {
+        setShowcaseTvShowPoster(showcaseTvShow.posterPath)
+        setShowCaseTvShowTitle(showcaseTvShow.title)
+        setShowCaseTvShowClickListeners(showcaseTvShow)
     }
 
     private fun setShowcaseTvShowPoster(showcaseTvShowPosterPath: String) {
