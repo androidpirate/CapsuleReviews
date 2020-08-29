@@ -39,7 +39,7 @@ class TvShowsRepository(
             if(dao.isRowExist(it.id)) {
                 dao.updateTopRatedTvShow(it.id)
             } else {
-                dao.insertTopRatedTvShow(it.toPopular())
+                dao.insertTopRatedTvShow(it.toTopRated())
             }
         }
     }
@@ -50,7 +50,7 @@ class TvShowsRepository(
             if(dao.isRowExist(it.id)) {
                 dao.updateTrendingTvShow(it.id)
             } else {
-                dao.insertTrendingTvShow(it.toPopular())
+                dao.insertTrendingTvShow(it.toTrending())
             }
         }
     }
