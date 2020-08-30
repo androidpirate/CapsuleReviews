@@ -26,10 +26,10 @@
                 android:layout_marginBottom="@dimen/margin_16"
                 app:layout_constraintBottom_toTopOf="@id/popularTitle"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="1.0"/>
+                app:layout_constraintVertical_bias="0.0" />
 
             <TextView
                 android:id="@+id/popularTitle"
@@ -115,6 +115,93 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/trendingTitle"
+                app:layout_constraintBottom_toTopOf="@id/popularOnNetflixTitle"
+                tools:listitem="@layout/list_item"/>
+
+            <TextView
+                android:id="@+id/popularOnNetflixTitle"
+                android:layout_width="@dimen/match_constraint"
+                android:layout_height="wrap_content"
+                android:text="@string/popular_on_netflix_tv_title"
+                android:textSize="@dimen/list_title"
+                android:textStyle="bold"
+                android:textColor="#FDFDFD"
+                android:layout_marginTop="@dimen/margin_32"
+                android:layout_marginBottom="@dimen/margin_16"
+                android:layout_marginStart="@dimen/margin_16"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/rvTrending"
+                app:layout_constraintBottom_toTopOf="@id/rvPopularOnNetflix"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvPopularOnNetflix"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                android:nestedScrollingEnabled="false"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/popularOnNetflixTitle"
+                app:layout_constraintBottom_toTopOf="@id/popularOnHuluTitle"
+                tools:listitem="@layout/list_item"/>
+
+            <TextView
+                android:id="@+id/popularOnHuluTitle"
+                android:layout_width="@dimen/match_constraint"
+                android:layout_height="wrap_content"
+                android:text="@string/popular_on_hulu_tv_title"
+                android:textSize="@dimen/list_title"
+                android:textStyle="bold"
+                android:textColor="#FDFDFD"
+                android:layout_marginTop="@dimen/margin_32"
+                android:layout_marginBottom="@dimen/margin_16"
+                android:layout_marginStart="@dimen/margin_16"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/rvPopularOnNetflix"
+                app:layout_constraintBottom_toTopOf="@id/rvPopularOnHulu"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvPopularOnHulu"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                android:nestedScrollingEnabled="false"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/popularOnHuluTitle"
+                app:layout_constraintBottom_toTopOf="@id/popularOnDisneyPlusTitle"
+                tools:listitem="@layout/list_item"/>
+
+            <TextView
+                android:id="@+id/popularOnDisneyPlusTitle"
+                android:layout_width="@dimen/match_constraint"
+                android:layout_height="wrap_content"
+                android:text="@string/popular_on_disney_plus_tv_title"
+                android:textSize="@dimen/list_title"
+                android:textStyle="bold"
+                android:textColor="#FDFDFD"
+                android:layout_marginTop="@dimen/margin_32"
+                android:layout_marginBottom="@dimen/margin_16"
+                android:layout_marginStart="@dimen/margin_16"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/rvPopularOnHulu"
+                app:layout_constraintBottom_toTopOf="@id/rvPopularOnDisneyPlus"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvPopularOnDisneyPlus"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                android:nestedScrollingEnabled="false"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/popularOnDisneyPlusTitle"
                 app:layout_constraintBottom_toBottomOf="parent"
                 tools:listitem="@layout/list_item"/>
 
