@@ -24,6 +24,7 @@ import com.github.androidpirate.capsulereviews.data.network.response.tvShow.Netw
 import com.github.androidpirate.capsulereviews.data.network.response.tvShow.NetworkTvShow
 import com.github.androidpirate.capsulereviews.data.network.response.tvShows.NetworkTvShowsListItem
 import com.github.androidpirate.capsulereviews.ui.adapter.ListItemAdapter
+import com.github.androidpirate.capsulereviews.util.ContentFormatter
 import com.github.androidpirate.capsulereviews.util.GridSpacingItemDecoration
 import com.github.androidpirate.capsulereviews.util.ItemClickListener
 import com.github.androidpirate.capsulereviews.viewmodel.TvShowDetailViewModel
@@ -136,19 +137,19 @@ class TvDetailFragment : Fragment(), ItemClickListener {
 
     private fun setTvShowDetails() {
         tvTitle.text = networkTvShow.name
-        releaseDate.text = formatReleaseDate(networkTvShow.releaseDate)
-        genres.text = formatGenres(networkTvShow.genres)
+        releaseDate.text = ContentFormatter.formatReleaseDate(networkTvShow.releaseDate)
+        genres.text = ContentFormatter.formatGenres(networkTvShow.genres)
         userRating.text = networkTvShow.voteAverage.toString()
         status.text = networkTvShow.status
-        createdBy.text = formatCreatedBy(networkTvShow.networkCreatedBy)
+        createdBy.text = ContentFormatter.formatCreatedBy(networkTvShow.networkCreatedBy)
         overview.text = networkTvShow.overview
         seasons.text = networkTvShow.numberOfSeasons.toString()
         episodes.text = networkTvShow.numberOfEpisodes.toString()
         if(networkTvShow.episodeRunTime.isNotEmpty()) {
-            runTime.text = formatRunTime(networkTvShow.episodeRunTime[0])
+            runTime.text = ContentFormatter.formatTvShowRunTime(networkTvShow.episodeRunTime[0])
         }
         type.text = networkTvShow.type
-        network.text = formatNetworks(networkTvShow.networkNetworkInfos)
+        network.text = ContentFormatter.formatNetworks(networkTvShow.networkNetworkInfos)
     }
 
     private fun setIMDBLink() {
@@ -202,54 +203,6 @@ class TvDetailFragment : Fragment(), ItemClickListener {
 
     private fun setFlagDecorationOn() {
         flagDecoration = true
-    }
-
-    private fun formatReleaseDate(releaseDate: String): String {
-        val dateArray = releaseDate.split("-")
-        val year = dateArray[0]
-        val month = dateArray[1]
-        val day = dateArray[2]
-        return "$day/$month/$year"
-    }
-
-    private fun formatGenres(genres: List<NetworkGenre>): String {
-        var movieGenres: String = ""
-        for(i in genres.indices) {
-            if(i == genres.size - 1) {
-                movieGenres += genres[i].name
-                break
-            }
-            movieGenres += "${genres[i].name}, "
-        }
-        return movieGenres
-    }
-
-    private fun formatCreatedBy(networkCreatedBy: List<NetworkCreatedBy>): String {
-        var creators = ""
-        for(i in networkCreatedBy.indices) {
-            if(i == networkCreatedBy.size - 1) {
-                creators += networkCreatedBy[i].name
-                break
-            }
-            creators += "${networkCreatedBy[i].name}, "
-        }
-        return creators
-    }
-
-    private fun formatNetworks(networkNetworkInfos: List<NetworkNetworkInfo>): String {
-        var network = ""
-        for(i in networkNetworkInfos.indices) {
-            if(i == networkNetworkInfos.size - 1) {
-                network += networkNetworkInfos[i].name
-                break
-            }
-            network += "${networkNetworkInfos[i].name}, "
-        }
-        return network
-    }
-
-    private fun formatRunTime(runTime: Int): String {
-        return "$runTime mins"
     }
 
     override fun <T> onItemClick(item: T) {

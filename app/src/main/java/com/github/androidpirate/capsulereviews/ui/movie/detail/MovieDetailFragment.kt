@@ -23,6 +23,7 @@ import com.github.androidpirate.capsulereviews.data.network.response.movie.Netwo
 import com.github.androidpirate.capsulereviews.data.network.response.movies.NetworkMoviesListItem
 import com.github.androidpirate.capsulereviews.data.network.response.videos.NetworkVideosListItem
 import com.github.androidpirate.capsulereviews.ui.adapter.ListItemAdapter
+import com.github.androidpirate.capsulereviews.util.ContentFormatter
 import com.github.androidpirate.capsulereviews.util.GridSpacingItemDecoration
 import com.github.androidpirate.capsulereviews.util.ItemClickListener
 import com.github.androidpirate.capsulereviews.viewmodel.MovieDetailViewModel
@@ -113,57 +114,13 @@ class MovieDetailFragment : Fragment(), ItemClickListener {
     private fun setMovieDetails() {
         movieTitle.text = networkMovie.title
         movieTagLine.text = networkMovie.tagLine
-        releaseDate.text = formatReleaseDate(networkMovie.releaseDate)
-        genres.text = formatGenres(networkMovie.networkGenres)
+        releaseDate.text = ContentFormatter.formatReleaseDate(networkMovie.releaseDate)
+        genres.text = ContentFormatter.formatGenres(networkMovie.networkGenres)
         userRating.text = networkMovie.voteAverage.toString()
-        runTime.text = formatRunTime(networkMovie.runtime)
+        runTime.text = ContentFormatter.formatMovieRunTime(networkMovie.runtime)
         overview.text = networkMovie.overview
-        budget.text = formatBudget(networkMovie.budget)
-        revenue.text = formatRevenue(networkMovie.revenue)
-    }
-
-    private fun formatReleaseDate(releaseDate: String): String {
-        val dateArray = releaseDate.split("-")
-        val year = dateArray[0]
-        val month = dateArray[1]
-        val day = dateArray[2]
-        return "$day/$month/$year"
-    }
-
-    private fun formatRunTime(runTime: Int): String {
-        val hour = runTime / 60
-        val minute = runTime % 60
-        return "$hour h $minute m"
-    }
-
-    private fun formatGenres(networkGenres: List<NetworkGenre>): String {
-        var movieGenres: String = ""
-        for(i in networkGenres.indices) {
-            if(i == networkGenres.size - 1) {
-                movieGenres += networkGenres[i].name
-                break
-            }
-            movieGenres += "${networkGenres[i].name}, "
-        }
-        return movieGenres
-    }
-
-    private fun formatBudget(budget: Long): String {
-        return if(budget != 0L) {
-            val formatter = DecimalFormat("#,###")
-            "$ ${formatter.format(budget)}"
-        } else {
-            "No data."
-        }
-    }
-
-    private fun formatRevenue(revenue: Long): String {
-        return if(revenue != 0L) {
-            val formatter = DecimalFormat("#,###")
-            "$ ${formatter.format(revenue)}"
-        } else {
-            "No data."
-        }
+        budget.text = ContentFormatter.formatBudget(networkMovie.budget)
+        revenue.text = ContentFormatter.formatRevenue(networkMovie.revenue)
     }
 
     private fun setIMDBLink() {
