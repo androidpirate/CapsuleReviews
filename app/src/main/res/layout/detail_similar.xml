@@ -10,7 +10,7 @@
         android:id="@+id/moreTitle"
         android:layout_width="@dimen/match_constraint"
         android:layout_height="wrap_content"
-        android:text="More Like This"
+        android:text="@string/more_title_content"
         android:textAllCaps="true"
         android:textColor="#FDFDFD"
         android:textSize="18sp"

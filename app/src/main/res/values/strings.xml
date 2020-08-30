@@ -45,4 +45,5 @@
     <!-- Search Fragment resources -->
     <string name="search_icon_description">Search icon.</string>
     <string name="et_search_hint_content">Search for a keyword</string>
+    <string name="more_title_content">More Like This</string>
 </resources>
