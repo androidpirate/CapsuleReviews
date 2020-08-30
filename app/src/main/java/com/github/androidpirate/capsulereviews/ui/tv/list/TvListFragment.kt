@@ -21,17 +21,16 @@ import com.github.androidpirate.capsulereviews.ui.adapter.ListItemAdapter
 import com.github.androidpirate.capsulereviews.util.ItemClickListener
 import com.github.androidpirate.capsulereviews.viewmodel.TvShowListViewModel
 import com.github.androidpirate.capsulereviews.viewmodel.ViewModelFactory
-import kotlinx.android.synthetic.main.fragment_tv_list.container
-import kotlinx.android.synthetic.main.fragment_tv_list.loadingScreen
-import kotlinx.android.synthetic.main.fragment_tv_list.rvPopular
-import kotlinx.android.synthetic.main.fragment_tv_list.rvTopRated
-import kotlinx.android.synthetic.main.fragment_tv_list.rvTrending
+import kotlinx.android.synthetic.main.fragment_tv_list.*
 import kotlinx.android.synthetic.main.tv_showcase.*
 
 class TvListFragment : Fragment(), ItemClickListener{
     private lateinit var popularShowsAdapter: ListItemAdapter<DBTvShow>
     private lateinit var topRatedShowsAdapter: ListItemAdapter<DBTvShow>
     private lateinit var trendingShowsAdapter: ListItemAdapter<DBTvShow>
+    private lateinit var popularNetflixAdapter: ListItemAdapter<DBTvShow>
+    private lateinit var popularHuluAdapter: ListItemAdapter<DBTvShow>
+    private lateinit var popularDisneyPlusAdapter: ListItemAdapter<DBTvShow>
     private lateinit var viewModel: TvShowListViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -71,6 +70,21 @@ class TvListFragment : Fragment(), ItemClickListener{
                 setShowCaseTvShow(it)
             }
         })
+        viewModel.popularOnNetflix.observe(viewLifecycleOwner, Observer {
+            if(it != null) {
+                popularNetflixAdapter.submitList(it)
+            }
+        })
+        viewModel.popularOnHulu.observe(viewLifecycleOwner, Observer {
+            if(it != null) {
+                popularHuluAdapter.submitList(it)
+            }
+        })
+        viewModel.popularOnDisneyPlus.observe(viewLifecycleOwner, Observer {
+            if(it != null) {
+                popularDisneyPlusAdapter.submitList(it)
+            }
+        })
     }
 
     private fun displayLoadingScreen() {
@@ -87,12 +101,18 @@ class TvListFragment : Fragment(), ItemClickListener{
         popularShowsAdapter = ListItemAdapter(TvListFragment::class.simpleName, this)
         topRatedShowsAdapter = ListItemAdapter(TvListFragment::class.simpleName, this)
         trendingShowsAdapter = ListItemAdapter(TvListFragment::class.simpleName, this)
+        popularNetflixAdapter = ListItemAdapter(TvListFragment::class.simpleName, this)
+        popularHuluAdapter = ListItemAdapter(TvListFragment::class.simpleName, this)
+        popularDisneyPlusAdapter = ListItemAdapter(TvListFragment::class.simpleName, this)
     }
 
     private fun setupViews() {
         rvPopular.adapter = popularShowsAdapter
         rvTopRated.adapter = topRatedShowsAdapter
         rvTrending.adapter = trendingShowsAdapter
+        rvPopularOnNetflix.adapter = popularNetflixAdapter
+        rvPopularOnHulu.adapter = popularHuluAdapter
+        rvPopularOnDisneyPlus.adapter = popularDisneyPlusAdapter
     }
 
     private fun setShowCaseTvShow(showcaseTvShow: DbTvShowShowcase) {
