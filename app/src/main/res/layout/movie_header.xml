@@ -9,7 +9,7 @@
     <ImageView
         android:id="@+id/movieHeaderBg"
         android:layout_width="@dimen/match_constraint"
-        android:layout_height="330dp"
+        android:layout_height="@dimen/match_constraint"
         android:src="@drawable/ic_image_placeholder"
         android:contentDescription="@string/movie_header_background_image_description"
         android:scaleType="center"
