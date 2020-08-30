@@ -56,6 +56,9 @@ interface MovieDbService {
     @GET("trending/tv/week")
     suspend fun getTrendingTvShows(): NetworkTvShowsResponse
 
+    @GET("discover/tv")
+    suspend fun getPopularTvShowsOnNetwork(@Query("with_networks") networkId: Int): NetworkTvShowsResponse
+
     @GET("tv/{tv_id}/similar")
     suspend fun getSimilarTvShows(@Path("tv_id") tvId: Int): NetworkTvShowsResponse
 
