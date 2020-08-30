@@ -25,6 +25,24 @@ interface TvShowListDao {
     @Insert
     suspend fun insertTrendingTvShow(show: DBTvShow)
 
+    @Query("UPDATE tvShows SET netflix = 1 WHERE id = :showId")
+    suspend fun updatePopularTvShowOnNetflix(showId: Int)
+
+    @Insert
+    suspend fun insertPopularTvShowOnNetflix(show: DBTvShow)
+
+    @Query("UPDATE tvShows SET hulu = 1 WHERE id = :showId")
+    suspend fun updatePopularTvShowOnHulu(showId: Int)
+
+    @Insert
+    suspend fun insertPopularTvShowOnHulu(show: DBTvShow)
+
+    @Query("UPDATE tvShows SET disneyPlus = 1 WHERE id = :showId")
+    suspend fun updatePopularTvShowOnDisneyPlus(showId: Int)
+
+    @Insert
+    suspend fun insertPopularTvShowOnDisneyPlus(show: DBTvShow)
+
     @Query("SELECT EXISTS(SELECT * FROM tvShows WHERE id = :id)")
     suspend fun isRowExist(id: Int) : Boolean
 
@@ -36,6 +54,15 @@ interface TvShowListDao {
 
     @Query("SELECT * FROM tvShows WHERE trending = 1")
     fun getTrendingTvShows(): LiveData<List<DBTvShow>>
+
+    @Query("SELECT * FROM tvShows WHERE netflix = 1")
+    fun getPopularShowsOnNetflix(): LiveData<List<DBTvShow>>
+
+    @Query("SELECT * FROM tvShows WHERE hulu = 1")
+    fun getPopularShowsOnHulu(): LiveData<List<DBTvShow>>
+
+    @Query("SELECT * FROM tvShows WHERE disneyPlus = 1")
+    fun getPopularShowsOnDisneyPlus(): LiveData<List<DBTvShow>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertShowcaseTvShow(showcaseTvShow: DbTvShowShowcase)
