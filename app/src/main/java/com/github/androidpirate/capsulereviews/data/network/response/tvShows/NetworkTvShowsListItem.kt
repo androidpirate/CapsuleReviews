@@ -41,6 +41,30 @@ data class NetworkTvShowsListItem(
         trending = true
     )
 
+    fun toNetflix() = DBTvShow(
+        this.id,
+        this.name,
+        this.posterPath ?: EMPTY_POSTER_PATH,
+        this.voteAverage,
+        netflix = true
+    )
+
+    fun toHulu() = DBTvShow(
+        this.id,
+        this.name,
+        this.posterPath ?: EMPTY_POSTER_PATH,
+        this.voteAverage,
+        hulu = true
+    )
+
+    fun toDisneyPlus() = DBTvShow(
+        this.id,
+        this.name,
+        this.posterPath ?: EMPTY_POSTER_PATH,
+        this.voteAverage,
+        disneyPlus = true
+    )
+
     fun toShowcase() = DbTvShowShowcase(
         this.id,
         this.name,
