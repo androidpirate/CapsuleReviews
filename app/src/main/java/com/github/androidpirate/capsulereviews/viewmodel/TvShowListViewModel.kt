@@ -12,6 +12,9 @@ class TvShowListViewModel(private val repo: TvShowsRepository): ViewModel() {
     val popularTvShows = repo.getPopularTvShows()
     val topRatedTvShows = repo.getTopRatedTvShows()
     val trendingTvShows = repo.getTrendingTvShows()
+    val popularOnNetflix = repo.getPopularTvShowsOnNetflix()
+    val popularOnHulu = repo.getPopularTvShowsOnHulu()
+    val popularOnDisneyPlus = repo.getPopularTvShowsOnDisneyPlus()
     val showcaseTvShow = repo.getShowcaseTvShow()
 
     init {
@@ -24,6 +27,15 @@ class TvShowListViewModel(private val repo: TvShowsRepository): ViewModel() {
             }
             withContext(Dispatchers.IO) {
                 repo.fetchAndPersistTrendingTvShows()
+            }
+            withContext(Dispatchers.IO) {
+                repo.fetchAndPersistPopularNetflixTvShows()
+            }
+            withContext(Dispatchers.IO) {
+                repo.fetchAndPersistPopularHuluTvShows()
+            }
+            withContext(Dispatchers.IO) {
+                repo.fetchAndPersisPopularDisneyPlusTvShows()
             }
         }
     }
