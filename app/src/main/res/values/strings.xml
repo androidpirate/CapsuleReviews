@@ -46,4 +46,7 @@
     <string name="search_icon_description">Search icon.</string>
     <string name="et_search_hint_content">Search for a keyword</string>
     <string name="more_title_content">More Like This</string>
+    <string name="popular_on_netflix_tv_title">Popular on Netflix</string>
+    <string name="popular_on_hulu_tv_title">Popular on Hulu</string>
+    <string name="popular_on_disney_plus_tv_title">Popular on Disney Plus</string>
 </resources>
