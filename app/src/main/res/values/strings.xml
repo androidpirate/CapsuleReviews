@@ -12,10 +12,6 @@
     <string name="now_playing_movies_title">Now Playing Movies</string>
     <string name="upcoming_movies_title">Upcoming Movies</string>
     <string name="trending_movies_title">Trending Movies</string>
-    <string name="showcase_movie_poster_description">Showcase movie poster.</string>
-    <string name="showcase_add_to_favorite_description">Add showcase movie to favorites button.</string>
-    <string name="play_showcase_movie_description">Play showcase movie trailer.</string>
-    <string name="showcase_goto_details_description">Go to showcase movie details.</string>
     <string name="list_item_preview_description">List item preview.</string>
     <string name="movie_poster_description">Movie Poster</string>
     <string name="favorite_button_description">Favorite Button</string>
@@ -36,4 +32,13 @@
     <string name="video_no_available_toast_content">Video not available.</string>
     <string name="link_not_available_toast_content">Link not available.</string>
     <string name="progress_bar_text_content">Loading</string>
+    <string name="showcase_subtitle_content">Trending Now</string>
+    <!-- Showcase item resources -->
+    <string name="showcase_movie_poster_description">Showcase movie poster.</string>
+    <string name="showcase_add_to_favorite_description">Add showcase item to favorites button.</string>
+    <string name="play_showcase_movie_description">Play showcase item trailer.</string>
+    <string name="showcase_goto_details_description">Go to showcase item details.</string>
+    <string name="showcase_tv_poster_description">Showcase tv show poster.</string>
+    <string name="add_favorites_button_content">Add Favorites</string>
+    <string name="showcase_details_content">See Details</string>
 </resources>
