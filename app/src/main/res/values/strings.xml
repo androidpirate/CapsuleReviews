@@ -6,26 +6,24 @@
     <string name="bottom_nav_discover">Discover</string>
     <string name="bottom_nav_favorites">Favorites</string>
     <string name="bottom_nav_more">More</string>
-    <!-- Movie list Fragment resources -->
+    <!-- Movie List Fragment resources -->
     <string name="popular_movies_title">Popular Movies</string>
     <string name="top_rated_movies_title">Top Rated Movies</string>
     <string name="now_playing_movies_title">Now Playing Movies</string>
     <string name="upcoming_movies_title">Upcoming Movies</string>
     <string name="trending_movies_title">Trending Movies</string>
     <string name="list_item_preview_description">List item preview.</string>
-    <string name="movie_poster_description">Movie Poster</string>
     <string name="favorite_button_description">Favorite Button</string>
     <!-- TV List Fragment resources -->
     <string name="popular_tv_title">Popular TV</string>
     <string name="top_rated_tv_title">Top Rated TV</string>
     <string name="trending_tv_title">Trending TV</string>
-    <!-- Movie Detail resources -->
+    <!-- Movie Detail Fragment resources -->
+    <string name="movie_poster_description">Movie poster.</string>
     <string name="rating_icon_description">Rating icon.</string>
     <string name="next_icon_description">Next icon.</string>
     <string name="dot_separator_description">Dot separator.</string>
     <string name="navigate_up_button_description">Navigate up button.</string>
-    <string name="search_icon_description">Search icon.</string>
-    <string name="et_search_hint_content">Search for a keyword</string>
     <string name="movie_header_background_image_description">Movie header background image.</string>
     <string name="play_showcase_tv_show_description">Play showcase tv show trailer.</string>
     <string name="empty_similar_list_message">Looks like there is nothing quiet like this yet!</string>
@@ -33,6 +31,9 @@
     <string name="link_not_available_toast_content">Link not available.</string>
     <string name="progress_bar_text_content">Loading</string>
     <string name="showcase_subtitle_content">Trending Now</string>
+    <!-- TV Detail Fragment resources -->
+    <string name="tv_header_background_image_description">TV show header background image.</string>
+    <string name="tv_poster_description">TV show poster.</string>
     <!-- Showcase item resources -->
     <string name="showcase_movie_poster_description">Showcase movie poster.</string>
     <string name="showcase_add_to_favorite_description">Add showcase item to favorites button.</string>
@@ -41,4 +42,7 @@
     <string name="showcase_tv_poster_description">Showcase tv show poster.</string>
     <string name="add_favorites_button_content">Add Favorites</string>
     <string name="showcase_details_content">See Details</string>
+    <!-- Search Fragment resources -->
+    <string name="search_icon_description">Search icon.</string>
+    <string name="et_search_hint_content">Search for a keyword</string>
 </resources>
