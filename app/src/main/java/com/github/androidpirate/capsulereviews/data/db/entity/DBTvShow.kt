@@ -12,5 +12,8 @@ data class DBTvShow(
     val voteAverage: Double,
     val popular: Boolean = false,
     val topRated: Boolean = false,
-    val trending: Boolean = false
+    val trending: Boolean = false,
+    val netflix: Boolean = false,
+    val hulu: Boolean = false,
+    val disneyPlus: Boolean = false
 )
