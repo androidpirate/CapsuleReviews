@@ -25,6 +25,18 @@ class TvShowsRepository(
         return dao.getTrendingTvShows()
     }
 
+    fun getPopularTvShowsOnNetflix(): LiveData<List<DBTvShow>> {
+        return dao.getPopularShowsOnNetflix()
+    }
+
+    fun getPopularTvShowsOnHulu(): LiveData<List<DBTvShow>> {
+        return dao.getPopularShowsOnHulu()
+    }
+
+    fun getPopularTvShowsOnDisneyPlus(): LiveData<List<DBTvShow>> {
+        return dao.getPopularShowsOnDisneyPlus()
+    }
+
     fun getShowcaseTvShow(): LiveData<DbTvShowShowcase> {
         return dao.getShowcaseTvShow()
     }
@@ -61,6 +73,39 @@ class TvShowsRepository(
             }
         }
         persistShowcaseTvShow(trendingShows[0])
+    }
+
+    suspend fun fetchAndPersistPopularNetflixTvShows() {
+        val popularShowsOnNetflix = api.getPopularTvShowsOnNetwork(NETFLIX_NETWORK_ID).networkTvShowsListItems
+        popularShowsOnNetflix.forEach {
+            if(dao.isRowExist(it.id)) {
+                dao.updatePopularTvShowOnNetflix(it.id)
+            } else {
+                dao.insertPopularTvShowOnNetflix(it.toNetflix())
+            }
+        }
+    }
+
+    suspend fun fetchAndPersistPopularHuluTvShows() {
+        val popularShowsOnHulu = api.getPopularTvShowsOnNetwork(HULU_NETWORK_ID).networkTvShowsListItems
+        popularShowsOnHulu.forEach {
+            if(dao.isRowExist(it.id)) {
+                dao.updatePopularTvShowOnHulu(it.id)
+            } else {
+                dao.insertPopularTvShowOnHulu(it.toHulu())
+            }
+        }
+    }
+
+    suspend fun fetchAndPersisPopularDisneyPlusTvShows() {
+        val popularShowsOnDisneyPlus = api.getPopularTvShowsOnNetwork(DISNEY_PLUS_NETWORK_ID).networkTvShowsListItems
+        popularShowsOnDisneyPlus.forEach {
+            if(dao.isRowExist(it.id)) {
+                dao.updatePopularTvShowOnDisneyPlus(it.id)
+            } else {
+                dao.insertPopularTvShowOnDisneyPlus(it.toDisneyPlus())
+            }
+        }
     }
 
     suspend fun fetchVideoKey(showId: Int): String {
@@ -106,5 +151,8 @@ class TvShowsRepository(
 
     companion object {
         const val EMPTY_VIDEO_KEY = ""
+        const val NETFLIX_NETWORK_ID = 213
+        const val HULU_NETWORK_ID = 453
+        const val DISNEY_PLUS_NETWORK_ID = 2739
     }
 }
