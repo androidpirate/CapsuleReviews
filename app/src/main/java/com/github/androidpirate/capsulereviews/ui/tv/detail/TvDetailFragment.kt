@@ -205,9 +205,10 @@ class TvDetailFragment : Fragment(), ItemClickListener {
         flagDecoration = true
     }
 
-    override fun <T> onItemClick(item: T) {
+    override fun <T> onItemClick(item: T, isLast: Boolean) {
         val action = TvDetailFragmentDirections
             .actionTvDetailFragmentSelf((item as NetworkTvShowsListItem).id)
         findNavController().navigate(action)
     }
+
 }

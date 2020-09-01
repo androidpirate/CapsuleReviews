@@ -164,8 +164,9 @@ class TvListFragment : Fragment(), ItemClickListener{
         findNavController().navigate(action)
     }
 
-    override fun <T> onItemClick(item: T) {
+    override fun <T> onItemClick(item: T, isLast: Boolean) {
         val action = TvListFragmentDirections.actionTvListToDetail((item as DBTvShow).id)
         findNavController().navigate(action)
     }
+
 }

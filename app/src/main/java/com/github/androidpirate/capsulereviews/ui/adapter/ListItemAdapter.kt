@@ -39,16 +39,20 @@ class ListItemAdapter<T>(private val fragmentType: String?, private val clickLis
         when(fragmentType) {
             MOVIE_LIST -> {
                 if(position != itemCount - 1) {
-                    holder.onBindItem(getItem(position))
+                    holder.onBindItem(getItem(position), false)
+                } else if(position == itemCount -1) {
+                    holder.onBindItem(getItem(position), true)
                 }
             }
-            MOVIE_DETAIL -> holder.onBindItem(getItem(position))
+            MOVIE_DETAIL -> holder.onBindItem(getItem(position), false)
             TV_LIST -> {
                 if(position != itemCount - 1) {
-                    holder.onBindItem(getItem(position))
+                    holder.onBindItem(getItem(position), false)
+                } else if(position == itemCount -1) {
+                    holder.onBindItem(getItem(position), true)
                 }
             }
-            TV_DETAIL -> holder.onBindItem(getItem(position))
+            TV_DETAIL -> holder.onBindItem(getItem(position), false)
             else -> throw IllegalArgumentException("Unknown fragment type: $fragmentType")
         }
     }
@@ -78,12 +82,14 @@ class ListItemAdapter<T>(private val fragmentType: String?, private val clickLis
 
     inner class ListItemHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        fun onBindItem(item: T) {
-            itemView.setOnClickListener { clickListener.onItemClick(item) }
+        fun onBindItem(item: T, lastItem: Boolean) {
+            itemView.setOnClickListener {
+                clickListener.onItemClick(item, lastItem)
+            }
             when(fragmentType) {
-                MOVIE_LIST -> setItemThumbnail((item as DBMovie).posterPath)
+                MOVIE_LIST -> if(!lastItem) { setItemThumbnail((item as DBMovie).posterPath) }
                 MOVIE_DETAIL -> setSimilarItemThumbnail((item as NetworkMoviesListItem).posterPath)
-                TV_LIST -> setItemThumbnail((item as DBTvShow).posterPath)
+                TV_LIST -> if(!lastItem) { setItemThumbnail((item as DBTvShow).posterPath) }
                 TV_DETAIL -> setSimilarItemThumbnail((item as NetworkTvShowsListItem).posterPath)
                 else -> throw IllegalArgumentException("Unknown fragment type: $fragmentType")
             }

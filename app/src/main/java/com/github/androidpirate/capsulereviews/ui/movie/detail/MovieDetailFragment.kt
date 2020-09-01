@@ -176,7 +176,7 @@ class MovieDetailFragment : Fragment(), ItemClickListener {
         flagDecoration = true
     }
 
-    override fun <T> onItemClick(item: T) {
+    override fun <T> onItemClick(item: T, isLast: Boolean) {
         val action = MovieDetailFragmentDirections
             .actionMovieDetailFragmentSelf((item as NetworkMoviesListItem).id)
         findNavController().navigate(action)
