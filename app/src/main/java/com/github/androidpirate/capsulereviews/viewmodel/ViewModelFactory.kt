@@ -35,6 +35,9 @@ class ViewModelFactory(val application: Application): ViewModelProvider.Factory 
             modelClass.isAssignableFrom(TvShowDetailViewModel::class.java) -> {
                 TvShowDetailViewModel(tvShowsRepo) as T
             }
+            modelClass.isAssignableFrom(PagedMovieListViewModel::class.java) -> {
+                PagedMovieListViewModel(moviesRepo) as T
+            }
             else -> throw IllegalStateException("No such view model class.")
         }
     }
