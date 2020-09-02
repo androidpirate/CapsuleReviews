@@ -19,6 +19,10 @@ import com.github.androidpirate.capsulereviews.data.db.entity.DbTvShowShowcase
 import com.github.androidpirate.capsulereviews.data.network.response.tvShows.NetworkTvShowsListItem
 import com.github.androidpirate.capsulereviews.ui.adapter.ListItemAdapter
 import com.github.androidpirate.capsulereviews.util.ItemClickListener
+import com.github.androidpirate.capsulereviews.util.internal.FragmentType
+import com.github.androidpirate.capsulereviews.util.internal.FragmentType.*
+import com.github.androidpirate.capsulereviews.util.internal.SortType
+import com.github.androidpirate.capsulereviews.util.internal.SortType.*
 import com.github.androidpirate.capsulereviews.viewmodel.TvShowListViewModel
 import com.github.androidpirate.capsulereviews.viewmodel.ViewModelFactory
 import kotlinx.android.synthetic.main.fragment_tv_list.*
@@ -98,12 +102,12 @@ class TvListFragment : Fragment(), ItemClickListener{
     }
 
     private fun setupAdapters() {
-        popularShowsAdapter = ListItemAdapter(TvListFragment::class.simpleName, this)
-        topRatedShowsAdapter = ListItemAdapter(TvListFragment::class.simpleName, this)
-        trendingShowsAdapter = ListItemAdapter(TvListFragment::class.simpleName, this)
-        popularNetflixAdapter = ListItemAdapter(TvListFragment::class.simpleName, this)
-        popularHuluAdapter = ListItemAdapter(TvListFragment::class.simpleName, this)
-        popularDisneyPlusAdapter = ListItemAdapter(TvListFragment::class.simpleName, this)
+        popularShowsAdapter = ListItemAdapter(TV_LIST, POPULAR, this)
+        topRatedShowsAdapter = ListItemAdapter(TV_LIST, TOP_RATED,this)
+        trendingShowsAdapter = ListItemAdapter(TV_LIST, TRENDING,this)
+        popularNetflixAdapter = ListItemAdapter(TV_LIST, POPULAR, this)
+        popularHuluAdapter = ListItemAdapter(TV_LIST, POPULAR, this)
+        popularDisneyPlusAdapter = ListItemAdapter(TV_LIST, POPULAR,this)
     }
 
     private fun setupViews() {
@@ -164,7 +168,7 @@ class TvListFragment : Fragment(), ItemClickListener{
         findNavController().navigate(action)
     }
 
-    override fun <T> onItemClick(item: T, isLast: Boolean) {
+    override fun <T> onItemClick(item: T, isLast: Boolean, sort: SortType) {
         val action = TvListFragmentDirections.actionTvListToDetail((item as DBTvShow).id)
         findNavController().navigate(action)
     }

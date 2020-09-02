@@ -18,14 +18,15 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions.bitmapTransform
 import com.github.androidpirate.capsulereviews.BuildConfig
 import com.github.androidpirate.capsulereviews.R
-import com.github.androidpirate.capsulereviews.data.network.response.genre.NetworkGenre
 import com.github.androidpirate.capsulereviews.data.network.response.movie.NetworkMovie
 import com.github.androidpirate.capsulereviews.data.network.response.movies.NetworkMoviesListItem
-import com.github.androidpirate.capsulereviews.data.network.response.videos.NetworkVideosListItem
 import com.github.androidpirate.capsulereviews.ui.adapter.ListItemAdapter
 import com.github.androidpirate.capsulereviews.util.ContentFormatter
 import com.github.androidpirate.capsulereviews.util.GridSpacingItemDecoration
 import com.github.androidpirate.capsulereviews.util.ItemClickListener
+import com.github.androidpirate.capsulereviews.util.internal.FragmentType.*
+import com.github.androidpirate.capsulereviews.util.internal.SortType
+import com.github.androidpirate.capsulereviews.util.internal.SortType.*
 import com.github.androidpirate.capsulereviews.viewmodel.MovieDetailViewModel
 import com.github.androidpirate.capsulereviews.viewmodel.ViewModelFactory
 import jp.wasabeef.glide.transformations.BlurTransformation
@@ -35,7 +36,6 @@ import kotlinx.android.synthetic.main.fragment_movie_detail.*
 import kotlinx.android.synthetic.main.movie_header.*
 import kotlinx.android.synthetic.main.movie_info.*
 import kotlinx.android.synthetic.main.movie_summary.*
-import java.text.DecimalFormat
 
 class MovieDetailFragment : Fragment(), ItemClickListener {
     private val args: MovieDetailFragmentArgs by navArgs()
@@ -48,7 +48,7 @@ class MovieDetailFragment : Fragment(), ItemClickListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        adapter = ListItemAdapter(MovieDetailFragment::class.simpleName,this)
+        adapter = ListItemAdapter(MOVIE_DETAIL, POPULAR, this)
         requireActivity().onBackPressedDispatcher.addCallback(
             this,
             object : OnBackPressedCallback(true) {
@@ -176,7 +176,7 @@ class MovieDetailFragment : Fragment(), ItemClickListener {
         flagDecoration = true
     }
 
-    override fun <T> onItemClick(item: T, isLast: Boolean) {
+    override fun <T> onItemClick(item: T, isLast: Boolean, sort: SortType) {
         val action = MovieDetailFragmentDirections
             .actionMovieDetailFragmentSelf((item as NetworkMoviesListItem).id)
         findNavController().navigate(action)

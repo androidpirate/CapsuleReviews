@@ -27,6 +27,10 @@ import com.github.androidpirate.capsulereviews.ui.adapter.ListItemAdapter
 import com.github.androidpirate.capsulereviews.util.ContentFormatter
 import com.github.androidpirate.capsulereviews.util.GridSpacingItemDecoration
 import com.github.androidpirate.capsulereviews.util.ItemClickListener
+import com.github.androidpirate.capsulereviews.util.internal.FragmentType
+import com.github.androidpirate.capsulereviews.util.internal.FragmentType.*
+import com.github.androidpirate.capsulereviews.util.internal.SortType
+import com.github.androidpirate.capsulereviews.util.internal.SortType.*
 import com.github.androidpirate.capsulereviews.viewmodel.TvShowDetailViewModel
 import com.github.androidpirate.capsulereviews.viewmodel.ViewModelFactory
 import jp.wasabeef.glide.transformations.BlurTransformation
@@ -53,7 +57,7 @@ class TvDetailFragment : Fragment(), ItemClickListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        adapter = ListItemAdapter(TvDetailFragment::class.simpleName, this)
+        adapter = ListItemAdapter(TV_DETAIL, POPULAR, this)
         requireActivity().onBackPressedDispatcher.addCallback(
             this,
             object : OnBackPressedCallback(true) {
@@ -205,7 +209,7 @@ class TvDetailFragment : Fragment(), ItemClickListener {
         flagDecoration = true
     }
 
-    override fun <T> onItemClick(item: T, isLast: Boolean) {
+    override fun <T> onItemClick(item: T, isLast: Boolean, sort: SortType) {
         val action = TvDetailFragmentDirections
             .actionTvDetailFragmentSelf((item as NetworkTvShowsListItem).id)
         findNavController().navigate(action)
