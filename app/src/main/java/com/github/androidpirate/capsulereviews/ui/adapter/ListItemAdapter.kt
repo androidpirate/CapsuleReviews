@@ -13,11 +13,17 @@ import com.github.androidpirate.capsulereviews.data.network.response.movies.Netw
 import com.github.androidpirate.capsulereviews.data.network.response.tvShows.NetworkTvShowsListItem
 import com.github.androidpirate.capsulereviews.util.ItemClickListener
 import com.github.androidpirate.capsulereviews.util.ListItemDiffCallback
+import com.github.androidpirate.capsulereviews.util.internal.FragmentType
+import com.github.androidpirate.capsulereviews.util.internal.FragmentType.*
+import com.github.androidpirate.capsulereviews.util.internal.SortType
 import kotlinx.android.synthetic.main.list_item.view.*
 import kotlinx.android.synthetic.main.similar_list_item.view.*
 import java.lang.IllegalArgumentException
 
-class ListItemAdapter<T>(private val fragmentType: String?, private val clickListener: ItemClickListener)
+class ListItemAdapter<T>(
+    private val fragmentType: FragmentType,
+    private val sort: SortType,
+    private val clickListener: ItemClickListener)
     : ListAdapter<T, ListItemAdapter<T>.ListItemHolder>(ListItemDiffCallback<T>(fragmentType)){
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListItemHolder {
@@ -84,7 +90,7 @@ class ListItemAdapter<T>(private val fragmentType: String?, private val clickLis
 
         fun onBindItem(item: T, lastItem: Boolean) {
             itemView.setOnClickListener {
-                clickListener.onItemClick(item, lastItem)
+                clickListener.onItemClick(item, lastItem, sort)
             }
             when(fragmentType) {
                 MOVIE_LIST -> if(!lastItem) { setItemThumbnail((item as DBMovie).posterPath) }
@@ -109,12 +115,5 @@ class ListItemAdapter<T>(private val fragmentType: String?, private val clickLis
                 .load("https://image.tmdb.org/t/p/w185/" + posterPath)
                 .into(itemView.ivSimilarListItem)
         }
-    }
-
-    companion object {
-        const val MOVIE_LIST = "MovieListFragment"
-        const val TV_LIST = "TvListFragment"
-        const val MOVIE_DETAIL = "MovieDetailFragment"
-        const val TV_DETAIL = "TvDetailFragment"
     }
 }
