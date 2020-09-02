@@ -3,13 +3,13 @@ package com.github.androidpirate.capsulereviews.util
 import androidx.recyclerview.widget.DiffUtil
 import com.github.androidpirate.capsulereviews.data.db.entity.DBMovie
 import com.github.androidpirate.capsulereviews.data.db.entity.DBTvShow
-import com.github.androidpirate.capsulereviews.data.network.response.movie.NetworkMovie
 import com.github.androidpirate.capsulereviews.data.network.response.movies.NetworkMoviesListItem
-import com.github.androidpirate.capsulereviews.data.network.response.tvShow.NetworkTvShow
 import com.github.androidpirate.capsulereviews.data.network.response.tvShows.NetworkTvShowsListItem
+import com.github.androidpirate.capsulereviews.util.internal.FragmentType
+import com.github.androidpirate.capsulereviews.util.internal.FragmentType.*
 import java.lang.IllegalArgumentException
 
-class ListItemDiffCallback<T>(val fragmentType: String?): DiffUtil.ItemCallback<T> () {
+class ListItemDiffCallback<T>(private val fragmentType: FragmentType): DiffUtil.ItemCallback<T> () {
 
     override fun areItemsTheSame(oldItem: T, newItem: T): Boolean {
         return when(fragmentType) {
@@ -29,12 +29,5 @@ class ListItemDiffCallback<T>(val fragmentType: String?): DiffUtil.ItemCallback<
             TV_DETAIL -> (oldItem as NetworkTvShowsListItem).name == (newItem as NetworkTvShowsListItem).name
             else -> throw IllegalArgumentException("Unknown fragment type: $fragmentType")
         }
-    }
-
-    companion object {
-        const val MOVIE_LIST = "MovieListFragment"
-        const val TV_LIST = "TvListFragment"
-        const val MOVIE_DETAIL = "MovieDetailFragment"
-        const val TV_DETAIL = "TvDetailFragment"
     }
 }

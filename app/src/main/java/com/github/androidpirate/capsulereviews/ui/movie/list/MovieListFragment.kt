@@ -10,15 +10,18 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.NavDirections
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.github.androidpirate.capsulereviews.BuildConfig
 import com.github.androidpirate.capsulereviews.R
 import com.github.androidpirate.capsulereviews.data.db.entity.DBMovie
 import com.github.androidpirate.capsulereviews.data.db.entity.DBMovieShowcase
-import com.github.androidpirate.capsulereviews.data.network.response.movies.NetworkMoviesListItem
 import com.github.androidpirate.capsulereviews.ui.adapter.ListItemAdapter
 import com.github.androidpirate.capsulereviews.util.ItemClickListener
+import com.github.androidpirate.capsulereviews.util.internal.FragmentType.*
+import com.github.androidpirate.capsulereviews.util.internal.SortType
+import com.github.androidpirate.capsulereviews.util.internal.SortType.*
 import com.github.androidpirate.capsulereviews.viewmodel.ViewModelFactory
 import com.github.androidpirate.capsulereviews.viewmodel.MovieListViewModel
 import kotlinx.android.synthetic.main.fragment_movie_list.*
@@ -89,15 +92,29 @@ class MovieListFragment : Fragment(), ItemClickListener {
 
     private fun setupAdapters() {
         popularNetworkMoviesAdapter = ListItemAdapter(
-            MovieListFragment::class.simpleName, this)
+            fragmentType = MOVIE_LIST,
+            clickListener = this,
+            sort = POPULAR
+        )
         topRatedNetworkMoviesAdapter = ListItemAdapter(
-            MovieListFragment::class.simpleName, this)
+            fragmentType = MOVIE_LIST,
+            clickListener = this,
+            sort = TOP_RATED
+        )
         nowPlayingNetworkMoviesAdapter = ListItemAdapter(
-            MovieListFragment::class.simpleName, this)
+            fragmentType = MOVIE_LIST,
+            clickListener = this,
+            sort = NOW_PLAYING
+        )
         upcomingNetworkMoviesAdapter = ListItemAdapter(
-            MovieListFragment::class.simpleName, this)
+            fragmentType = MOVIE_LIST,
+            clickListener = this,
+            sort = UPCOMING
+        )
         trendingNetworkMoviesAdapter = ListItemAdapter(
-            MovieListFragment::class.simpleName, this)
+            fragmentType = MOVIE_LIST,
+            clickListener = this,
+            sort = TRENDING)
     }
 
     private fun setupViews() {
@@ -157,9 +174,41 @@ class MovieListFragment : Fragment(), ItemClickListener {
         findNavController().navigate(action)
     }
 
-    override fun <T> onItemClick(item: T) {
-        val action = MovieListFragmentDirections
-            .actionMovieListToDetail((item as DBMovie).id)
+    private fun navigateToPagedMoviesList(action: NavDirections) {
         findNavController().navigate(action)
+    }
+
+    private fun navigateToDetails(action: NavDirections) {
+        findNavController().navigate(action)
+    }
+
+    override fun <T> onItemClick(item: T, isLast: Boolean, sort: SortType) {
+        if(isLast) {
+            when(sort) {
+                POPULAR -> {
+                    val action = MovieListFragmentDirections.actionMovieListToPagedMovies(POPULAR)
+                    navigateToPagedMoviesList(action)
+                }
+                TOP_RATED -> {
+                    val action = MovieListFragmentDirections.actionMovieListToPagedMovies(TOP_RATED)
+                    navigateToPagedMoviesList(action)
+                }
+                NOW_PLAYING -> {
+                    val action = MovieListFragmentDirections.actionMovieListToPagedMovies(NOW_PLAYING)
+                    navigateToPagedMoviesList(action)
+                }
+                UPCOMING -> {
+                    val action = MovieListFragmentDirections.actionMovieListToPagedMovies(UPCOMING)
+                    navigateToPagedMoviesList(action)
+                }
+                TRENDING -> {
+                    val action = MovieListFragmentDirections.actionMovieListToPagedMovies(TRENDING)
+                    navigateToPagedMoviesList(action)
+                }
+            }
+        } else {
+            val action = MovieListFragmentDirections.actionMovieListToDetail((item as DBMovie).id)
+            navigateToDetails(action)
+        }
     }
 }
