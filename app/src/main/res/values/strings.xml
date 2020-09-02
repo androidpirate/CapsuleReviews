@@ -49,4 +49,6 @@
     <string name="popular_on_netflix_tv_title">Popular on Netflix</string>
     <string name="popular_on_hulu_tv_title">Popular on Hulu</string>
     <string name="popular_on_disney_plus_tv_title">Popular on Disney Plus</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
