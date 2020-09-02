@@ -14,6 +14,26 @@
         <action
             android:id="@+id/action_movie_list_toDetail"
             app:destination="@id/movieDetailFragment"/>
+        <action
+            android:id="@+id/action_movie_list_toPagedMovies"
+            app:destination="@+id/pagedMoviesListFragment"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/pagedMoviesListFragment"
+        android:name="com.github.androidpirate.capsulereviews.ui.movie.list.PagedMoviesListFragment"
+        android:label="fragment_paged_movies"
+        tools:layout="@layout/fragment_paged_movies_list">
+        <argument
+            android:name="sortType"
+            app:argType="com.github.androidpirate.capsulereviews.util.internal.SortType"
+            android:defaultValue="POPULAR"/>
+        <action
+            android:id="@+id/action_paged_movie_list_to_list"
+            app:destination="@id/movieListFragment"/>
+        <action
+            android:id="@+id/action_paged_movie_list_to_detail"
+            app:destination="@id/movieDetailFragment"/>
     </fragment>
 
     <fragment
