@@ -1,6 +1,9 @@
 package com.github.androidpirate.capsulereviews.data.repo
 
 import androidx.lifecycle.LiveData
+import androidx.paging.LivePagedListBuilder
+import androidx.paging.PagedList
+import com.github.androidpirate.capsulereviews.data.datasource.PagedMoviesDataSourceFactory
 import com.github.androidpirate.capsulereviews.data.db.MovieListDao
 import com.github.androidpirate.capsulereviews.data.db.entity.DBMovie
 import com.github.androidpirate.capsulereviews.data.db.entity.DBMovieShowcase
@@ -8,6 +11,9 @@ import com.github.androidpirate.capsulereviews.data.network.api.MovieDbService
 import com.github.androidpirate.capsulereviews.data.network.response.movie.NetworkMovie
 import com.github.androidpirate.capsulereviews.data.network.response.movies.NetworkMoviesListItem
 import com.github.androidpirate.capsulereviews.data.network.response.videos.NetworkVideosListItem
+import com.github.androidpirate.capsulereviews.util.internal.GenreType
+import com.github.androidpirate.capsulereviews.util.internal.SortType
+import kotlinx.coroutines.CoroutineScope
 
 class MoviesRepository(
     private val api: MovieDbService,
@@ -36,6 +42,16 @@ class MoviesRepository(
 
     fun getShowcaseMovie(): LiveData<DBMovieShowcase> {
         return dao.getShowcaseMovie()
+    }
+
+    fun getPagedMovies(scope: CoroutineScope, sort: SortType, genre: GenreType)
+        : LiveData<PagedList<NetworkMoviesListItem>> {
+            val popularMoviesDataSourceFactory = PagedMoviesDataSourceFactory(api, scope, sort, genre)
+            val config = PagedList.Config.Builder()
+                .setEnablePlaceholders(false)
+                .setPageSize(20)
+                .build()
+            return LivePagedListBuilder<Int, NetworkMoviesListItem>(popularMoviesDataSourceFactory, config).build()
     }
 
     suspend fun fetchAndPersistPopularMovies() {
