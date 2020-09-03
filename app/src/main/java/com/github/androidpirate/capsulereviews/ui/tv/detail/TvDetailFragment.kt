@@ -18,19 +18,14 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.github.androidpirate.capsulereviews.BuildConfig
 import com.github.androidpirate.capsulereviews.R
-import com.github.androidpirate.capsulereviews.data.network.response.genre.NetworkGenre
-import com.github.androidpirate.capsulereviews.data.network.response.tvShow.NetworkCreatedBy
-import com.github.androidpirate.capsulereviews.data.network.response.tvShow.NetworkNetworkInfo
 import com.github.androidpirate.capsulereviews.data.network.response.tvShow.NetworkTvShow
 import com.github.androidpirate.capsulereviews.data.network.response.tvShows.NetworkTvShowsListItem
-import com.github.androidpirate.capsulereviews.ui.adapter.ListItemAdapter
 import com.github.androidpirate.capsulereviews.util.ContentFormatter
 import com.github.androidpirate.capsulereviews.util.GridSpacingItemDecoration
-import com.github.androidpirate.capsulereviews.util.ItemClickListener
-import com.github.androidpirate.capsulereviews.util.internal.FragmentType
+import com.github.androidpirate.capsulereviews.ui.adapter.similar.SimilarContentAdapter
+import com.github.androidpirate.capsulereviews.ui.adapter.similar.SimilarContentClickListener
+import com.github.androidpirate.capsulereviews.util.internal.Constants
 import com.github.androidpirate.capsulereviews.util.internal.FragmentType.*
-import com.github.androidpirate.capsulereviews.util.internal.SortType
-import com.github.androidpirate.capsulereviews.util.internal.SortType.*
 import com.github.androidpirate.capsulereviews.viewmodel.TvShowDetailViewModel
 import com.github.androidpirate.capsulereviews.viewmodel.ViewModelFactory
 import jp.wasabeef.glide.transformations.BlurTransformation
@@ -45,11 +40,11 @@ import kotlinx.android.synthetic.main.tv_info.imdbLink
 import kotlinx.android.synthetic.main.tv_info.overview
 import kotlinx.android.synthetic.main.tv_summary.*
 
-class TvDetailFragment : Fragment(), ItemClickListener {
+class TvDetailFragment : Fragment(), SimilarContentClickListener {
     private val args: TvDetailFragmentArgs by navArgs()
     private lateinit var networkTvShow: NetworkTvShow
     private var videoKey: String = ""
-    private lateinit var adapter: ListItemAdapter<NetworkTvShowsListItem>
+    private lateinit var adapter: SimilarContentAdapter<NetworkTvShowsListItem>
     private lateinit var similarShows: List<NetworkTvShowsListItem>
     private var imdbId: String = ""
     private lateinit var viewModel: TvShowDetailViewModel
@@ -57,7 +52,7 @@ class TvDetailFragment : Fragment(), ItemClickListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        adapter = ListItemAdapter(TV_DETAIL, POPULAR, this)
+        adapter = SimilarContentAdapter(fragment = TV_DETAIL,clickListener = this)
         requireActivity().onBackPressedDispatcher.addCallback(
             this,
             object : OnBackPressedCallback(true) {
@@ -129,12 +124,15 @@ class TvDetailFragment : Fragment(), ItemClickListener {
 
     private fun setTvShowPoster() {
         Glide.with(requireContext())
-            .load(BuildConfig.MOVIE_DB_IMAGE_BASE_URL + "w185/" + networkTvShow.posterPath)
+            .load(
+                BuildConfig.MOVIE_DB_IMAGE_BASE_URL +
+                        Constants.ADAPTER_POSTER_WIDTH +
+                        networkTvShow.posterPath)
             .placeholder(R.drawable.ic_image_placeholder)
             .apply(RequestOptions.bitmapTransform(BlurTransformation(100)))
             .into(tvHeaderBg)
         Glide.with(requireContext())
-            .load(BuildConfig.MOVIE_DB_IMAGE_BASE_URL + "w185/" + networkTvShow.posterPath)
+            .load(BuildConfig.MOVIE_DB_IMAGE_BASE_URL + Constants.ADAPTER_POSTER_WIDTH + networkTvShow.posterPath)
             .placeholder(R.drawable.ic_image_placeholder)
             .into(tvPoster)
     }
@@ -176,7 +174,7 @@ class TvDetailFragment : Fragment(), ItemClickListener {
     private fun setTrailerLink() {
         val trailerEndpoint = BuildConfig.YOUTUBE_BASE_URL + videoKey
         btPlay.setOnClickListener {
-            if(videoKey != "") {
+            if(videoKey != Constants.EMPTY_VIDEO_KEY) {
                 val uri = Uri.parse(trailerEndpoint)
                 val intent = Intent(Intent.ACTION_VIEW, uri)
                 startActivity(intent)
@@ -209,10 +207,9 @@ class TvDetailFragment : Fragment(), ItemClickListener {
         flagDecoration = true
     }
 
-    override fun <T> onItemClick(item: T, isLast: Boolean, sort: SortType) {
+    override fun <T> onItemClick(item: T) {
         val action = TvDetailFragmentDirections
             .actionTvDetailFragmentSelf((item as NetworkTvShowsListItem).id)
         findNavController().navigate(action)
     }
-
 }

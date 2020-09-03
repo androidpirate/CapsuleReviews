@@ -20,35 +20,35 @@ import com.github.androidpirate.capsulereviews.BuildConfig
 import com.github.androidpirate.capsulereviews.R
 import com.github.androidpirate.capsulereviews.data.network.response.movie.NetworkMovie
 import com.github.androidpirate.capsulereviews.data.network.response.movies.NetworkMoviesListItem
-import com.github.androidpirate.capsulereviews.ui.adapter.ListItemAdapter
 import com.github.androidpirate.capsulereviews.util.ContentFormatter
 import com.github.androidpirate.capsulereviews.util.GridSpacingItemDecoration
-import com.github.androidpirate.capsulereviews.util.ItemClickListener
+import com.github.androidpirate.capsulereviews.ui.adapter.similar.SimilarContentAdapter
+import com.github.androidpirate.capsulereviews.ui.adapter.similar.SimilarContentClickListener
+import com.github.androidpirate.capsulereviews.util.internal.Constants
 import com.github.androidpirate.capsulereviews.util.internal.FragmentType.*
-import com.github.androidpirate.capsulereviews.util.internal.SortType
-import com.github.androidpirate.capsulereviews.util.internal.SortType.*
 import com.github.androidpirate.capsulereviews.viewmodel.MovieDetailViewModel
 import com.github.androidpirate.capsulereviews.viewmodel.ViewModelFactory
 import jp.wasabeef.glide.transformations.BlurTransformation
 import kotlinx.android.synthetic.main.detail_action_bar.*
 import kotlinx.android.synthetic.main.detail_similar.*
-import kotlinx.android.synthetic.main.fragment_movie_detail.*
+import kotlinx.android.synthetic.main.fragment_movie_detail.container
+import kotlinx.android.synthetic.main.fragment_movie_detail.loadingScreen
 import kotlinx.android.synthetic.main.movie_header.*
 import kotlinx.android.synthetic.main.movie_info.*
 import kotlinx.android.synthetic.main.movie_summary.*
 
-class MovieDetailFragment : Fragment(), ItemClickListener {
+class MovieDetailFragment : Fragment(), SimilarContentClickListener {
     private val args: MovieDetailFragmentArgs by navArgs()
     private lateinit var networkMovie: NetworkMovie
     private var videoKey: String = ""
-    private lateinit var adapter: ListItemAdapter<NetworkMoviesListItem>
+    private lateinit var adapter: SimilarContentAdapter<NetworkMoviesListItem>
     private lateinit var similarMovies: List<NetworkMoviesListItem>
     private lateinit var viewModel: MovieDetailViewModel
     private var flagDecoration = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        adapter = ListItemAdapter(MOVIE_DETAIL, POPULAR, this)
+        adapter = SimilarContentAdapter(fragment = MOVIE_DETAIL, clickListener = this)
         requireActivity().onBackPressedDispatcher.addCallback(
             this,
             object : OnBackPressedCallback(true) {
@@ -68,6 +68,7 @@ class MovieDetailFragment : Fragment(), ItemClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        displayLoadingScreen()
         btUp.setOnClickListener {
             findNavController().navigate(R.id.action_movie_detail_toList)
         }
@@ -77,10 +78,6 @@ class MovieDetailFragment : Fragment(), ItemClickListener {
         super.onActivityCreated(savedInstanceState)
         val factory = ViewModelFactory(requireActivity().application)
         viewModel = ViewModelProvider(this, factory).get(MovieDetailViewModel::class.java)
-    }
-
-    override fun onStart() {
-        super.onStart()
         viewModel.getMovieDetails(args.movieId).observe(viewLifecycleOwner, Observer {
             networkMovie = it
             setMoviePoster()
@@ -95,18 +92,33 @@ class MovieDetailFragment : Fragment(), ItemClickListener {
             similarMovies = it
             setSimilarMovies()
         })
+        displayContainerScreen()
+    }
+
+    private fun displayLoadingScreen() {
+        loadingScreen.visibility = View.VISIBLE
+        container.visibility = View.GONE
+    }
+
+    private fun displayContainerScreen() {
         loadingScreen.visibility = View.GONE
         container.visibility = View.VISIBLE
     }
 
     private fun setMoviePoster() {
         Glide.with(requireContext())
-            .load(BuildConfig.MOVIE_DB_IMAGE_BASE_URL + "w185/" + networkMovie.posterPath)
+            .load(
+                BuildConfig.MOVIE_DB_IMAGE_BASE_URL +
+                        Constants.ADAPTER_POSTER_WIDTH +
+                        networkMovie.posterPath)
             .placeholder(R.drawable.ic_image_placeholder)
             .apply(bitmapTransform(BlurTransformation(100)))
             .into(movieHeaderBg)
         Glide.with(requireContext())
-            .load(BuildConfig.MOVIE_DB_IMAGE_BASE_URL + "w185/" + networkMovie.posterPath)
+            .load(
+                BuildConfig.MOVIE_DB_IMAGE_BASE_URL +
+                        Constants.ADAPTER_POSTER_WIDTH +
+                        networkMovie.posterPath)
             .placeholder(R.drawable.ic_image_placeholder)
             .into(moviePoster)
     }
@@ -143,7 +155,7 @@ class MovieDetailFragment : Fragment(), ItemClickListener {
     private fun setTrailerLink() {
         val trailerEndpoint = BuildConfig.YOUTUBE_BASE_URL + videoKey
         btPlay.setOnClickListener {
-            if(videoKey != "") {
+            if(videoKey != Constants.EMPTY_VIDEO_KEY) {
                 val uri = Uri.parse(trailerEndpoint)
                 val intent = Intent(Intent.ACTION_VIEW, uri)
                 startActivity(intent)
@@ -176,7 +188,7 @@ class MovieDetailFragment : Fragment(), ItemClickListener {
         flagDecoration = true
     }
 
-    override fun <T> onItemClick(item: T, isLast: Boolean, sort: SortType) {
+    override fun <T> onItemClick(item: T) {
         val action = MovieDetailFragmentDirections
             .actionMovieDetailFragmentSelf((item as NetworkMoviesListItem).id)
         findNavController().navigate(action)

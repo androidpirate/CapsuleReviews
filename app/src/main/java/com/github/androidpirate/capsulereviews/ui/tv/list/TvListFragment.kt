@@ -16,10 +16,9 @@ import com.github.androidpirate.capsulereviews.BuildConfig
 import com.github.androidpirate.capsulereviews.R
 import com.github.androidpirate.capsulereviews.data.db.entity.DBTvShow
 import com.github.androidpirate.capsulereviews.data.db.entity.DbTvShowShowcase
-import com.github.androidpirate.capsulereviews.data.network.response.tvShows.NetworkTvShowsListItem
-import com.github.androidpirate.capsulereviews.ui.adapter.ListItemAdapter
-import com.github.androidpirate.capsulereviews.util.ItemClickListener
-import com.github.androidpirate.capsulereviews.util.internal.FragmentType
+import com.github.androidpirate.capsulereviews.ui.adapter.list.ListItemAdapter
+import com.github.androidpirate.capsulereviews.ui.adapter.list.ItemClickListener
+import com.github.androidpirate.capsulereviews.util.internal.Constants
 import com.github.androidpirate.capsulereviews.util.internal.FragmentType.*
 import com.github.androidpirate.capsulereviews.util.internal.SortType
 import com.github.androidpirate.capsulereviews.util.internal.SortType.*
@@ -28,7 +27,7 @@ import com.github.androidpirate.capsulereviews.viewmodel.ViewModelFactory
 import kotlinx.android.synthetic.main.fragment_tv_list.*
 import kotlinx.android.synthetic.main.tv_showcase.*
 
-class TvListFragment : Fragment(), ItemClickListener{
+class TvListFragment : Fragment(), ItemClickListener {
     private lateinit var popularShowsAdapter: ListItemAdapter<DBTvShow>
     private lateinit var topRatedShowsAdapter: ListItemAdapter<DBTvShow>
     private lateinit var trendingShowsAdapter: ListItemAdapter<DBTvShow>
@@ -61,13 +60,19 @@ class TvListFragment : Fragment(), ItemClickListener{
         val factory = ViewModelFactory(requireActivity().application)
         viewModel = ViewModelProvider(this, factory).get(TvShowListViewModel::class.java)
         viewModel.popularTvShows.observe(viewLifecycleOwner, Observer {
-            popularShowsAdapter.submitList(it)
+            if(it != null) {
+                popularShowsAdapter.submitList(it)
+            }
         })
         viewModel.topRatedTvShows.observe(viewLifecycleOwner, Observer {
-            topRatedShowsAdapter.submitList(it)
+            if(it != null) {
+                topRatedShowsAdapter.submitList(it)
+            }
         })
         viewModel.trendingTvShows.observe(viewLifecycleOwner, Observer {
-            trendingShowsAdapter.submitList(it)
+            if(it != null) {
+                trendingShowsAdapter.submitList(it)
+            }
         })
         viewModel.showcaseTvShow.observe(viewLifecycleOwner, Observer {
             if(it != null) {
@@ -102,12 +107,12 @@ class TvListFragment : Fragment(), ItemClickListener{
     }
 
     private fun setupAdapters() {
-        popularShowsAdapter = ListItemAdapter(TV_LIST, POPULAR, this)
-        topRatedShowsAdapter = ListItemAdapter(TV_LIST, TOP_RATED,this)
-        trendingShowsAdapter = ListItemAdapter(TV_LIST, TRENDING,this)
-        popularNetflixAdapter = ListItemAdapter(TV_LIST, POPULAR, this)
-        popularHuluAdapter = ListItemAdapter(TV_LIST, POPULAR, this)
-        popularDisneyPlusAdapter = ListItemAdapter(TV_LIST, POPULAR,this)
+        popularShowsAdapter = ListItemAdapter(fragment = TV_LIST, sort = POPULAR, clickListener = this)
+        topRatedShowsAdapter = ListItemAdapter(fragment = TV_LIST, sort = TOP_RATED, clickListener = this)
+        trendingShowsAdapter = ListItemAdapter(fragment = TV_LIST, sort = TRENDING,clickListener = this)
+        popularNetflixAdapter = ListItemAdapter(fragment = TV_LIST, sort = POPULAR, clickListener = this)
+        popularHuluAdapter = ListItemAdapter(fragment = TV_LIST, sort = POPULAR, clickListener = this)
+        popularDisneyPlusAdapter = ListItemAdapter(fragment = TV_LIST, sort = POPULAR, clickListener = this)
     }
 
     private fun setupViews() {
@@ -127,7 +132,10 @@ class TvListFragment : Fragment(), ItemClickListener{
 
     private fun setShowcaseTvShowPoster(showcaseTvShowPosterPath: String) {
         Glide.with(this)
-            .load(BuildConfig.MOVIE_DB_IMAGE_BASE_URL + "w342/" + showcaseTvShowPosterPath)
+            .load(
+                BuildConfig.MOVIE_DB_IMAGE_BASE_URL +
+                        Constants.SHOWCASE_POSTER_WIDTH +
+                        showcaseTvShowPosterPath)
             .placeholder(R.drawable.ic_image_placeholder)
             .into(scPoster)
     }

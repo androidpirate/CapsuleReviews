@@ -17,8 +17,9 @@ import com.github.androidpirate.capsulereviews.BuildConfig
 import com.github.androidpirate.capsulereviews.R
 import com.github.androidpirate.capsulereviews.data.db.entity.DBMovie
 import com.github.androidpirate.capsulereviews.data.db.entity.DBMovieShowcase
-import com.github.androidpirate.capsulereviews.ui.adapter.ListItemAdapter
-import com.github.androidpirate.capsulereviews.util.ItemClickListener
+import com.github.androidpirate.capsulereviews.ui.adapter.list.ListItemAdapter
+import com.github.androidpirate.capsulereviews.ui.adapter.list.ItemClickListener
+import com.github.androidpirate.capsulereviews.util.internal.Constants
 import com.github.androidpirate.capsulereviews.util.internal.FragmentType.*
 import com.github.androidpirate.capsulereviews.util.internal.SortType
 import com.github.androidpirate.capsulereviews.util.internal.SortType.*
@@ -92,27 +93,27 @@ class MovieListFragment : Fragment(), ItemClickListener {
 
     private fun setupAdapters() {
         popularNetworkMoviesAdapter = ListItemAdapter(
-            fragmentType = MOVIE_LIST,
+            fragment = MOVIE_LIST,
             clickListener = this,
             sort = POPULAR
         )
         topRatedNetworkMoviesAdapter = ListItemAdapter(
-            fragmentType = MOVIE_LIST,
+            fragment = MOVIE_LIST,
             clickListener = this,
             sort = TOP_RATED
         )
         nowPlayingNetworkMoviesAdapter = ListItemAdapter(
-            fragmentType = MOVIE_LIST,
+            fragment = MOVIE_LIST,
             clickListener = this,
             sort = NOW_PLAYING
         )
         upcomingNetworkMoviesAdapter = ListItemAdapter(
-            fragmentType = MOVIE_LIST,
+            fragment = MOVIE_LIST,
             clickListener = this,
             sort = UPCOMING
         )
         trendingNetworkMoviesAdapter = ListItemAdapter(
-            fragmentType = MOVIE_LIST,
+            fragment = MOVIE_LIST,
             clickListener = this,
             sort = TRENDING)
     }
@@ -133,7 +134,10 @@ class MovieListFragment : Fragment(), ItemClickListener {
 
     private fun setShowCaseMoviePoster(showCaseMoviePosterPath: String) {
         Glide.with(requireContext())
-            .load(BuildConfig.MOVIE_DB_IMAGE_BASE_URL + "w342/" + showCaseMoviePosterPath)
+            .load(
+                BuildConfig.MOVIE_DB_IMAGE_BASE_URL +
+                        Constants.SHOWCASE_POSTER_WIDTH +
+                        showCaseMoviePosterPath)
             .placeholder(R.drawable.ic_image_placeholder)
             .into(scPoster)
     }
