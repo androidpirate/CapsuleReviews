@@ -1,4 +1,4 @@
-package com.github.androidpirate.capsulereviews.util
+package com.github.androidpirate.capsulereviews.ui.adapter.list
 
 import com.github.androidpirate.capsulereviews.util.internal.SortType
 

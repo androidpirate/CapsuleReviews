@@ -12,10 +12,9 @@ import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.GridLayoutManager
 import com.github.androidpirate.capsulereviews.R
 import com.github.androidpirate.capsulereviews.data.network.response.movies.NetworkMoviesListItem
-import com.github.androidpirate.capsulereviews.ui.adapter.PagedMoviesAdapter
-import com.github.androidpirate.capsulereviews.util.ContentFormatter
+import com.github.androidpirate.capsulereviews.ui.adapter.paged.PagedItemAdapter
 import com.github.androidpirate.capsulereviews.util.GridSpacingItemDecoration
-import com.github.androidpirate.capsulereviews.util.ItemClickListener
+import com.github.androidpirate.capsulereviews.ui.adapter.list.ItemClickListener
 import com.github.androidpirate.capsulereviews.util.internal.SortType
 import com.github.androidpirate.capsulereviews.util.internal.SortType.*
 import com.github.androidpirate.capsulereviews.viewmodel.PagedMovieListViewModel
@@ -26,7 +25,7 @@ import kotlinx.android.synthetic.main.paged_movie_toolbar.*
 class PagedMoviesListFragment : Fragment(), ItemClickListener {
     private val args: PagedMoviesListFragmentArgs by navArgs()
     private lateinit var viewModel: PagedMovieListViewModel
-    private lateinit var adapter: PagedMoviesAdapter
+    private lateinit var adapter: PagedItemAdapter
     private lateinit var sort: SortType
     private var flagDecoration = false
 
@@ -35,7 +34,7 @@ class PagedMoviesListFragment : Fragment(), ItemClickListener {
         val factory = ViewModelFactory(requireActivity().application)
         viewModel = ViewModelProvider(this, factory).get(PagedMovieListViewModel::class.java)
         sort = args.sortType
-        adapter = PagedMoviesAdapter(this)
+        adapter = PagedItemAdapter(this)
     }
 
     override fun onCreateView(

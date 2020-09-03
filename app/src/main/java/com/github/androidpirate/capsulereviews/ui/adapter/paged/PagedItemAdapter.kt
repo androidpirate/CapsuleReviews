@@ -1,4 +1,4 @@
-package com.github.androidpirate.capsulereviews.ui.adapter
+package com.github.androidpirate.capsulereviews.ui.adapter.paged
 
 import android.view.LayoutInflater
 import android.view.View
@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.github.androidpirate.capsulereviews.R
 import com.github.androidpirate.capsulereviews.data.network.response.movies.NetworkMoviesListItem
-import com.github.androidpirate.capsulereviews.util.ItemClickListener
+import com.github.androidpirate.capsulereviews.ui.adapter.list.ItemClickListener
 import com.github.androidpirate.capsulereviews.util.internal.SortType
 import kotlinx.android.synthetic.main.list_item.view.*
 
