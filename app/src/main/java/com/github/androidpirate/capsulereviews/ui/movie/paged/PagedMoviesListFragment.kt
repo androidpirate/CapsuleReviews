@@ -1,4 +1,4 @@
-package com.github.androidpirate.capsulereviews.ui.movie.list
+package com.github.androidpirate.capsulereviews.ui.movie.paged
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -14,7 +14,8 @@ import com.github.androidpirate.capsulereviews.R
 import com.github.androidpirate.capsulereviews.data.network.response.movies.NetworkMoviesListItem
 import com.github.androidpirate.capsulereviews.ui.adapter.paged.PagedItemAdapter
 import com.github.androidpirate.capsulereviews.util.GridSpacingItemDecoration
-import com.github.androidpirate.capsulereviews.ui.adapter.list.ItemClickListener
+import com.github.androidpirate.capsulereviews.ui.adapter.paged.PagedItemClickListener
+import com.github.androidpirate.capsulereviews.util.internal.FragmentType.*
 import com.github.androidpirate.capsulereviews.util.internal.SortType
 import com.github.androidpirate.capsulereviews.util.internal.SortType.*
 import com.github.androidpirate.capsulereviews.viewmodel.PagedMovieListViewModel
@@ -22,10 +23,10 @@ import com.github.androidpirate.capsulereviews.viewmodel.ViewModelFactory
 import kotlinx.android.synthetic.main.fragment_paged_movies_list.*
 import kotlinx.android.synthetic.main.paged_movie_toolbar.*
 
-class PagedMoviesListFragment : Fragment(), ItemClickListener {
+class PagedMoviesListFragment : Fragment(), PagedItemClickListener {
     private val args: PagedMoviesListFragmentArgs by navArgs()
     private lateinit var viewModel: PagedMovieListViewModel
-    private lateinit var adapter: PagedItemAdapter
+    private lateinit var adapter: PagedItemAdapter<NetworkMoviesListItem>
     private lateinit var sort: SortType
     private var flagDecoration = false
 
@@ -34,7 +35,7 @@ class PagedMoviesListFragment : Fragment(), ItemClickListener {
         val factory = ViewModelFactory(requireActivity().application)
         viewModel = ViewModelProvider(this, factory).get(PagedMovieListViewModel::class.java)
         sort = args.sortType
-        adapter = PagedItemAdapter(this)
+        adapter = PagedItemAdapter(fragment = PAGED_MOVIE_LIST, clickListener = this)
     }
 
     override fun onCreateView(
@@ -46,6 +47,7 @@ class PagedMoviesListFragment : Fragment(), ItemClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        displayContainerScreen()
         btUp.setOnClickListener {
             findNavController().navigate(R.id.action_paged_movie_list_to_list)
         }
@@ -90,7 +92,18 @@ class PagedMoviesListFragment : Fragment(), ItemClickListener {
                 })
             }
         }
+        displayContainerScreen()
         setupViews()
+    }
+
+    private fun displayLoadingScreen() {
+        loadingScreen.visibility = View.VISIBLE
+        container.visibility = View.GONE
+    }
+
+    private fun displayContainerScreen() {
+        loadingScreen.visibility = View.GONE
+        container.visibility = View.VISIBLE
     }
 
     private fun setupViews() {
@@ -121,9 +134,8 @@ class PagedMoviesListFragment : Fragment(), ItemClickListener {
         flagDecoration = true
     }
 
-    override fun <T> onItemClick(item: T, isLast: Boolean, sort: SortType) {
-        val action = PagedMoviesListFragmentDirections
-            .actionPagedMovieListToDetail((item as NetworkMoviesListItem).id)
+    override fun <T> onPagedItemClick(item: T) {
+        val action = PagedMoviesListFragmentDirections.actionPagedMovieListToDetail((item as NetworkMoviesListItem).id)
         findNavController().navigate(action)
     }
 
@@ -133,6 +145,5 @@ class PagedMoviesListFragment : Fragment(), ItemClickListener {
         const val NOW_PLAYING_TITLE = "Now Playing Movies"
         const val UPCOMING_TITLE = "Upcoming Movies"
         const val TRENDING_TITLE = "Trending Movies"
-
     }
 }
