@@ -21,7 +21,7 @@
 
     <fragment
         android:id="@+id/pagedMoviesListFragment"
-        android:name="com.github.androidpirate.capsulereviews.ui.movie.list.PagedMoviesListFragment"
+        android:name="com.github.androidpirate.capsulereviews.ui.movie.paged.PagedMoviesListFragment"
         android:label="fragment_paged_movies"
         tools:layout="@layout/fragment_paged_movies_list">
         <argument
