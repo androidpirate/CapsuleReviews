@@ -57,35 +57,45 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 
-    <ImageView
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/scAddFavorite"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:contentDescription="@string/showcase_add_to_favorite_description"
-        android:src="@drawable/ic_outline_favorite_white"
+        android:layout_width="@dimen/showcase_favorite_width"
+        android:layout_height="@dimen/showcase_favorite_height"
         app:layout_constraintTop_toBottomOf="@id/scSubtitle"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/scPlay"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"/>
+        app:layout_constraintStart_toStartOf="parent">
 
-    <TextView
-        android:id="@+id/scAddFavoriteTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/add_favorites_button_content"
-        android:textSize="12sp"
-        android:textColor="#FDFDFD"
-        app:layout_constraintTop_toBottomOf="@id/scAddFavorite"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/scPlay"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"/>
+        <ImageView
+            android:id="@+id/scIvFavorite"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/showcase_add_to_favorite_description"
+            android:src="@drawable/ic_outline_favorite_white"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+        <TextView
+            android:id="@+id/scAddFavoriteTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/add_favorites_button_content"
+            android:textSize="12sp"
+            android:textColor="#FDFDFD"
+            app:layout_constraintTop_toBottomOf="@id/scIvFavorite"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <ImageView
         android:id="@+id/scPlay"
-        android:layout_width="60dp"
-        android:layout_height="40dp"
+        android:layout_width="@dimen/showcase_play_width"
+        android:layout_height="@dimen/showcase_play_height"
         android:contentDescription="@string/play_showcase_movie_description"
         android:background="@drawable/custom_rectangular_background"
         android:src="@drawable/ic_filled_play_black"
@@ -95,29 +105,39 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/scAddFavorite"/>
 
-    <ImageView
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/scInfo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:contentDescription="@string/showcase_goto_details_description"
-        android:src="@drawable/ic_filled_info_white"
+        android:layout_width="@dimen/showcase_info_width"
+        android:layout_height="@dimen/showcase_info_height"
         app:layout_constraintTop_toBottomOf="@id/scSubtitle"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/scPlay"/>
+        app:layout_constraintStart_toEndOf="@+id/scPlay">
 
-    <TextView
-        android:id="@+id/scInfoTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/showcase_details_content"
-        android:textSize="12sp"
-        android:textColor="#FDFDFD"
-        app:layout_constraintTop_toBottomOf="@id/scInfo"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/scPlay"/>
+        <ImageView
+            android:id="@+id/scIvInfo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/showcase_goto_details_description"
+            android:src="@drawable/ic_filled_info_white"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+        <TextView
+            android:id="@+id/scInfoTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/showcase_details_content"
+            android:textSize="12sp"
+            android:textColor="#FDFDFD"
+            app:layout_constraintTop_toBottomOf="@id/scIvInfo"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

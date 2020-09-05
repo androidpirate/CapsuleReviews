@@ -13,4 +13,10 @@
     <dimen name="list_title">22sp</dimen>
     <!-- Showcase -->
     <dimen name="showcase_height">550dp</dimen>
+    <dimen name="showcase_favorite_width">80dp</dimen>
+    <dimen name="showcase_favorite_height">80dp</dimen>
+    <dimen name="showcase_play_width">60dp</dimen>
+    <dimen name="showcase_play_height">40dp</dimen>
+    <dimen name="showcase_info_width">80dp</dimen>
+    <dimen name="showcase_info_height">80dp</dimen>
 </resources>
