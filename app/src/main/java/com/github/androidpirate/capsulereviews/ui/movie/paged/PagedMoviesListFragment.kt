@@ -47,7 +47,7 @@ class PagedMoviesListFragment : Fragment(), PagedItemClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        displayContainerScreen()
+        displayLoadingScreen()
         btUp.setOnClickListener {
             findNavController().navigate(R.id.action_paged_movie_list_to_list)
         }
