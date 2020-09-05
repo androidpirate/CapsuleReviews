@@ -21,7 +21,7 @@
             <include
                 layout="@layout/movie_showcase"
                 android:layout_width="match_parent"
-                android:layout_height="500dp"
+                android:layout_height="@dimen/showcase_height"
                 android:layout_marginBottom="@dimen/margin_16"
                 app:layout_constraintBottom_toTopOf="@id/popularTitle"
                 app:layout_constraintEnd_toEndOf="parent"

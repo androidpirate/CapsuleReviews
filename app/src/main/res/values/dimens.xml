@@ -11,4 +11,6 @@
     <dimen name="padding_16">16dp</dimen>
     <dimen name="padding_32">32dp</dimen>
     <dimen name="list_title">22sp</dimen>
+    <!-- Showcase -->
+    <dimen name="showcase_height">550dp</dimen>
 </resources>
