@@ -10,16 +10,16 @@ import com.github.androidpirate.capsulereviews.BuildConfig
 import com.github.androidpirate.capsulereviews.R
 import com.github.androidpirate.capsulereviews.data.db.entity.DBMovie
 import com.github.androidpirate.capsulereviews.data.db.entity.DBTvShow
-import com.github.androidpirate.capsulereviews.util.internal.Constants
-import com.github.androidpirate.capsulereviews.util.internal.FragmentType
+import com.github.androidpirate.capsulereviews.util.internal.*
 import com.github.androidpirate.capsulereviews.util.internal.FragmentType.*
-import com.github.androidpirate.capsulereviews.util.internal.SortType
 import kotlinx.android.synthetic.main.list_item.view.*
 import java.lang.IllegalArgumentException
 
 class ListItemAdapter<T>(
     private val fragment: FragmentType,
-    private val sort: SortType,
+    private val genericSort: GenericSortType,
+    private val network: NetworkType,
+    private val genre: GenreType,
     private val clickListener: ItemClickListener
 )
     : ListAdapter<T, ListItemAdapter<T>.ListItemHolder>(ListItemDiffCallback<T>(fragment)){
@@ -68,7 +68,7 @@ class ListItemAdapter<T>(
 
         fun onBindItem(item: T, lastItem: Boolean) {
             itemView.setOnClickListener {
-                clickListener.onItemClick(item, lastItem, sort)
+                clickListener.onItemClick(item, lastItem, genericSort, network, genre)
             }
             when(fragment) {
                 MOVIE_LIST -> if(!lastItem) { setItemThumbnail((item as DBMovie).posterPath) }
