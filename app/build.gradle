@@ -32,6 +32,9 @@ android {
         it.buildConfigField 'String', 'MOVIE_DB_ORIG_LANG_VALUE', MovieDBOriginalLangValue
         it.buildConfigField 'String', 'IMDB_BASE_URL', IMDBBaseURL
         it.buildConfigField 'String', 'YOUTUBE_BASE_URL', YouTubeBaseURL
+        it.buildConfigField 'String', 'POPULARITY_DESC', PopularityDescending
+        it.buildConfigField 'String', 'RELEASE_DATE_DESC', PrimaryReleaseDescending
+        it.buildConfigField 'String', "VOTE_AVERAGE_DESC", VoteAverageDescending
     }
 
     compileOptions {
