@@ -50,6 +50,12 @@ interface MovieDbService {
     @GET("trending/movie/week")
     suspend fun getPagedTrendingMovies(@Query("page") page: Int): NetworkMoviesResponse
 
+    @GET("discover/movie")
+    suspend fun getPagedMoviesWithGenre(
+        @Query("page")page: Int,
+        @Query("with_genres") genre: Int,
+        @Query("sort_by") sort: String): NetworkMoviesResponse
+
     @GET("movie/{movie_id}/similar")
     suspend fun getSimilarMovies(@Path("movie_id") movieId: Int): NetworkMoviesResponse
 
@@ -81,12 +87,28 @@ interface MovieDbService {
     suspend fun getPagedTrendingTvShows(@Query("page") page: Int): NetworkTvShowsResponse
 
     @GET("discover/tv")
-    suspend fun getPopularTvShowsOnNetwork(@Query("with_networks") networkId: Int): NetworkTvShowsResponse
+    suspend fun getPopularTvShowsOnNetwork(
+        @Query("with_networks") networkId: Int
+    ): NetworkTvShowsResponse
 
     @GET("discover/tv")
-    suspend fun getPopularPagedTvShowsOnNetwork(
+    suspend fun getPagedTvShowsWithNetwork(
+        @Query("page") page: Int,
         @Query("with_networks") networkId: Int,
-        @Query("page") page: Int): NetworkTvShowsResponse
+        @Query("sort_by") sort: String): NetworkTvShowsResponse
+
+    @GET("discover/tv")
+    suspend fun getPagedTvShowsWithGenre(
+        @Query("page") page: Int,
+        @Query("with_genres") genre: Int,
+        @Query("sort_by") sort: String): NetworkTvShowsResponse
+
+    @GET("discover/tv")
+    suspend fun getPagedTvShowsWithGenreAndNetwork(
+        @Query("page") page: Int,
+        @Query("with_genres") genre: Int,
+        @Query("with_networks") networkId: Int,
+        @Query("sort_by") sort: String): NetworkTvShowsResponse
 
     @GET("tv/{tv_id}/similar")
     suspend fun getSimilarTvShows(@Path("tv_id") tvId: Int): NetworkTvShowsResponse
