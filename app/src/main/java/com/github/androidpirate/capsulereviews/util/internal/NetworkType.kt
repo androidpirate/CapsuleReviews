@@ -8,5 +8,6 @@ enum class NetworkType(val id: Int) {
     HBO_NOW(49),
     HBO_MAX(3186),
     APPLE_TV(2552),
-    PEACOCK(3353)
+    PEACOCK(3353),
+    NONE(0)
 }

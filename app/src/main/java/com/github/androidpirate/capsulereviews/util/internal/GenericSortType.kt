@@ -1,6 +1,6 @@
 package com.github.androidpirate.capsulereviews.util.internal
 
-enum class SortType {
+enum class GenericSortType {
     POPULAR,
     TOP_RATED,
     UPCOMING,
