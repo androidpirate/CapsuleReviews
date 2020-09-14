@@ -11,7 +11,9 @@ import com.github.androidpirate.capsulereviews.data.network.api.MovieDbService
 import com.github.androidpirate.capsulereviews.data.network.response.movie.NetworkMovie
 import com.github.androidpirate.capsulereviews.data.network.response.movies.NetworkMoviesListItem
 import com.github.androidpirate.capsulereviews.data.network.response.videos.NetworkVideosListItem
+import com.github.androidpirate.capsulereviews.util.internal.Constants
 import com.github.androidpirate.capsulereviews.util.internal.GenreType
+import com.github.androidpirate.capsulereviews.util.internal.GenericSortType
 import com.github.androidpirate.capsulereviews.util.internal.SortType
 import kotlinx.coroutines.CoroutineScope
 
@@ -44,14 +46,21 @@ class MoviesRepository(
         return dao.getShowcaseMovie()
     }
 
-    fun getPagedMovies(scope: CoroutineScope, sort: SortType, genre: GenreType)
+    fun getPagedMovies(
+        scope: CoroutineScope,
+        genericSort: GenericSortType,
+        sort: SortType,
+        genre: GenreType)
         : LiveData<PagedList<NetworkMoviesListItem>> {
-            val popularMoviesDataSourceFactory = PagedMoviesDataSourceFactory(api, scope, sort, genre)
+            val moviesDataSourceFactory = PagedMoviesDataSourceFactory(api, scope, genericSort, sort, genre)
             val config = PagedList.Config.Builder()
                 .setEnablePlaceholders(false)
-                .setPageSize(20)
+                .setPageSize(Constants.PAGE_SIZE)
                 .build()
-            return LivePagedListBuilder<Int, NetworkMoviesListItem>(popularMoviesDataSourceFactory, config).build()
+            return LivePagedListBuilder<Int, NetworkMoviesListItem>(
+                moviesDataSourceFactory,
+                config)
+                .build()
     }
 
     suspend fun fetchAndPersistPopularMovies() {
@@ -135,7 +144,7 @@ class MoviesRepository(
     }
 
     private fun fetchMovieVideoKey(videos: List<NetworkVideosListItem>): String {
-        var videoKey = EMPTY_VIDEO_KEY
+        var videoKey = Constants.EMPTY_VIDEO_KEY
         if(videos.isNotEmpty()) {
             for (video in videos) {
                 if (video.site == "YouTube" && video.type == "Trailer") {
@@ -146,9 +155,4 @@ class MoviesRepository(
         }
         return videoKey
     }
-
-    companion object {
-        const val EMPTY_VIDEO_KEY = ""
-    }
-
 }
