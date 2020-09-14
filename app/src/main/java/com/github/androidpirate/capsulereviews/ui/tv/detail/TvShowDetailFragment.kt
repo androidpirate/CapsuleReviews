@@ -40,7 +40,7 @@ import kotlinx.android.synthetic.main.tv_info.imdbLink
 import kotlinx.android.synthetic.main.tv_info.overview
 import kotlinx.android.synthetic.main.tv_summary.*
 
-class TvDetailFragment : Fragment(), SimilarContentClickListener {
+class TvShowDetailFragment : Fragment(), SimilarContentClickListener {
     private val args: TvDetailFragmentArgs by navArgs()
     private lateinit var networkTvShow: NetworkTvShow
     private var videoKey: String = ""
@@ -75,7 +75,7 @@ class TvDetailFragment : Fragment(), SimilarContentClickListener {
         super.onViewCreated(view, savedInstanceState)
         displayLoadingScreen()
         btUp.setOnClickListener {
-            findNavController().navigate(R.id.action_tv_detail_toList)
+            findNavController().navigate(R.id.action_tv_detail_to_list)
         }
     }
 

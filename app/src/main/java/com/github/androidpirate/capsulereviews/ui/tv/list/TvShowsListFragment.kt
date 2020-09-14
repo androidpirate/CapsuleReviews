@@ -27,19 +27,19 @@ import com.github.androidpirate.capsulereviews.util.internal.GenreType
 import com.github.androidpirate.capsulereviews.util.internal.GenreType.*
 import com.github.androidpirate.capsulereviews.util.internal.NetworkType
 import com.github.androidpirate.capsulereviews.util.internal.NetworkType.*
-import com.github.androidpirate.capsulereviews.viewmodel.TvShowListViewModel
+import com.github.androidpirate.capsulereviews.viewmodel.TvShowsListViewModel
 import com.github.androidpirate.capsulereviews.viewmodel.ViewModelFactory
-import kotlinx.android.synthetic.main.fragment_tv_list.*
+import kotlinx.android.synthetic.main.fragment_tv_shows_list.*
 import kotlinx.android.synthetic.main.tv_showcase.*
 
-class TvListFragment : Fragment(), ItemClickListener {
+class TvShowsListFragment : Fragment(), ItemClickListener {
     private lateinit var popularShowsAdapter: ListItemAdapter<DBTvShow>
     private lateinit var topRatedShowsAdapter: ListItemAdapter<DBTvShow>
     private lateinit var trendingShowsAdapter: ListItemAdapter<DBTvShow>
     private lateinit var popularNetflixAdapter: ListItemAdapter<DBTvShow>
     private lateinit var popularHuluAdapter: ListItemAdapter<DBTvShow>
     private lateinit var popularDisneyPlusAdapter: ListItemAdapter<DBTvShow>
-    private lateinit var viewModel: TvShowListViewModel
+    private lateinit var viewModel: TvShowsListViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,7 +51,7 @@ class TvListFragment : Fragment(), ItemClickListener {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_tv_list, container, false)
+        return inflater.inflate(R.layout.fragment_tv_shows_list, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -63,7 +63,7 @@ class TvListFragment : Fragment(), ItemClickListener {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         val factory = ViewModelFactory(requireActivity().application)
-        viewModel = ViewModelProvider(this, factory).get(TvShowListViewModel::class.java)
+        viewModel = ViewModelProvider(this, factory).get(TvShowsListViewModel::class.java)
         viewModel.popularTvShows.observe(viewLifecycleOwner, Observer {
             if(it != null) {
                 popularShowsAdapter.submitList(it)

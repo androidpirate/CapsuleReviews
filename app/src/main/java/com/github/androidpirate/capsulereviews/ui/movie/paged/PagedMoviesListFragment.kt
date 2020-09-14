@@ -19,14 +19,14 @@ import com.github.androidpirate.capsulereviews.util.internal.Constants
 import com.github.androidpirate.capsulereviews.util.internal.FragmentType.*
 import com.github.androidpirate.capsulereviews.util.internal.GenericSortType
 import com.github.androidpirate.capsulereviews.util.internal.GenericSortType.*
-import com.github.androidpirate.capsulereviews.viewmodel.PagedMovieListViewModel
+import com.github.androidpirate.capsulereviews.viewmodel.PagedMoviesListViewModel
 import com.github.androidpirate.capsulereviews.viewmodel.ViewModelFactory
 import kotlinx.android.synthetic.main.fragment_paged_movies_list.*
-import kotlinx.android.synthetic.main.paged_movie_toolbar.*
+import kotlinx.android.synthetic.main.paged_movies_toolbar.*
 
 class PagedMoviesListFragment : Fragment(), PagedItemClickListener {
     private val args: PagedMoviesListFragmentArgs by navArgs()
-    private lateinit var viewModel: PagedMovieListViewModel
+    private lateinit var viewModel: PagedMoviesListViewModel
     private lateinit var adapter: PagedItemAdapter<NetworkMoviesListItem>
     private lateinit var genericSort: GenericSortType
     private var flagDecoration = false
@@ -34,7 +34,7 @@ class PagedMoviesListFragment : Fragment(), PagedItemClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val factory = ViewModelFactory(requireActivity().application)
-        viewModel = ViewModelProvider(this, factory).get(PagedMovieListViewModel::class.java)
+        viewModel = ViewModelProvider(this, factory).get(PagedMoviesListViewModel::class.java)
         genericSort = args.genericSortType
         adapter = PagedItemAdapter(fragment = PAGED_MOVIE_LIST, clickListener = this)
     }
@@ -50,7 +50,7 @@ class PagedMoviesListFragment : Fragment(), PagedItemClickListener {
         super.onViewCreated(view, savedInstanceState)
         displayLoadingScreen()
         btUp.setOnClickListener {
-            findNavController().navigate(R.id.action_paged_movie_list_to_list)
+            findNavController().navigate(R.id.action_paged_movies_list_to_list)
         }
     }
 

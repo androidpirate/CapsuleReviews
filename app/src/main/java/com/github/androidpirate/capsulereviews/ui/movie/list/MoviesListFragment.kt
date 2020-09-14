@@ -28,17 +28,17 @@ import com.github.androidpirate.capsulereviews.util.internal.GenreType.*
 import com.github.androidpirate.capsulereviews.util.internal.NetworkType
 import com.github.androidpirate.capsulereviews.util.internal.NetworkType.*
 import com.github.androidpirate.capsulereviews.viewmodel.ViewModelFactory
-import com.github.androidpirate.capsulereviews.viewmodel.MovieListViewModel
-import kotlinx.android.synthetic.main.fragment_movie_list.*
+import com.github.androidpirate.capsulereviews.viewmodel.MoviesListViewModel
+import kotlinx.android.synthetic.main.fragment_movies_list.*
 import kotlinx.android.synthetic.main.movie_showcase.*
 
-class MovieListFragment : Fragment(), ItemClickListener {
+class MoviesListFragment : Fragment(), ItemClickListener {
     private lateinit var popularNetworkMoviesAdapter: ListItemAdapter<DBMovie>
     private lateinit var topRatedNetworkMoviesAdapter: ListItemAdapter<DBMovie>
     private lateinit var nowPlayingNetworkMoviesAdapter: ListItemAdapter<DBMovie>
     private lateinit var upcomingNetworkMoviesAdapter: ListItemAdapter<DBMovie>
     private lateinit var trendingNetworkMoviesAdapter: ListItemAdapter<DBMovie>
-    private lateinit var viewModel: MovieListViewModel
+    private lateinit var viewModel: MoviesListViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,13 +50,13 @@ class MovieListFragment : Fragment(), ItemClickListener {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_movie_list, container, false)
+        return inflater.inflate(R.layout.fragment_movies_list, container, false)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         val factory = ViewModelFactory(requireActivity().application)
-        viewModel = ViewModelProvider(this, factory).get(MovieListViewModel::class.java)
+        viewModel = ViewModelProvider(this, factory).get(MoviesListViewModel::class.java)
         displayLoadingScreen()
     }
 

@@ -18,17 +18,16 @@ import com.github.androidpirate.capsulereviews.util.GridSpacingItemDecoration
 import com.github.androidpirate.capsulereviews.util.internal.*
 import com.github.androidpirate.capsulereviews.util.internal.GenericSortType.*
 import com.github.androidpirate.capsulereviews.util.internal.NetworkType.*
-import com.github.androidpirate.capsulereviews.viewmodel.PagedTvShowListViewModel
+import com.github.androidpirate.capsulereviews.viewmodel.PagedTvShowsListViewModel
 import com.github.androidpirate.capsulereviews.viewmodel.ViewModelFactory
-import kotlinx.android.synthetic.main.fragment_paged_movies_list.*
 import kotlinx.android.synthetic.main.fragment_paged_movies_list.container
 import kotlinx.android.synthetic.main.fragment_paged_movies_list.loadingScreen
-import kotlinx.android.synthetic.main.fragment_paged_tv_list.*
-import kotlinx.android.synthetic.main.paged_tv_toolbar.*
+import kotlinx.android.synthetic.main.fragment_paged_tv_shows_list.*
+import kotlinx.android.synthetic.main.paged_tv_shows_toolbar.*
 
-class PagedTvListFragment : Fragment(), PagedItemClickListener {
+class PagedTvShowsListFragment : Fragment(), PagedItemClickListener {
     private val args: PagedTvListFragmentArgs by navArgs()
-    private lateinit var viewModel: PagedTvShowListViewModel
+    private lateinit var viewModel: PagedTvShowsListViewModel
     private lateinit var adapter: PagedItemAdapter<NetworkTvShowsListItem>
     private lateinit var genericSort: GenericSortType
     private lateinit var genre: GenreType
@@ -38,7 +37,7 @@ class PagedTvListFragment : Fragment(), PagedItemClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val factory = ViewModelFactory(requireActivity().application)
-        viewModel = ViewModelProvider(this, factory).get(PagedTvShowListViewModel::class.java)
+        viewModel = ViewModelProvider(this, factory).get(PagedTvShowsListViewModel::class.java)
         genericSort = args.genericSortType
         network = args.network
         genre = args.genre
@@ -49,14 +48,14 @@ class PagedTvListFragment : Fragment(), PagedItemClickListener {
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_paged_tv_list, container, false)
+        return inflater.inflate(R.layout.fragment_paged_tv_shows_list, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         displayLoadingScreen()
         btUp.setOnClickListener {
-            findNavController().navigate(R.id.action_paged_tv_list_to_list)
+            findNavController().navigate(R.id.action_paged_tv_shows_list_to_list)
         }
     }
 
