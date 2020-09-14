@@ -70,7 +70,7 @@ class MovieDetailFragment : Fragment(), SimilarContentClickListener {
         super.onViewCreated(view, savedInstanceState)
         displayLoadingScreen()
         btUp.setOnClickListener {
-            findNavController().navigate(R.id.action_movie_detail_toList)
+            findNavController().navigate(R.id.action_movie_detail_to_list)
         }
     }
 
