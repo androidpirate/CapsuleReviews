@@ -6,7 +6,7 @@
     <string name="bottom_nav_discover">Discover</string>
     <string name="bottom_nav_favorites">Favorites</string>
     <string name="bottom_nav_more">More</string>
-    <!-- Movie List Fragment resources -->
+    <!-- Movies List Fragment resources -->
     <string name="popular_movies_title">Popular Movies</string>
     <string name="top_rated_movies_title">Top Rated Movies</string>
     <string name="now_playing_movies_title">Now Playing Movies</string>
@@ -14,7 +14,7 @@
     <string name="trending_movies_title">Trending Movies</string>
     <string name="list_item_preview_description">List item preview.</string>
     <string name="favorite_button_description">Favorite Button</string>
-    <!-- TV List Fragment resources -->
+    <!-- TV Shows List Fragment resources -->
     <string name="popular_tv_title">Popular TV</string>
     <string name="top_rated_tv_title">Top Rated TV</string>
     <string name="trending_tv_title">Trending TV</string>
@@ -49,6 +49,4 @@
     <string name="popular_on_netflix_tv_title">Popular on Netflix</string>
     <string name="popular_on_hulu_tv_title">Popular on Hulu</string>
     <string name="popular_on_disney_plus_tv_title">Popular on Disney Plus</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
