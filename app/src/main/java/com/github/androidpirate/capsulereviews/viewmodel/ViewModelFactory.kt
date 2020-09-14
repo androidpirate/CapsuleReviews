@@ -10,7 +10,7 @@ import com.github.androidpirate.capsulereviews.data.repo.TvShowsRepository
 import java.lang.IllegalStateException
 
 @Suppress("UNCHECKED_CAST")
-class ViewModelFactory(val application: Application): ViewModelProvider.Factory {
+class ViewModelFactory(application: Application): ViewModelProvider.Factory {
     private val movieDbService = MovieDbService.invoke()
     private val appDatabase = AppDatabase.invoke(application.applicationContext)
     private val moviesRepo = MoviesRepository(
@@ -37,6 +37,9 @@ class ViewModelFactory(val application: Application): ViewModelProvider.Factory 
             }
             modelClass.isAssignableFrom(PagedMovieListViewModel::class.java) -> {
                 PagedMovieListViewModel(moviesRepo) as T
+            }
+            modelClass.isAssignableFrom(PagedTvShowListViewModel::class.java) -> {
+                PagedTvShowListViewModel(tvShowsRepo) as T
             }
             else -> throw IllegalStateException("No such view model class.")
         }
