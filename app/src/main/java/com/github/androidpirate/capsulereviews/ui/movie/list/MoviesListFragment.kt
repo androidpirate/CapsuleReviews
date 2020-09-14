@@ -188,8 +188,8 @@ class MoviesListFragment : Fragment(), ItemClickListener {
     }
 
     private fun onShowcaseMovieClick(showCaseMovie: DBMovieShowcase) {
-        val action = MovieListFragmentDirections
-            .actionMovieListToDetail(showCaseMovie.movieId)
+        val action = MoviesListFragmentDirections
+            .actionMoviesListToDetail(showCaseMovie.movieId)
         findNavController().navigate(action)
     }
 
@@ -210,29 +210,34 @@ class MoviesListFragment : Fragment(), ItemClickListener {
             if(isLast) {
                 when(genericSort) {
                     POPULAR -> {
-                        val action = MovieListFragmentDirections.actionMovieListToPagedMovies(POPULAR)
+                        val action = MoviesListFragmentDirections
+                            .actionMoviesListToPagedMovies(POPULAR)
                         navigateToPagedMoviesList(action)
                     }
                     TOP_RATED -> {
-                        val action = MovieListFragmentDirections.actionMovieListToPagedMovies(TOP_RATED)
+                        val action = MoviesListFragmentDirections
+                            .actionMoviesListToPagedMovies(TOP_RATED)
                         navigateToPagedMoviesList(action)
                     }
                     NOW_PLAYING -> {
-                        val action = MovieListFragmentDirections.actionMovieListToPagedMovies(NOW_PLAYING)
+                        val action = MoviesListFragmentDirections
+                            .actionMoviesListToPagedMovies(NOW_PLAYING)
                         navigateToPagedMoviesList(action)
                     }
                     UPCOMING -> {
-                        val action = MovieListFragmentDirections.actionMovieListToPagedMovies(UPCOMING)
+                        val action = MoviesListFragmentDirections
+                            .actionMoviesListToPagedMovies(UPCOMING)
                         navigateToPagedMoviesList(action)
                     }
                     TRENDING -> {
-                        val action = MovieListFragmentDirections.actionMovieListToPagedMovies(TRENDING)
+                        val action = MoviesListFragmentDirections
+                            .actionMoviesListToPagedMovies(TRENDING)
                         navigateToPagedMoviesList(action)
                     }
                 }
             } else {
-                val action = MovieListFragmentDirections
-                    .actionMovieListToDetail((item as DBMovie).id)
+                val action = MoviesListFragmentDirections
+                    .actionMoviesListToDetail((item as DBMovie).id)
                 navigateToDetails(action)
             }
     }

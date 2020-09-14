@@ -136,7 +136,8 @@ class PagedMoviesListFragment : Fragment(), PagedItemClickListener {
     }
 
     override fun <T> onPagedItemClick(item: T) {
-        val action = PagedMoviesListFragmentDirections.actionPagedMovieListToDetail((item as NetworkMoviesListItem).id)
+        val action = PagedMoviesListFragmentDirections
+            .actionPagedMoviesListToDetail((item as NetworkMoviesListItem).id)
         findNavController().navigate(action)
     }
 }

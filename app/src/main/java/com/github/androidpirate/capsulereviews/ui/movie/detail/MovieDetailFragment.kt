@@ -190,7 +190,7 @@ class MovieDetailFragment : Fragment(), SimilarContentClickListener {
 
     override fun <T> onItemClick(item: T) {
         val action = MovieDetailFragmentDirections
-            .actionMovieDetailFragmentSelf((item as NetworkMoviesListItem).id)
+            .actionMovieDetailToSelf((item as NetworkMoviesListItem).id)
         findNavController().navigate(action)
     }
 }

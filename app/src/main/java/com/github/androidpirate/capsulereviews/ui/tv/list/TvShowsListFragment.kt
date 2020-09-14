@@ -212,8 +212,8 @@ class TvShowsListFragment : Fragment(), ItemClickListener {
     }
 
     private fun onShowcaseTvShowClick(showcaseTvShowId: Int) {
-        val action = TvListFragmentDirections
-            .actionTvListToDetail(showcaseTvShowId)
+        val action = TvShowsListFragmentDirections
+            .actionTvShowsListToDetail(showcaseTvShowId)
         findNavController().navigate(action)
     }
 
@@ -231,36 +231,43 @@ class TvShowsListFragment : Fragment(), ItemClickListener {
                 if(network != NONE) {
                     when(network) {
                         NETFLIX -> {
-                            val action = TvListFragmentDirections.actionTvListToPagedTvShows(POPULAR, NETFLIX, ALL)
+                            val action = TvShowsListFragmentDirections
+                                .actionTvShowsListToPagedTvShows(POPULAR, NETFLIX, ALL)
                             navigateToPagedTvShowsList(action)
                         }
                         HULU -> {
-                            val action = TvListFragmentDirections.actionTvListToPagedTvShows(POPULAR, HULU,  ALL)
+                            val action = TvShowsListFragmentDirections
+                                .actionTvShowsListToPagedTvShows(POPULAR, HULU,  ALL)
                             navigateToPagedTvShowsList(action)
                         }
                         DISNEY_PLUS -> {
-                            val action = TvListFragmentDirections.actionTvListToPagedTvShows(POPULAR, DISNEY_PLUS, ALL)
+                            val action = TvShowsListFragmentDirections
+                                .actionTvShowsListToPagedTvShows(POPULAR, DISNEY_PLUS, ALL)
                             navigateToPagedTvShowsList(action)
                         }
                     }
                 } else {
                     when(genericSort) {
                         POPULAR -> {
-                            val action = TvListFragmentDirections.actionTvListToPagedTvShows(POPULAR, NONE, ALL)
+                            val action = TvShowsListFragmentDirections
+                                .actionTvShowsListToPagedTvShows(POPULAR, NONE, ALL)
                             navigateToPagedTvShowsList(action)
                         }
                         TOP_RATED -> {
-                            val action = TvListFragmentDirections.actionTvListToPagedTvShows(TOP_RATED, NONE, ALL)
+                            val action = TvShowsListFragmentDirections
+                                .actionTvShowsListToPagedTvShows(TOP_RATED, NONE, ALL)
                             navigateToPagedTvShowsList(action)
                         }
                         TRENDING -> {
-                            val action = TvListFragmentDirections.actionTvListToPagedTvShows(TRENDING, NONE, ALL)
+                            val action = TvShowsListFragmentDirections
+                                .actionTvShowsListToPagedTvShows(TRENDING, NONE, ALL)
                             navigateToPagedTvShowsList(action)
                         }
                     }
                 }
             } else {
-                val action = TvListFragmentDirections.actionTvListToDetail((item as DBTvShow).id)
+                val action = TvShowsListFragmentDirections
+                    .actionTvShowsListToDetail((item as DBTvShow).id)
                 findNavController().navigate(action)
             }
     }

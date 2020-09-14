@@ -41,7 +41,7 @@ import kotlinx.android.synthetic.main.tv_info.overview
 import kotlinx.android.synthetic.main.tv_summary.*
 
 class TvShowDetailFragment : Fragment(), SimilarContentClickListener {
-    private val args: TvDetailFragmentArgs by navArgs()
+    private val args: TvShowDetailFragmentArgs by navArgs()
     private lateinit var networkTvShow: NetworkTvShow
     private var videoKey: String = ""
     private lateinit var adapter: SimilarContentAdapter<NetworkTvShowsListItem>
@@ -208,8 +208,8 @@ class TvShowDetailFragment : Fragment(), SimilarContentClickListener {
     }
 
     override fun <T> onItemClick(item: T) {
-        val action = TvDetailFragmentDirections
-            .actionTvDetailFragmentSelf((item as NetworkTvShowsListItem).id)
+        val action = TvShowDetailFragmentDirections
+            .actionTvDetailToSelf((item as NetworkTvShowsListItem).id)
         findNavController().navigate(action)
     }
 }

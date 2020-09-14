@@ -26,7 +26,7 @@ import kotlinx.android.synthetic.main.fragment_paged_tv_shows_list.*
 import kotlinx.android.synthetic.main.paged_tv_shows_toolbar.*
 
 class PagedTvShowsListFragment : Fragment(), PagedItemClickListener {
-    private val args: PagedTvListFragmentArgs by navArgs()
+    private val args: PagedTvShowsListFragmentArgs by navArgs()
     private lateinit var viewModel: PagedTvShowsListViewModel
     private lateinit var adapter: PagedItemAdapter<NetworkTvShowsListItem>
     private lateinit var genericSort: GenericSortType
@@ -159,7 +159,8 @@ class PagedTvShowsListFragment : Fragment(), PagedItemClickListener {
     }
 
     override fun <T> onPagedItemClick(item: T) {
-        val action = PagedTvListFragmentDirections.actionPagedTvListToDetail((item as NetworkTvShowsListItem).id)
+        val action = PagedTvShowsListFragmentDirections
+            .actionPagedTvShowsListToDetail((item as NetworkTvShowsListItem).id)
         findNavController().navigate(action)
     }
 }
