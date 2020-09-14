@@ -3,12 +3,12 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/movieListFragment"
+        android:id="@+id/moviesListFragment"
         android:icon="@drawable/ic_outline_movie_black"
         android:title="@string/bottom_nav_movies"/>
 
     <item
-        android:id="@+id/tvListFragment"
+        android:id="@+id/tvShowsListFragment"
         android:icon="@drawable/ic_outline_tv_black"
         android:title="@string/bottom_nav_tv_shows"/>
 
