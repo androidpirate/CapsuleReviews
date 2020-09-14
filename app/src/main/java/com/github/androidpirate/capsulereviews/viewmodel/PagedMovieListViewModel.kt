@@ -4,13 +4,38 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.github.androidpirate.capsulereviews.data.repo.MoviesRepository
 import com.github.androidpirate.capsulereviews.util.internal.GenreType.*
+import com.github.androidpirate.capsulereviews.util.internal.GenericSortType.*
 import com.github.androidpirate.capsulereviews.util.internal.SortType.*
 
-class PagedMovieListViewModel(private val repo: MoviesRepository) : ViewModel() {
+class PagedMovieListViewModel(repo: MoviesRepository) : ViewModel() {
 
-    val popularMovies = repo.getPagedMovies(viewModelScope, POPULAR, ALL)
-    val topRatedMovies = repo.getPagedMovies(viewModelScope, TOP_RATED, ALL)
-    val nowPlayingMovies = repo.getPagedMovies(viewModelScope, NOW_PLAYING, ALL)
-    val upcomingMovies = repo.getPagedMovies(viewModelScope, UPCOMING, ALL)
-    val trendingMovies = repo.getPagedMovies(viewModelScope, TRENDING, ALL)
+    val popularMovies = repo.getPagedMovies(
+        scope = viewModelScope,
+        genericSort = POPULAR,
+        sort = POPULAR_DESCENDING,
+        genre = ALL)
+
+    val topRatedMovies = repo.getPagedMovies(
+        scope = viewModelScope,
+        genericSort = TOP_RATED,
+        sort = POPULAR_DESCENDING,
+        genre = ALL)
+
+    val nowPlayingMovies = repo.getPagedMovies(
+        scope = viewModelScope,
+        genericSort = NOW_PLAYING,
+        sort = POPULAR_DESCENDING,
+        genre = ALL)
+
+    val upcomingMovies = repo.getPagedMovies(
+        scope = viewModelScope,
+        genericSort = UPCOMING,
+        sort = POPULAR_DESCENDING,
+        genre = ALL)
+
+    val trendingMovies = repo.getPagedMovies(
+        scope = viewModelScope,
+        genericSort = TRENDING,
+        sort = POPULAR_DESCENDING,
+        genre = ALL)
 }
