@@ -4,18 +4,18 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/navigation_graph"
-    app:startDestination="@id/movieListFragment">
+    app:startDestination="@id/moviesListFragment">
 
     <fragment
-        android:id="@+id/movieListFragment"
-        android:name="com.github.androidpirate.capsulereviews.ui.movie.list.MovieListFragment"
-        android:label="fragment_movie_list"
-        tools:layout="@layout/fragment_movie_list">
+        android:id="@+id/moviesListFragment"
+        android:name="com.github.androidpirate.capsulereviews.ui.movie.list.MoviesListFragment"
+        android:label="fragment_movies_list"
+        tools:layout="@layout/fragment_movies_list">
         <action
-            android:id="@+id/action_movie_list_to_detail"
+            android:id="@+id/action_movies_list_to_detail"
             app:destination="@id/movieDetailFragment"/>
         <action
-            android:id="@+id/action_movie_list_to_paged_movies"
+            android:id="@+id/action_movies_list_to_paged_movies"
             app:destination="@+id/pagedMoviesListFragment"/>
     </fragment>
 
@@ -29,31 +29,31 @@
             app:argType="com.github.androidpirate.capsulereviews.util.internal.GenericSortType"
             android:defaultValue="POPULAR"/>
         <action
-            android:id="@+id/action_paged_movie_list_to_list"
-            app:destination="@id/movieListFragment"/>
+            android:id="@+id/action_paged_movies_list_to_list"
+            app:destination="@id/moviesListFragment"/>
         <action
-            android:id="@+id/action_paged_movie_list_to_detail"
+            android:id="@+id/action_paged_movies_list_to_detail"
             app:destination="@id/movieDetailFragment"/>
     </fragment>
 
     <fragment
-        android:id="@+id/tvListFragment"
-        android:name="com.github.androidpirate.capsulereviews.ui.tv.list.TvListFragment"
-        android:label="fragment_tv_list"
-        tools:layout="@layout/fragment_tv_list">
+        android:id="@+id/tvShowsListFragment"
+        android:name="com.github.androidpirate.capsulereviews.ui.tv.list.TvShowsListFragment"
+        android:label="fragment_tv_shows_list"
+        tools:layout="@layout/fragment_tv_shows_list">
         <action
-            android:id="@+id/action_tv_list_to_detail"
+            android:id="@+id/action_tv_shows_list_to_detail"
             app:destination="@id/tvDetailFragment"/>
         <action
-            android:id="@+id/action_tv_list_to_paged_tv_shows"
+            android:id="@+id/action_tv_shows_list_to_paged_tv_shows"
             app:destination="@id/pagedTvShowsListFragment"/>
     </fragment>
 
     <fragment
         android:id="@+id/pagedTvShowsListFragment"
-        android:name="com.github.androidpirate.capsulereviews.ui.tv.paged.PagedTvListFragment"
+        android:name="com.github.androidpirate.capsulereviews.ui.tv.paged.PagedTvShowsListFragment"
         android:label="fragment_paged_tv_shows"
-        tools:layout="@layout/fragment_paged_tv_list">
+        tools:layout="@layout/fragment_paged_tv_shows_list">
         <argument
             android:name="genericSortType"
             app:argType="com.github.androidpirate.capsulereviews.util.internal.GenericSortType"
@@ -67,10 +67,10 @@
             app:argType="com.github.androidpirate.capsulereviews.util.internal.GenreType"
             android:defaultValue="ALL"/>
         <action
-            android:id="@+id/action_paged_tv_list_to_list"
-            app:destination="@id/tvListFragment"/>
+            android:id="@+id/action_paged_tv_shows_list_to_list"
+            app:destination="@id/tvShowsListFragment"/>
         <action
-            android:id="@+id/action_paged_tv_list_to_detail"
+            android:id="@+id/action_paged_tv_shows_list_to_detail"
             app:destination="@id/tvDetailFragment"/>
     </fragment>
 
@@ -102,16 +102,16 @@
             app:argType="integer"
             android:defaultValue="0"/>
         <action
-            android:id="@+id/action_movie_detail_toList"
-            app:destination="@id/movieListFragment"/>
+            android:id="@+id/action_movie_detail_to_list"
+            app:destination="@id/moviesListFragment"/>
         <action
-            android:id="@+id/action_movieDetailFragment_self"
+            android:id="@+id/action_movie_detail_to_self"
             app:destination="@id/movieDetailFragment" />
     </fragment>
 
     <fragment
         android:id="@+id/tvDetailFragment"
-        android:name="com.github.androidpirate.capsulereviews.ui.tv.detail.TvDetailFragment"
+        android:name="com.github.androidpirate.capsulereviews.ui.tv.detail.TvShowDetailFragment"
         android:label="fragment_tv_detail"
         tools:layout="@layout/fragment_tv_detail">
         <argument
@@ -119,10 +119,10 @@
             app:argType="integer"
             android:defaultValue="0"/>
         <action
-            android:id="@+id/action_tv_detail_toList"
-            app:destination="@id/tvListFragment"/>
+            android:id="@+id/action_tv_detail_to_list"
+            app:destination="@id/tvShowsListFragment"/>
         <action
-            android:id="@+id/action_tvDetailFragment_self"
+            android:id="@+id/action_tv_detail_to_self"
             app:destination="@id/tvDetailFragment" />
     </fragment>
 
