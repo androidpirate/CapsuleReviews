@@ -7,7 +7,7 @@ import com.github.androidpirate.capsulereviews.util.internal.GenreType.*
 import com.github.androidpirate.capsulereviews.util.internal.GenericSortType.*
 import com.github.androidpirate.capsulereviews.util.internal.SortType.*
 
-class PagedMovieListViewModel(repo: MoviesRepository) : ViewModel() {
+class PagedMoviesListViewModel(repo: MoviesRepository) : ViewModel() {
 
     val popularMovies = repo.getPagedMovies(
         scope = viewModelScope,

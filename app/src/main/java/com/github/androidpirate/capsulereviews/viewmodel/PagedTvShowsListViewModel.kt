@@ -8,7 +8,7 @@ import com.github.androidpirate.capsulereviews.util.internal.GenreType.*
 import com.github.androidpirate.capsulereviews.util.internal.NetworkType.*
 import com.github.androidpirate.capsulereviews.util.internal.SortType.*
 
-class PagedTvShowListViewModel(repo: TvShowsRepository): ViewModel() {
+class PagedTvShowsListViewModel(repo: TvShowsRepository): ViewModel() {
 
     val popularTvShows = repo.getPagedTvShows(
         scope = viewModelScope,

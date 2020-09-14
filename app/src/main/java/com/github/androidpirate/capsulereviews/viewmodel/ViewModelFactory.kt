@@ -23,23 +23,23 @@ class ViewModelFactory(application: Application): ViewModelProvider.Factory {
 
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         return when {
-            modelClass.isAssignableFrom(MovieListViewModel::class.java) -> {
-                MovieListViewModel(moviesRepo) as T
+            modelClass.isAssignableFrom(MoviesListViewModel::class.java) -> {
+                MoviesListViewModel(moviesRepo) as T
             }
             modelClass.isAssignableFrom(MovieDetailViewModel::class.java) -> {
                 MovieDetailViewModel(moviesRepo) as T
             }
-            modelClass.isAssignableFrom(TvShowListViewModel::class.java) -> {
-                TvShowListViewModel(tvShowsRepo) as T
+            modelClass.isAssignableFrom(TvShowsListViewModel::class.java) -> {
+                TvShowsListViewModel(tvShowsRepo) as T
             }
             modelClass.isAssignableFrom(TvShowDetailViewModel::class.java) -> {
                 TvShowDetailViewModel(tvShowsRepo) as T
             }
-            modelClass.isAssignableFrom(PagedMovieListViewModel::class.java) -> {
-                PagedMovieListViewModel(moviesRepo) as T
+            modelClass.isAssignableFrom(PagedMoviesListViewModel::class.java) -> {
+                PagedMoviesListViewModel(moviesRepo) as T
             }
-            modelClass.isAssignableFrom(PagedTvShowListViewModel::class.java) -> {
-                PagedTvShowListViewModel(tvShowsRepo) as T
+            modelClass.isAssignableFrom(PagedTvShowsListViewModel::class.java) -> {
+                PagedTvShowsListViewModel(tvShowsRepo) as T
             }
             else -> throw IllegalStateException("No such view model class.")
         }

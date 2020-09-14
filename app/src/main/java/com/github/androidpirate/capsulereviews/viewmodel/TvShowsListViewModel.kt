@@ -7,7 +7,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class TvShowListViewModel(private val repo: TvShowsRepository): ViewModel() {
+class TvShowsListViewModel(private val repo: TvShowsRepository): ViewModel() {
 
     val popularTvShows = repo.getPopularTvShows()
     val topRatedTvShows = repo.getTopRatedTvShows()

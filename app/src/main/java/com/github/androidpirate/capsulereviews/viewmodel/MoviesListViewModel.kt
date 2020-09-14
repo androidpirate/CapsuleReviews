@@ -7,7 +7,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class MovieListViewModel(private val repo: MoviesRepository): ViewModel() {
+class MoviesListViewModel(private val repo: MoviesRepository): ViewModel() {
 
     val popularMovies = repo.getPopularMovies()
     val topRatedMovies = repo.getTopRatedMovies()
