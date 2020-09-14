@@ -1,6 +1,9 @@
 package com.github.androidpirate.capsulereviews.data.repo
 
 import androidx.lifecycle.LiveData
+import androidx.paging.LivePagedListBuilder
+import androidx.paging.PagedList
+import com.github.androidpirate.capsulereviews.data.datasource.PagedTvShowsDataSourceFactory
 import com.github.androidpirate.capsulereviews.data.db.TvShowListDao
 import com.github.androidpirate.capsulereviews.data.db.entity.DBTvShow
 import com.github.androidpirate.capsulereviews.data.db.entity.DbTvShowShowcase
@@ -8,6 +11,8 @@ import com.github.androidpirate.capsulereviews.data.network.api.MovieDbService
 import com.github.androidpirate.capsulereviews.data.network.response.tvShow.NetworkTvShow
 import com.github.androidpirate.capsulereviews.data.network.response.tvShows.NetworkTvShowsListItem
 import com.github.androidpirate.capsulereviews.data.network.response.videos.NetworkVideosListItem
+import com.github.androidpirate.capsulereviews.util.internal.*
+import kotlinx.coroutines.CoroutineScope
 
 class TvShowsRepository(
     private val api: MovieDbService,
@@ -39,6 +44,24 @@ class TvShowsRepository(
 
     fun getShowcaseTvShow(): LiveData<DbTvShowShowcase> {
         return dao.getShowcaseTvShow()
+    }
+
+    fun getPagedTvShows(
+        scope: CoroutineScope,
+        genericSort: GenericSortType,
+        sort: SortType,
+        network: NetworkType,
+        genre: GenreType
+    ): LiveData<PagedList<NetworkTvShowsListItem>> {
+        val tvShowsDataSourceFactory = PagedTvShowsDataSourceFactory(api, scope, genericSort, sort, network, genre)
+        val config = PagedList.Config.Builder()
+            .setEnablePlaceholders(false)
+            .setPageSize(Constants.PAGE_SIZE)
+            .build()
+        return LivePagedListBuilder<Int, NetworkTvShowsListItem>(
+            tvShowsDataSourceFactory,
+            config
+        ).build()
     }
 
     suspend fun fetchAndPersistPopularTvShows() {
@@ -76,7 +99,7 @@ class TvShowsRepository(
     }
 
     suspend fun fetchAndPersistPopularNetflixTvShows() {
-        val popularShowsOnNetflix = api.getPopularTvShowsOnNetwork(NETFLIX_NETWORK_ID).networkTvShowsListItems
+        val popularShowsOnNetflix = api.getPopularTvShowsOnNetwork(NetworkType.NETFLIX.id).networkTvShowsListItems
         popularShowsOnNetflix.forEach {
             if(dao.isRowExist(it.id)) {
                 dao.updatePopularTvShowOnNetflix(it.id)
@@ -87,7 +110,7 @@ class TvShowsRepository(
     }
 
     suspend fun fetchAndPersistPopularHuluTvShows() {
-        val popularShowsOnHulu = api.getPopularTvShowsOnNetwork(HULU_NETWORK_ID).networkTvShowsListItems
+        val popularShowsOnHulu = api.getPopularTvShowsOnNetwork(NetworkType.HULU.id).networkTvShowsListItems
         popularShowsOnHulu.forEach {
             if(dao.isRowExist(it.id)) {
                 dao.updatePopularTvShowOnHulu(it.id)
@@ -98,7 +121,7 @@ class TvShowsRepository(
     }
 
     suspend fun fetchAndPersisPopularDisneyPlusTvShows() {
-        val popularShowsOnDisneyPlus = api.getPopularTvShowsOnNetwork(DISNEY_PLUS_NETWORK_ID).networkTvShowsListItems
+        val popularShowsOnDisneyPlus = api.getPopularTvShowsOnNetwork(NetworkType.DISNEY_PLUS.id).networkTvShowsListItems
         popularShowsOnDisneyPlus.forEach {
             if(dao.isRowExist(it.id)) {
                 dao.updatePopularTvShowOnDisneyPlus(it.id)
@@ -137,7 +160,7 @@ class TvShowsRepository(
     }
 
     private fun fetchShowVideoKey(videos: List<NetworkVideosListItem>): String {
-        var videoKey = EMPTY_VIDEO_KEY
+        var videoKey = Constants.EMPTY_VIDEO_KEY
         if(videos.isNotEmpty()) {
             for (video in videos) {
                 if (video.site == "YouTube" && video.type == "Trailer") {
@@ -147,12 +170,5 @@ class TvShowsRepository(
             }
         }
         return videoKey
-    }
-
-    companion object {
-        const val EMPTY_VIDEO_KEY = ""
-        const val NETFLIX_NETWORK_ID = 213
-        const val HULU_NETWORK_ID = 453
-        const val DISNEY_PLUS_NETWORK_ID = 2739
     }
 }
