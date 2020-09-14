@@ -12,10 +12,10 @@
         android:label="fragment_movie_list"
         tools:layout="@layout/fragment_movie_list">
         <action
-            android:id="@+id/action_movie_list_toDetail"
+            android:id="@+id/action_movie_list_to_detail"
             app:destination="@id/movieDetailFragment"/>
         <action
-            android:id="@+id/action_movie_list_toPagedMovies"
+            android:id="@+id/action_movie_list_to_paged_movies"
             app:destination="@+id/pagedMoviesListFragment"/>
     </fragment>
 
@@ -25,8 +25,8 @@
         android:label="fragment_paged_movies"
         tools:layout="@layout/fragment_paged_movies_list">
         <argument
-            android:name="sortType"
-            app:argType="com.github.androidpirate.capsulereviews.util.internal.SortType"
+            android:name="genericSortType"
+            app:argType="com.github.androidpirate.capsulereviews.util.internal.GenericSortType"
             android:defaultValue="POPULAR"/>
         <action
             android:id="@+id/action_paged_movie_list_to_list"
@@ -42,7 +42,35 @@
         android:label="fragment_tv_list"
         tools:layout="@layout/fragment_tv_list">
         <action
-            android:id="@+id/action_tv_list_toDetail"
+            android:id="@+id/action_tv_list_to_detail"
+            app:destination="@id/tvDetailFragment"/>
+        <action
+            android:id="@+id/action_tv_list_to_paged_tv_shows"
+            app:destination="@id/pagedTvShowsListFragment"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/pagedTvShowsListFragment"
+        android:name="com.github.androidpirate.capsulereviews.ui.tv.paged.PagedTvListFragment"
+        android:label="fragment_paged_tv_shows"
+        tools:layout="@layout/fragment_paged_tv_list">
+        <argument
+            android:name="genericSortType"
+            app:argType="com.github.androidpirate.capsulereviews.util.internal.GenericSortType"
+            android:defaultValue="POPULAR"/>
+        <argument
+            android:name="network"
+            app:argType="com.github.androidpirate.capsulereviews.util.internal.NetworkType"
+            android:defaultValue="NONE"/>
+        <argument
+            android:name="genre"
+            app:argType="com.github.androidpirate.capsulereviews.util.internal.GenreType"
+            android:defaultValue="ALL"/>
+        <action
+            android:id="@+id/action_paged_tv_list_to_list"
+            app:destination="@id/tvListFragment"/>
+        <action
+            android:id="@+id/action_paged_tv_list_to_detail"
             app:destination="@id/tvDetailFragment"/>
     </fragment>
 

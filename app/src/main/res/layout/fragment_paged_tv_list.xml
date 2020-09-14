@@ -19,14 +19,14 @@
 
         <include
             android:id="@+id/toolbar"
-            layout="@layout/paged_movie_toolbar"
+            layout="@layout/paged_tv_toolbar"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/rvPagedMovies"/>
+            app:layout_constraintBottom_toTopOf="@id/rvPagedTvShows"/>
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rvPagedMovies"
+            android:id="@+id/rvPagedTvShows"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:nestedScrollingEnabled="false"
