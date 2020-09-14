@@ -19,7 +19,7 @@
 
         <include
             android:id="@+id/toolbar"
-            layout="@layout/paged_movie_toolbar"
+            layout="@layout/paged_movies_toolbar"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
