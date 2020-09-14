@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.NavDirections
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.github.androidpirate.capsulereviews.BuildConfig
@@ -20,8 +21,12 @@ import com.github.androidpirate.capsulereviews.ui.adapter.list.ListItemAdapter
 import com.github.androidpirate.capsulereviews.ui.adapter.list.ItemClickListener
 import com.github.androidpirate.capsulereviews.util.internal.Constants
 import com.github.androidpirate.capsulereviews.util.internal.FragmentType.*
-import com.github.androidpirate.capsulereviews.util.internal.SortType
-import com.github.androidpirate.capsulereviews.util.internal.SortType.*
+import com.github.androidpirate.capsulereviews.util.internal.GenericSortType
+import com.github.androidpirate.capsulereviews.util.internal.GenericSortType.*
+import com.github.androidpirate.capsulereviews.util.internal.GenreType
+import com.github.androidpirate.capsulereviews.util.internal.GenreType.*
+import com.github.androidpirate.capsulereviews.util.internal.NetworkType
+import com.github.androidpirate.capsulereviews.util.internal.NetworkType.*
 import com.github.androidpirate.capsulereviews.viewmodel.TvShowListViewModel
 import com.github.androidpirate.capsulereviews.viewmodel.ViewModelFactory
 import kotlinx.android.synthetic.main.fragment_tv_list.*
@@ -107,12 +112,48 @@ class TvListFragment : Fragment(), ItemClickListener {
     }
 
     private fun setupAdapters() {
-        popularShowsAdapter = ListItemAdapter(fragment = TV_LIST, sort = POPULAR, clickListener = this)
-        topRatedShowsAdapter = ListItemAdapter(fragment = TV_LIST, sort = TOP_RATED, clickListener = this)
-        trendingShowsAdapter = ListItemAdapter(fragment = TV_LIST, sort = TRENDING,clickListener = this)
-        popularNetflixAdapter = ListItemAdapter(fragment = TV_LIST, sort = POPULAR, clickListener = this)
-        popularHuluAdapter = ListItemAdapter(fragment = TV_LIST, sort = POPULAR, clickListener = this)
-        popularDisneyPlusAdapter = ListItemAdapter(fragment = TV_LIST, sort = POPULAR, clickListener = this)
+        popularShowsAdapter = ListItemAdapter(
+            fragment = TV_LIST,
+            clickListener = this,
+            genericSort = POPULAR,
+            network = NONE,
+            genre = ALL
+        )
+        topRatedShowsAdapter = ListItemAdapter(
+            fragment = TV_LIST,
+            clickListener = this,
+            genericSort = TOP_RATED,
+            network = NONE,
+            genre = ALL
+        )
+        trendingShowsAdapter = ListItemAdapter(
+            fragment = TV_LIST,
+            clickListener = this,
+            genericSort = TRENDING,
+            network = NONE,
+            genre = ALL
+        )
+        popularNetflixAdapter = ListItemAdapter(
+            fragment = TV_LIST,
+            clickListener = this,
+            genericSort = POPULAR,
+            network = NETFLIX,
+            genre = ALL
+        )
+        popularHuluAdapter = ListItemAdapter(
+            fragment = TV_LIST,
+            clickListener = this,
+            genericSort = POPULAR,
+            network = HULU,
+            genre = ALL
+        )
+        popularDisneyPlusAdapter = ListItemAdapter(
+            fragment = TV_LIST,
+            clickListener = this,
+            genericSort = POPULAR,
+            network = DISNEY_PLUS,
+            genre = ALL
+        )
     }
 
     private fun setupViews() {
@@ -176,9 +217,52 @@ class TvListFragment : Fragment(), ItemClickListener {
         findNavController().navigate(action)
     }
 
-    override fun <T> onItemClick(item: T, isLast: Boolean, sort: SortType) {
-        val action = TvListFragmentDirections.actionTvListToDetail((item as DBTvShow).id)
+    private fun navigateToPagedTvShowsList(action: NavDirections) {
         findNavController().navigate(action)
+    }
+
+    override fun <T> onItemClick(
+        item: T,
+        isLast: Boolean,
+        genericSort: GenericSortType,
+        network: NetworkType,
+        genre: GenreType) {
+            if(isLast) {
+                if(network != NONE) {
+                    when(network) {
+                        NETFLIX -> {
+                            val action = TvListFragmentDirections.actionTvListToPagedTvShows(POPULAR, NETFLIX, ALL)
+                            navigateToPagedTvShowsList(action)
+                        }
+                        HULU -> {
+                            val action = TvListFragmentDirections.actionTvListToPagedTvShows(POPULAR, HULU,  ALL)
+                            navigateToPagedTvShowsList(action)
+                        }
+                        DISNEY_PLUS -> {
+                            val action = TvListFragmentDirections.actionTvListToPagedTvShows(POPULAR, DISNEY_PLUS, ALL)
+                            navigateToPagedTvShowsList(action)
+                        }
+                    }
+                } else {
+                    when(genericSort) {
+                        POPULAR -> {
+                            val action = TvListFragmentDirections.actionTvListToPagedTvShows(POPULAR, NONE, ALL)
+                            navigateToPagedTvShowsList(action)
+                        }
+                        TOP_RATED -> {
+                            val action = TvListFragmentDirections.actionTvListToPagedTvShows(TOP_RATED, NONE, ALL)
+                            navigateToPagedTvShowsList(action)
+                        }
+                        TRENDING -> {
+                            val action = TvListFragmentDirections.actionTvListToPagedTvShows(TRENDING, NONE, ALL)
+                            navigateToPagedTvShowsList(action)
+                        }
+                    }
+                }
+            } else {
+                val action = TvListFragmentDirections.actionTvListToDetail((item as DBTvShow).id)
+                findNavController().navigate(action)
+            }
     }
 
 }
