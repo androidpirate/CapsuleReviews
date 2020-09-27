@@ -49,4 +49,12 @@
     <string name="popular_on_netflix_tv_title">Popular on Netflix</string>
     <string name="popular_on_hulu_tv_title">Popular on Hulu</string>
     <string name="popular_on_disney_plus_tv_title">Popular on Disney Plus</string>
+    <!-- Favorites Fragment resources -->
+    <string name="overview_title_content">Overview</string>
+    <string name="binge_status_title_content">Binge Status</string>
+    <string name="created_by_title_content">Created By</string>
+    <string name="status_title_content">Status</string>
+    <string name="number_of_seasons_title_content">Number of Seasons</string>
+    <string name="number_of_episodes_title_content">Number Of Episodes</string>
+    <string name="networks_title_content">Networks</string>
 </resources>

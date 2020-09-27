@@ -9,6 +9,32 @@
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <item name="android:windowBackground">@color/colorWindowBackground</item>
+        <item name="android:popupMenuStyle">@style/PopupMenu</item>
+        <item name="android:textAppearanceLargePopupMenu">@style/PopupMenuTextAppearanceLarge</item>
+        <item name="android:textAppearanceSmallPopupMenu">@style/PopupMenuTextAppearanceSmall</item>
+    </style>
+
+    <style name="PopupMenu" parent="@style/Widget.AppCompat.PopupMenu.Overflow">
+        <item name="android:popupBackground">@color/colorWindowBackground</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style
+        name="PopupMenuTextAppearanceSmall"
+        parent="@android:style/TextAppearance.DeviceDefault.Widget.PopupMenu.Small">
+        <item name="android:textColor">#FDFDFD</item>
+    </style>
+
+    <style
+        name="PopupMenuTextAppearanceLarge"
+        parent="@android:style/TextAppearance.DeviceDefault.Widget.PopupMenu.Large">
+        <item name="android:textColor">#FDFDFD</item>
+    </style>
+    
+    <style name="BingeStatusAlertDialogTheme" parent="Theme.AppCompat.Dialog.Alert">
+        <item name="background">@color/colorWindowBackground</item>
+        <item name="textColorAlertDialogListItem">#FDFDFD</item>
+        <item name="android:colorAccent">@color/colorAccent</item>
     </style>
 
 </resources>

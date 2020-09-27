@@ -7,4 +7,7 @@
     <color name="colorWhite">#FDFDFD</color>
     <color name="colorLightGrey">#8C8B8B</color>
     <color name="colorDarkGrey">#4E4E4E</color>
+    <color name="colorDefaultBingeStatus">@color/colorLightGrey</color>
+    <color name="colorBingingBingeStatus">@color/colorAccent</color>
+    <color name="colorSeenBingeStatus">#009688</color>
 </resources>
