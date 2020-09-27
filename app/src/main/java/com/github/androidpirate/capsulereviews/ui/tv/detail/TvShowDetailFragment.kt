@@ -48,6 +48,7 @@ class TvShowDetailFragment : Fragment(), SimilarContentClickListener {
     private lateinit var similarShows: List<NetworkTvShowsListItem>
     private var imdbId: String = ""
     private lateinit var viewModel: TvShowDetailViewModel
+    private var isFavorite = false
     private var flagDecoration = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -88,7 +89,14 @@ class TvShowDetailFragment : Fragment(), SimilarContentClickListener {
                 networkTvShow = it
                 setTvShowPoster()
                 setTvShowDetails()
+                setFavoriteButtonState()
                 setIMDBLink()
+            }
+        })
+        viewModel.getIsFavorite().observe(viewLifecycleOwner, Observer {
+            if(it != null) {
+                isFavorite = it
+                setFavoriteButtonState()
             }
         })
         viewModel.getShowKey(args.showId).observe(viewLifecycleOwner, Observer {
@@ -109,6 +117,7 @@ class TvShowDetailFragment : Fragment(), SimilarContentClickListener {
                 setIMDBLink()
             }
         })
+        setFavoriteListener()
         displayContainerScreen()
     }
 
@@ -140,10 +149,10 @@ class TvShowDetailFragment : Fragment(), SimilarContentClickListener {
     private fun setTvShowDetails() {
         tvTitle.text = networkTvShow.name
         releaseDate.text = ContentFormatter.formatReleaseDate(networkTvShow.releaseDate)
-        genres.text = ContentFormatter.formatGenres(networkTvShow.genres)
+        genres.text = ContentFormatter.formatGenres(networkTvShow.networkGenres)
         userRating.text = networkTvShow.voteAverage.toString()
         status.text = networkTvShow.status
-        createdBy.text = ContentFormatter.formatCreatedBy(networkTvShow.networkCreatedBy)
+        createdBy.text = ContentFormatter.formatCreatedBy(networkTvShow.createdBy)
         overview.text = networkTvShow.overview
         seasons.text = networkTvShow.numberOfSeasons.toString()
         episodes.text = networkTvShow.numberOfEpisodes.toString()
@@ -152,6 +161,10 @@ class TvShowDetailFragment : Fragment(), SimilarContentClickListener {
         }
         type.text = networkTvShow.type
         network.text = ContentFormatter.formatNetworks(networkTvShow.networkNetworkInfos)
+    }
+
+    private fun setFavoriteButtonState() {
+        btFavorite.isActivated = isFavorite
     }
 
     private fun setIMDBLink() {
@@ -167,6 +180,18 @@ class TvShowDetailFragment : Fragment(), SimilarContentClickListener {
                     getString(R.string.link_not_available_toast_content),
                     Toast.LENGTH_SHORT)
                     .show()
+            }
+        }
+    }
+
+    private fun setFavoriteListener() {
+        btFavorite.setOnClickListener {
+            if(!isFavorite) {
+                viewModel.insertFavoriteTvShow(networkTvShow)
+                setFavoriteButtonState()
+            } else {
+                viewModel.deleteFavoriteTvShow(networkTvShow)
+                setFavoriteButtonState()
             }
         }
     }

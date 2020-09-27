@@ -44,6 +44,7 @@ class MovieDetailFragment : Fragment(), SimilarContentClickListener {
     private lateinit var adapter: SimilarContentAdapter<NetworkMoviesListItem>
     private lateinit var similarMovies: List<NetworkMoviesListItem>
     private lateinit var viewModel: MovieDetailViewModel
+    private var isFavorite = false
     private var flagDecoration = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -82,7 +83,15 @@ class MovieDetailFragment : Fragment(), SimilarContentClickListener {
             networkMovie = it
             setMoviePoster()
             setMovieDetails()
+            setFavoriteButtonState()
             setIMDBLink()
+            setFavoriteListener()
+        })
+        viewModel.getIsFavorite().observe(viewLifecycleOwner, Observer {
+            if(it != null) {
+                isFavorite = it
+                setFavoriteButtonState()
+            }
         })
         viewModel.getMovieKey(args.movieId).observe(viewLifecycleOwner, Observer {
             videoKey = it
@@ -135,6 +144,10 @@ class MovieDetailFragment : Fragment(), SimilarContentClickListener {
         revenue.text = ContentFormatter.formatRevenue(networkMovie.revenue)
     }
 
+    private fun setFavoriteButtonState() {
+        btFavorite.isActivated = isFavorite
+    }
+
     private fun setIMDBLink() {
         val imdbEndpoint = BuildConfig.IMDB_BASE_URL + networkMovie.imdbId
         imdbLink.setOnClickListener {
@@ -148,6 +161,18 @@ class MovieDetailFragment : Fragment(), SimilarContentClickListener {
                     getString(R.string.link_not_available_toast_content),
                     Toast.LENGTH_SHORT)
                     .show()
+            }
+        }
+    }
+
+    private fun setFavoriteListener() {
+        btFavorite.setOnClickListener {
+            if(!isFavorite) {
+                viewModel.insertFavoriteMovie(networkMovie)
+                setFavoriteButtonState()
+            } else {
+                viewModel.deleteFavoriteMovie(networkMovie)
+                setFavoriteButtonState()
             }
         }
     }

@@ -23,7 +23,6 @@
         android:id="@+id/overview"
         android:layout_width="@dimen/match_constraint"
         android:layout_height="wrap_content"
-        tools:text="@string/lorem_ipsum_text"
         android:textColor="#FDFDFD"
         android:textSize="16sp"
         android:layout_marginTop="@dimen/margin_16"

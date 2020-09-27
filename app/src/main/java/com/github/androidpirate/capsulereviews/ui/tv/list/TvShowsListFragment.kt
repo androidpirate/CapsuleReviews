@@ -16,7 +16,7 @@ import com.bumptech.glide.Glide
 import com.github.androidpirate.capsulereviews.BuildConfig
 import com.github.androidpirate.capsulereviews.R
 import com.github.androidpirate.capsulereviews.data.db.entity.DBTvShow
-import com.github.androidpirate.capsulereviews.data.db.entity.DbTvShowShowcase
+import com.github.androidpirate.capsulereviews.data.db.entity.DBTvShowShowcase
 import com.github.androidpirate.capsulereviews.ui.adapter.list.ListItemAdapter
 import com.github.androidpirate.capsulereviews.ui.adapter.list.ItemClickListener
 import com.github.androidpirate.capsulereviews.util.internal.Constants
@@ -165,7 +165,7 @@ class TvShowsListFragment : Fragment(), ItemClickListener {
         rvPopularOnDisneyPlus.adapter = popularDisneyPlusAdapter
     }
 
-    private fun setShowCaseTvShow(showcaseTvShow: DbTvShowShowcase) {
+    private fun setShowCaseTvShow(showcaseTvShow: DBTvShowShowcase) {
         setShowcaseTvShowPoster(showcaseTvShow.posterPath)
         setShowCaseTvShowTitle(showcaseTvShow.title)
         setShowCaseTvShowClickListeners(showcaseTvShow)
@@ -185,7 +185,7 @@ class TvShowsListFragment : Fragment(), ItemClickListener {
         scTitle.text = showcaseTvShowTitle
     }
 
-    private fun setShowCaseTvShowClickListeners(showcaseTvShow: DbTvShowShowcase) {
+    private fun setShowCaseTvShowClickListeners(showcaseTvShow: DBTvShowShowcase) {
         scAddFavorite.setOnClickListener {
             // TODO 7: Implement adding to favorites here
         }
