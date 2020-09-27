@@ -65,8 +65,8 @@ interface TvShowListDao {
     fun getPopularShowsOnDisneyPlus(): LiveData<List<DBTvShow>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertShowcaseTvShow(showcaseTvShow: DbTvShowShowcase)
+    fun insertShowcaseTvShow(showcaseTvShow: DBTvShowShowcase)
 
     @Query("SELECT * FROM tvShowcase")
-    fun getShowcaseTvShow(): LiveData<DbTvShowShowcase>
+    fun getShowcaseTvShow(): LiveData<DBTvShowShowcase>
 }

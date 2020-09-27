@@ -6,7 +6,7 @@ import androidx.paging.PagedList
 import com.github.androidpirate.capsulereviews.data.datasource.PagedTvShowsDataSourceFactory
 import com.github.androidpirate.capsulereviews.data.db.TvShowListDao
 import com.github.androidpirate.capsulereviews.data.db.entity.DBTvShow
-import com.github.androidpirate.capsulereviews.data.db.entity.DbTvShowShowcase
+import com.github.androidpirate.capsulereviews.data.db.entity.DBTvShowShowcase
 import com.github.androidpirate.capsulereviews.data.network.api.MovieDbService
 import com.github.androidpirate.capsulereviews.data.network.response.tvShow.NetworkTvShow
 import com.github.androidpirate.capsulereviews.data.network.response.tvShows.NetworkTvShowsListItem
@@ -42,7 +42,7 @@ class TvShowsRepository(
         return dao.getPopularShowsOnDisneyPlus()
     }
 
-    fun getShowcaseTvShow(): LiveData<DbTvShowShowcase> {
+    fun getShowcaseTvShow(): LiveData<DBTvShowShowcase> {
         return dao.getShowcaseTvShow()
     }
 

@@ -3,7 +3,7 @@ package com.github.androidpirate.capsulereviews.data.network.response.tvShows
 
 import androidx.annotation.Nullable
 import com.github.androidpirate.capsulereviews.data.db.entity.DBTvShow
-import com.github.androidpirate.capsulereviews.data.db.entity.DbTvShowShowcase
+import com.github.androidpirate.capsulereviews.data.db.entity.DBTvShowShowcase
 import com.google.gson.annotations.SerializedName
 
 data class NetworkTvShowsListItem(
@@ -65,7 +65,7 @@ data class NetworkTvShowsListItem(
         disneyPlus = true
     )
 
-    fun toShowcase() = DbTvShowShowcase(
+    fun toShowcase() = DBTvShowShowcase(
         this.id,
         this.name,
         this.posterPath ?: EMPTY_POSTER_PATH
