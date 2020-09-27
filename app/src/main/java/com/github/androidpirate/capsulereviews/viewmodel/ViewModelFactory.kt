@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.github.androidpirate.capsulereviews.data.db.AppDatabase
 import com.github.androidpirate.capsulereviews.data.network.api.MovieDbService
+import com.github.androidpirate.capsulereviews.data.repo.FavoritesRepository
 import com.github.androidpirate.capsulereviews.data.repo.MoviesRepository
 import com.github.androidpirate.capsulereviews.data.repo.TvShowsRepository
 import java.lang.IllegalStateException
@@ -20,6 +21,9 @@ class ViewModelFactory(application: Application): ViewModelProvider.Factory {
         movieDbService,
         appDatabase.tvShowListDao()
     )
+    private val favoritesRepo = FavoritesRepository(
+        appDatabase.favoritesDao()
+    )
 
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         return when {
@@ -27,19 +31,22 @@ class ViewModelFactory(application: Application): ViewModelProvider.Factory {
                 MoviesListViewModel(moviesRepo) as T
             }
             modelClass.isAssignableFrom(MovieDetailViewModel::class.java) -> {
-                MovieDetailViewModel(moviesRepo) as T
+                MovieDetailViewModel(moviesRepo, favoritesRepo) as T
             }
             modelClass.isAssignableFrom(TvShowsListViewModel::class.java) -> {
                 TvShowsListViewModel(tvShowsRepo) as T
             }
             modelClass.isAssignableFrom(TvShowDetailViewModel::class.java) -> {
-                TvShowDetailViewModel(tvShowsRepo) as T
+                TvShowDetailViewModel(tvShowsRepo, favoritesRepo) as T
             }
             modelClass.isAssignableFrom(PagedMoviesListViewModel::class.java) -> {
                 PagedMoviesListViewModel(moviesRepo) as T
             }
             modelClass.isAssignableFrom(PagedTvShowsListViewModel::class.java) -> {
                 PagedTvShowsListViewModel(tvShowsRepo) as T
+            }
+            modelClass.isAssignableFrom(FavoritesViewModel::class.java) -> {
+                FavoritesViewModel(favoritesRepo) as T
             }
             else -> throw IllegalStateException("No such view model class.")
         }

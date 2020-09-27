@@ -6,25 +6,44 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.github.androidpirate.capsulereviews.data.network.response.tvShow.NetworkTvShow
 import com.github.androidpirate.capsulereviews.data.network.response.tvShows.NetworkTvShowsListItem
+import com.github.androidpirate.capsulereviews.data.repo.FavoritesRepository
 import com.github.androidpirate.capsulereviews.data.repo.TvShowsRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class TvShowDetailViewModel(private val repo: TvShowsRepository): ViewModel() {
+class TvShowDetailViewModel(
+    private val repo: TvShowsRepository,
+    private val favRepo: FavoritesRepository
+): ViewModel() {
 
     private val tvShowDetails = MutableLiveData<NetworkTvShow>()
     private val tvShowVideoKey = MutableLiveData<String>()
     private val similarTvShows = MutableLiveData<List<NetworkTvShowsListItem>>()
     private val imdbId = MutableLiveData<String> ()
+    private var isFavorite = MutableLiveData<Boolean>()
 
     fun getTvShowDetails(showId: Int): LiveData<NetworkTvShow> {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
-                tvShowDetails.postValue(repo.fetchTvShowDetails(showId))
+                val networkTvShow = repo.fetchTvShowDetails(showId)
+                tvShowDetails.postValue(networkTvShow)
+                setIsFavorite(networkTvShow.id)
             }
         }
         return tvShowDetails
+    }
+
+    fun getIsFavorite(): LiveData<Boolean> {
+        return isFavorite
+    }
+
+    private fun setIsFavorite(itemId: Int) {
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                isFavorite.postValue(favRepo.isFavorite(itemId))
+            }
+        }
     }
 
     fun getSimilarTvShows(showId: Int): LiveData<List<NetworkTvShowsListItem>> {
@@ -54,4 +73,21 @@ class TvShowDetailViewModel(private val repo: TvShowsRepository): ViewModel() {
         return imdbId
     }
 
+    fun insertFavoriteTvShow(tvShow: NetworkTvShow) {
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                favRepo.insertFavorite(tvShow.toFavorite())
+                isFavorite.postValue(true)
+            }
+        }
+    }
+
+    fun deleteFavoriteTvShow(tvShow: NetworkTvShow) {
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                favRepo.deleteFavorite(tvShow.toFavorite())
+                isFavorite.postValue(false)
+            }
+        }
+    }
 }
