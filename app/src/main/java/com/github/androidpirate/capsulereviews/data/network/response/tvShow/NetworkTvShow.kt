@@ -53,7 +53,7 @@ data class NetworkTvShow(
         episodeRunTime = ContentFormatter.formatTvShowRunTime(episodeRunTime[0]),
         status = this.status,
         numberOfSeasons = this.numberOfSeasons,
-        numberOfEpisodes = this.numberOfSeasons,
+        numberOfEpisodes = this.numberOfEpisodes,
         networks = ContentFormatter.formatNetworks(this.networkNetworkInfos)
     )
 }
