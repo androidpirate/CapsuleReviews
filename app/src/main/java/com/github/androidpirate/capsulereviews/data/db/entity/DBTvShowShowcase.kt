@@ -4,7 +4,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity(tableName = "tvShowcase")
-data class DbTvShowShowcase(
+data class DBTvShowShowcase(
     val tvShowId: Int,
     val title: String,
     val posterPath: String
