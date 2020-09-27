@@ -84,7 +84,36 @@
         android:id="@+id/favoritesFragment"
         android:name="com.github.androidpirate.capsulereviews.ui.favorites.FavoritesFragment"
         android:label="fragment_favorites"
-        tools:layout="@layout/fragment_favorites"/>
+        tools:layout="@layout/fragment_favorites">
+        <action
+            android:id="@+id/action_favorite_movies_list_to_detail"
+            app:destination="@id/favoriteMovieDetailFragment"/>
+        <action
+            android:id="@+id/action_favorite_tv_shows_list_to_detail"
+            app:destination="@id/favoriteTvShowDetailFragment"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/favoriteMovieDetailFragment"
+        android:name="com.github.androidpirate.capsulereviews.ui.favorites.FavoriteMovieDetailFragment"
+        android:label="fragment_favorite_movie_detail"
+        tools:layout="@layout/fragment_favorite_movie_detail">
+        <argument
+            android:name="movieId"
+            app:argType="integer"
+            android:defaultValue="0"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/favoriteTvShowDetailFragment"
+        android:name="com.github.androidpirate.capsulereviews.ui.favorites.FavoriteTvShowDetailFragment"
+        android:label="fragment_favorite_tv_show_detail"
+        tools:layout="@layout/fragment_favorite_tv_show_detail">
+        <argument
+            android:name="tvShowId"
+            app:argType="integer"
+            android:defaultValue="0"/>
+    </fragment>
 
     <fragment
         android:id="@+id/moreFragment"
