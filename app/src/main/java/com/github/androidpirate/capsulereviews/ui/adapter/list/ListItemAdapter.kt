@@ -21,8 +21,7 @@ class ListItemAdapter<T>(
     private val network: NetworkType,
     private val genre: GenreType,
     private val clickListener: ItemClickListener
-)
-    : ListAdapter<T, ListItemAdapter<T>.ListItemHolder>(ListItemDiffCallback<T>(fragment)){
+) : ListAdapter<T, ListItemAdapter<T>.ListItemHolder>(ListItemDiffCallback<T>(fragment)){
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListItemHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
