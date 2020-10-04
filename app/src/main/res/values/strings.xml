@@ -6,6 +6,13 @@
     <string name="bottom_nav_discover">Discover</string>
     <string name="bottom_nav_favorites">Favorites</string>
     <string name="bottom_nav_more">More</string>
+    <!-- Movie Toolbar -->
+    <string name="movie_toolbar_title_content">Movies</string>
+    <string name="movie_toolbar_genres_spinner_content">Genres</string>
+    <!-- Tv Toolbar -->
+    <string name="tv_toolbar_title_content">TV Shows</string>
+    <string name="tv_toolbar_networks_spinner_content">Networks</string>
+    <string name="tv_toolbar_genres_spinner_content">Genres</string>
     <!-- Movies List Fragment resources -->
     <string name="popular_movies_title">Popular Movies</string>
     <string name="top_rated_movies_title">Top Rated Movies</string>
@@ -18,43 +25,57 @@
     <string name="popular_tv_title">Popular TV</string>
     <string name="top_rated_tv_title">Top Rated TV</string>
     <string name="trending_tv_title">Trending TV</string>
-    <!-- Movie Detail Fragment resources -->
-    <string name="movie_poster_description">Movie poster.</string>
-    <string name="rating_icon_description">Rating icon.</string>
-    <string name="next_icon_description">Next icon.</string>
-    <string name="dot_separator_description">Dot separator.</string>
-    <string name="navigate_up_button_description">Navigate up button.</string>
-    <string name="movie_header_background_image_description">Movie header background image.</string>
-    <string name="play_showcase_tv_show_description">Play showcase tv show trailer.</string>
-    <string name="empty_similar_list_message">Looks like there is nothing quiet like this yet!</string>
-    <string name="video_no_available_toast_content">Video not available.</string>
-    <string name="link_not_available_toast_content">Link not available.</string>
-    <string name="progress_bar_text_content">Loading</string>
-    <string name="showcase_subtitle_content">Trending Now</string>
-    <!-- TV Detail Fragment resources -->
-    <string name="tv_header_background_image_description">TV show header background image.</string>
-    <string name="tv_poster_description">TV show poster.</string>
-    <!-- Showcase item resources -->
-    <string name="showcase_movie_poster_description">Showcase movie poster.</string>
-    <string name="showcase_add_to_favorite_description">Add showcase item to favorites button.</string>
-    <string name="play_showcase_movie_description">Play showcase item trailer.</string>
-    <string name="showcase_goto_details_description">Go to showcase item details.</string>
-    <string name="showcase_tv_poster_description">Showcase tv show poster.</string>
-    <string name="add_favorites_button_content">Add Favorites</string>
-    <string name="showcase_details_content">See Details</string>
-    <!-- Search Fragment resources -->
-    <string name="search_icon_description">Search icon.</string>
-    <string name="et_search_hint_content">Search for a keyword</string>
-    <string name="more_title_content">More Like This</string>
     <string name="popular_on_netflix_tv_title">Popular on Netflix</string>
     <string name="popular_on_hulu_tv_title">Popular on Hulu</string>
     <string name="popular_on_disney_plus_tv_title">Popular on Disney Plus</string>
-    <!-- Favorites Fragment resources -->
-    <string name="overview_title_content">Overview</string>
-    <string name="binge_status_title_content">Binge Status</string>
+    <!-- Other List resources -->
+    <string name="list_item_see_more_content">See More</string>
+    <string name="capsule_reviews_logo_content">Capsule Reviews logo</string>
+    <!-- Movie Detail Fragment resources -->
+    <string name="movie_poster_description">Movie poster.</string>
+    <string name="movie_header_background_image_description">Movie header background image.</string>
+    <string name="budget_title_content">Budget</string>
+    <string name="revenue_title_content">Revenue</string>
+    <!-- TV Detail Fragment resources -->
+    <string name="tv_header_background_image_description">TV show header background image.</string>
+    <string name="tv_poster_description">TV show poster.</string>
     <string name="created_by_title_content">Created By</string>
     <string name="status_title_content">Status</string>
     <string name="number_of_seasons_title_content">Number of Seasons</string>
     <string name="number_of_episodes_title_content">Number Of Episodes</string>
     <string name="networks_title_content">Networks</string>
+    <string name="overview_title_content">Overview</string>
+    <string name="tv_info_episodes_runtime_title_content">Episode Runtime</string>
+    <string name="tv_info_type_title_content">Type</string>
+    <string name="tv_info_network_title_content">Network</string>
+    <!-- Other Detail resources -->
+    <string name="rating_icon_description">Rating icon.</string>
+    <string name="next_icon_description">Next icon.</string>
+    <string name="dot_separator_description">Dot separator.</string>
+    <string name="navigate_up_button_description">Navigate up button.</string>
+    <string name="imdb_link_title_content">See on IMDB</string>
+    <string name="more_title_content">More Like This</string>
+    <string name="empty_similar_list_message">Looks like there is nothing quiet like this yet!</string>
+    <!-- Toast warnings resources -->
+    <string name="video_no_available_toast_content">Video not available.</string>
+    <string name="link_not_available_toast_content">Link not available.</string>
+    <!-- Progress Bar resources -->
+    <string name="progress_bar_text_content">Loading</string>
+    <!-- Showcase item resources -->
+    <string name="showcase_movie_poster_description">Showcase movie poster.</string>
+    <string name="showcase_add_to_favorite_description">Add showcase item to favorites button.</string>
+    <string name="play_showcase_movie_description">Play showcase item trailer.</string>
+    <string name="play_showcase_tv_show_description">Play showcase tv show trailer.</string>
+    <string name="showcase_goto_details_description">Go to showcase item details.</string>
+    <string name="showcase_tv_poster_description">Showcase tv show poster.</string>
+    <string name="showcase_subtitle_content">Trending Now</string>
+    <string name="add_favorites_button_content">Favorite</string>
+    <string name="showcase_details_content">Details</string>
+    <!-- Search Fragment resources -->
+    <string name="search_icon_description">Search icon.</string>
+    <string name="et_search_hint_content">Search for a keyword</string>
+    <string name="search_spinner_title_content">Movies</string>
+    <!-- Favorites Fragment resources -->
+    <string name="favorites_toolbar_title_content">Favorites</string>
+    <string name="binge_status_title_content">Binge Status</string>
 </resources>
