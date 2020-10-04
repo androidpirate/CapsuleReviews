@@ -5,7 +5,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#000000"
     tools:context=".ui.MainActivity">
 
     <androidx.core.widget.NestedScrollView
@@ -20,25 +19,22 @@
 
             <include
                 layout="@layout/movie_showcase"
-                android:layout_width="match_parent"
+                android:layout_width="@dimen/match_constraint"
                 android:layout_height="@dimen/showcase_height"
                 android:layout_marginBottom="@dimen/margin_16"
                 app:layout_constraintBottom_toTopOf="@id/popularTitle"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintVertical_bias="1.0"/>
 
             <TextView
+                style="@style/SubTitleBoldTextStyle"
                 android:id="@+id/popularTitle"
                 android:layout_width="@dimen/match_constraint"
                 android:layout_height="wrap_content"
                 android:text="@string/popular_movies_title"
-                android:textSize="@dimen/list_title"
-                android:textStyle="bold"
-                android:textColor="#FDFDFD"
-                android:layout_marginTop="@dimen/margin_32"
                 android:layout_marginBottom="@dimen/margin_16"
                 android:layout_marginStart="@dimen/margin_16"
                 app:layout_constraintStart_toStartOf="parent"
@@ -48,11 +44,11 @@
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvPopular"
-                android:layout_width="match_parent"
+                android:layout_width="@dimen/match_constraint"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 android:nestedScrollingEnabled="false"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/popularTitle"
@@ -60,13 +56,11 @@
                 tools:listitem="@layout/list_item"/>
 
             <TextView
+                style="@style/SubTitleBoldTextStyle"
                 android:id="@+id/topRatedTitle"
                 android:layout_width="@dimen/match_constraint"
                 android:layout_height="wrap_content"
                 android:text="@string/top_rated_movies_title"
-                android:textSize="@dimen/list_title"
-                android:textStyle="bold"
-                android:textColor="#FDFDFD"
                 android:layout_marginTop="@dimen/margin_32"
                 android:layout_marginBottom="@dimen/margin_16"
                 android:layout_marginStart="@dimen/margin_16"
@@ -77,11 +71,11 @@
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvTopRated"
-                android:layout_width="match_parent"
+                android:layout_width="@dimen/match_constraint"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 android:nestedScrollingEnabled="false"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/topRatedTitle"
@@ -89,13 +83,11 @@
                 tools:listitem="@layout/list_item"/>
 
             <TextView
+                style="@style/SubTitleBoldTextStyle"
                 android:id="@+id/nowPlayingTitle"
                 android:layout_width="@dimen/match_constraint"
                 android:layout_height="wrap_content"
                 android:text="@string/now_playing_movies_title"
-                android:textSize="@dimen/list_title"
-                android:textStyle="bold"
-                android:textColor="#FDFDFD"
                 android:layout_marginTop="@dimen/margin_32"
                 android:layout_marginBottom="@dimen/margin_16"
                 android:layout_marginStart="@dimen/margin_16"
@@ -106,11 +98,11 @@
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvNowPlaying"
-                android:layout_width="match_parent"
+                android:layout_width="@dimen/match_constraint"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 android:nestedScrollingEnabled="false"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/nowPlayingTitle"
@@ -118,13 +110,11 @@
                 tools:listitem="@layout/list_item"/>
 
             <TextView
+                style="@style/SubTitleBoldTextStyle"
                 android:id="@+id/upcomingTitle"
                 android:layout_width="@dimen/match_constraint"
                 android:layout_height="wrap_content"
                 android:text="@string/upcoming_movies_title"
-                android:textSize="@dimen/list_title"
-                android:textStyle="bold"
-                android:textColor="#FDFDFD"
                 android:layout_marginTop="@dimen/margin_32"
                 android:layout_marginBottom="@dimen/margin_16"
                 android:layout_marginStart="@dimen/margin_16"
@@ -135,11 +125,11 @@
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvUpcoming"
-                android:layout_width="match_parent"
+                android:layout_width="@dimen/match_constraint"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 android:nestedScrollingEnabled="false"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/upcomingTitle"
@@ -147,13 +137,11 @@
                 tools:listitem="@layout/list_item"/>
 
             <TextView
+                style="@style/SubTitleBoldTextStyle"
                 android:id="@+id/trendingTitle"
                 android:layout_width="@dimen/match_constraint"
                 android:layout_height="wrap_content"
                 android:text="@string/trending_movies_title"
-                android:textSize="@dimen/list_title"
-                android:textStyle="bold"
-                android:textColor="#FDFDFD"
                 android:layout_marginTop="@dimen/margin_32"
                 android:layout_marginBottom="@dimen/margin_16"
                 android:layout_marginStart="@dimen/margin_16"
@@ -164,11 +152,11 @@
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvTrending"
-                android:layout_width="match_parent"
+                android:layout_width="@dimen/match_constraint"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 android:nestedScrollingEnabled="false"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/trendingTitle"
@@ -180,8 +168,8 @@
     </androidx.core.widget.NestedScrollView>
 
     <include
-        android:id="@+id/loadingScreen"
         layout="@layout/loading_screen"
+        android:id="@+id/loadingScreen"
         android:layout_width="@dimen/match_constraint"
         android:layout_height="@dimen/match_constraint"
         android:visibility="gone"
@@ -191,4 +179,3 @@
         app:layout_constraintBottom_toBottomOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
-

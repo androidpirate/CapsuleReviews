@@ -177,7 +177,7 @@ class TvShowsListFragment : Fragment(), ItemClickListener {
                 BuildConfig.MOVIE_DB_IMAGE_BASE_URL +
                         Constants.SHOWCASE_POSTER_WIDTH +
                         showcaseTvShowPosterPath)
-            .placeholder(R.drawable.ic_image_placeholder)
+            .placeholder(R.drawable.ic_image_placeholder_white)
             .into(scPoster)
     }
 

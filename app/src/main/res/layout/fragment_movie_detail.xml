@@ -17,50 +17,53 @@
             android:layout_height="wrap_content">
 
             <include
+                layout="@layout/movie_header"
                 android:id="@+id/movieHeader"
                 android:layout_width="@dimen/match_constraint"
                 android:layout_height="wrap_content"
-                layout="@layout/movie_header"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"/>
 
             <include
+                layout="@layout/movie_summary"
                 android:id="@+id/movieSummary"
                 android:layout_width="@dimen/match_constraint"
                 android:layout_height="wrap_content"
-                layout="@layout/movie_summary"
-                android:layout_margin="@dimen/margin_16"
+                android:layout_marginTop="@dimen/margin_16"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/movieHeader"/>
+                app:layout_constraintTop_toBottomOf="@+id/movieHeader"
+                app:layout_constraintBottom_toTopOf="@id/actionBar"/>
 
             <include
+                layout="@layout/detail_action_bar"
                 android:id="@+id/actionBar"
                 android:layout_width="@dimen/match_constraint"
                 android:layout_height="wrap_content"
-                layout="@layout/detail_action_bar"
-                android:layout_margin="@dimen/margin_16"
+                android:layout_marginTop="@dimen/margin_16"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/movieSummary"/>
+                app:layout_constraintTop_toBottomOf="@id/movieSummary"
+                app:layout_constraintBottom_toTopOf="@id/movieInfo"/>
 
             <include
+                layout="@layout/movie_info"
                 android:id="@+id/movieInfo"
                 android:layout_width="@dimen/match_constraint"
                 android:layout_height="wrap_content"
-                layout="@layout/movie_info"
-                android:layout_margin="@dimen/margin_16"
+                android:layout_marginTop="@dimen/margin_8"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/actionBar"/>
+                app:layout_constraintTop_toBottomOf="@id/actionBar"
+                app:layout_constraintBottom_toTopOf="@id/movieSimilar"/>
 
             <include
+                layout="@layout/detail_similar"
                 android:id="@+id/movieSimilar"
                 android:layout_width="@dimen/match_constraint"
                 android:layout_height="wrap_content"
-                layout="@layout/detail_similar"
-                android:layout_margin="@dimen/margin_16"
+                android:layout_marginTop="@dimen/margin_8"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/movieInfo"/>
@@ -70,8 +73,8 @@
     </androidx.core.widget.NestedScrollView>
 
     <include
-        android:id="@+id/loadingScreen"
         layout="@layout/loading_screen"
+        android:id="@+id/loadingScreen"
         android:layout_width="@dimen/match_constraint"
         android:layout_height="@dimen/match_constraint"
         android:visibility="gone"

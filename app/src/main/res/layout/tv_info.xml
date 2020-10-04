@@ -4,181 +4,165 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:paddingStart="@dimen/padding_16"
+    android:paddingEnd="@dimen/padding_16">
 
     <TextView
+        style="@style/SubHeadBoldTextStyle"
         android:id="@+id/createdByTitle"
         android:layout_width="@dimen/match_constraint"
         android:layout_height="wrap_content"
-        android:text="Created By: "
-        android:textColor="#FDFDFD"
-        android:textSize="22sp"
-        android:textStyle="bold"
+        android:text="@string/created_by_title_content"
         android:layout_marginTop="@dimen/margin_16"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 
     <TextView
+        style="@style/ContentTextStyle"
         android:id="@+id/createdBy"
         android:layout_width="@dimen/match_constraint"
         android:layout_height="wrap_content"
-        tools:text="Martha Kaufman, David Crane"
-        android:textColor="#FDFDFD"
-        android:textSize="16sp"
-        android:layout_marginTop="@dimen/margin_16"
+        android:layout_marginTop="@dimen/margin_8"
         app:layout_constraintTop_toBottomOf="@id/createdByTitle"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:text="Martha Kaufman, David Crane"/>
 
     <TextView
+        style="@style/SubHeadBoldTextStyle"
         android:id="@+id/overviewTitle"
         android:layout_width="@dimen/match_constraint"
         android:layout_height="wrap_content"
-        android:text="Overview"
-        android:textColor="#FDFDFD"
-        android:textSize="22sp"
-        android:textStyle="bold"
+        android:text="@string/overview_title_content"
         android:layout_marginTop="@dimen/margin_16"
         app:layout_constraintTop_toBottomOf="@id/createdBy"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"/>
 
     <TextView
+        style="@style/ContentTextStyle"
         android:id="@+id/overview"
         android:layout_width="@dimen/match_constraint"
         android:layout_height="wrap_content"
-        android:textColor="#FDFDFD"
-        android:textSize="16sp"
-        android:layout_marginTop="@dimen/margin_16"
+        android:layout_marginTop="@dimen/margin_8"
         app:layout_constraintTop_toBottomOf="@id/overviewTitle"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"/>
 
     <TextView
+        style="@style/SubHeadBoldTextStyle"
         android:id="@+id/seasonsTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Number of Seasons: "
-        android:textColor="#FDFDFD"
-        android:textSize="18sp"
-        android:textStyle="bold"
+        android:text="@string/number_of_seasons_title_content"
         android:layout_marginTop="@dimen/margin_16"
         app:layout_constraintTop_toBottomOf="@id/overview"
         app:layout_constraintStart_toStartOf="parent"/>
 
     <TextView
+        style="@style/ContentTextStyle"
         android:id="@+id/seasons"
         android:layout_width="@dimen/match_constraint"
         android:layout_height="wrap_content"
-        tools:text="10"
-        android:textColor="#FDFDFD"
-        android:textSize="18sp"
         android:gravity="bottom"
-        android:layout_marginTop="@dimen/margin_16"
-        app:layout_constraintTop_toBottomOf="@id/overview"
-        app:layout_constraintStart_toEndOf="@id/seasonsTitle"/>
+        android:layout_marginTop="@dimen/margin_8"
+        app:layout_constraintTop_toBottomOf="@id/seasonsTitle"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:text="10"/>
 
     <TextView
+        style="@style/SubHeadBoldTextStyle"
         android:id="@+id/episodesTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Number of Episodes: "
-        android:textColor="#FDFDFD"
-        android:textSize="18sp"
-        android:textStyle="bold"
+        android:text="@string/number_of_episodes_title_content"
         android:layout_marginTop="@dimen/margin_16"
         app:layout_constraintTop_toBottomOf="@id/seasons"
         app:layout_constraintStart_toStartOf="parent"/>
 
     <TextView
+        style="@style/ContentTextStyle"
         android:id="@+id/episodes"
         android:layout_width="@dimen/match_constraint"
         android:layout_height="wrap_content"
-        tools:text="236"
-        android:textColor="#FDFDFD"
-        android:textSize="18sp"
-        android:layout_marginTop="@dimen/margin_16"
-        app:layout_constraintTop_toBottomOf="@id/seasons"
-        app:layout_constraintStart_toEndOf="@id/episodesTitle"/>
+        android:layout_marginTop="@dimen/margin_8"
+        app:layout_constraintTop_toBottomOf="@id/episodesTitle"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:text="236"/>
 
     <TextView
+        style="@style/SubHeadBoldTextStyle"
         android:id="@+id/runTimeTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Episode Runtime: "
-        android:textColor="#FDFDFD"
-        android:textSize="18sp"
-        android:textStyle="bold"
+        android:text="@string/tv_info_episodes_runtime_title_content"
         android:layout_marginTop="@dimen/margin_16"
         app:layout_constraintTop_toBottomOf="@id/episodes"
         app:layout_constraintStart_toStartOf="parent"/>
 
     <TextView
+        style="@style/ContentTextStyle"
         android:id="@+id/runTime"
         android:layout_width="@dimen/match_constraint"
         android:layout_height="wrap_content"
-        tools:text="25 mins"
-        android:textColor="#FDFDFD"
-        android:textSize="18sp"
-        android:layout_marginTop="@dimen/margin_16"
-        app:layout_constraintTop_toBottomOf="@id/episodes"
-        app:layout_constraintStart_toEndOf="@id/runTimeTitle"/>
+        android:layout_marginTop="@dimen/margin_8"
+        app:layout_constraintTop_toBottomOf="@id/runTimeTitle"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:text="25 mins"/>
 
     <TextView
+        style="@style/SubHeadBoldTextStyle"
         android:id="@+id/typeTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Type: "
-        android:textColor="#FDFDFD"
-        android:textSize="18sp"
-        android:textStyle="bold"
+        android:text="@string/tv_info_type_title_content"
         android:layout_marginTop="@dimen/margin_16"
         app:layout_constraintTop_toBottomOf="@id/runTime"
         app:layout_constraintStart_toStartOf="parent"/>
 
     <TextView
+        style="@style/ContentTextStyle"
         android:id="@+id/type"
         android:layout_width="@dimen/match_constraint"
         android:layout_height="wrap_content"
-        tools:text="Scripted"
-        android:textColor="#FDFDFD"
-        android:textSize="18sp"
-        android:layout_marginTop="@dimen/margin_16"
-        app:layout_constraintTop_toBottomOf="@id/runTime"
-        app:layout_constraintStart_toEndOf="@id/typeTitle"/>
+        android:layout_marginTop="@dimen/margin_8"
+        app:layout_constraintTop_toBottomOf="@id/typeTitle"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:text="Scripted"/>
 
     <TextView
+        style="@style/SubHeadBoldTextStyle"
         android:id="@+id/networkTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Network: "
-        android:textColor="#FDFDFD"
-        android:textSize="18sp"
-        android:textStyle="bold"
+        android:text="@string/tv_info_network_title_content"
         android:layout_marginTop="@dimen/margin_16"
         app:layout_constraintTop_toBottomOf="@id/type"
         app:layout_constraintStart_toStartOf="parent"/>
 
     <TextView
+        style="@style/ContentTextStyle"
         android:id="@+id/network"
         android:layout_width="@dimen/match_constraint"
         android:layout_height="wrap_content"
-        tools:text="NBC"
-        android:textColor="#FDFDFD"
-        android:textSize="18sp"
-        android:layout_marginTop="@dimen/margin_16"
-        app:layout_constraintTop_toBottomOf="@id/type"
-        app:layout_constraintStart_toEndOf="@id/networkTitle"/>
+        android:layout_marginTop="@dimen/margin_8"
+        app:layout_constraintTop_toBottomOf="@id/networkTitle"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:text="NBC"/>
 
     <TextView
+        style="@style/IMDBLinkStyle"
         android:id="@+id/imdbLink"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="See on IMDB"
-        android:textColor="@color/colorAccent"
-        android:textSize="18sp"
-        android:textStyle="bold"
+        android:text="@string/imdb_link_title_content"
         android:layout_marginTop="@dimen/margin_32"
         app:layout_constraintTop_toBottomOf="@id/network"
         app:layout_constraintStart_toStartOf="parent"/>
@@ -186,11 +170,12 @@
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_next"
+        android:src="@drawable/ic_outline_next_accent"
         android:contentDescription="@string/next_icon_description"
         android:layout_marginTop="@dimen/margin_32"
         android:layout_marginStart="@dimen/margin_8"
         app:layout_constraintStart_toEndOf="@id/imdbLink"
-        app:layout_constraintTop_toBottomOf="@id/network"/>
+        app:layout_constraintTop_toBottomOf="@id/network"
+        app:layout_constraintBottom_toBottomOf="@id/imdbLink"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

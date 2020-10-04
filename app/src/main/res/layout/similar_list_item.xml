@@ -7,11 +7,12 @@
 
     <ImageView
         android:id="@+id/ivSimilarListItem"
-        android:layout_width="140dp"
-        android:layout_height="180dp"
-        android:src="@drawable/ic_image_placeholder"
+        android:layout_width="@dimen/list_item_similar_width"
+        android:layout_height="@dimen/list_item_similar_height"
+        android:src="@drawable/ic_image_placeholder_white"
         android:contentDescription="@string/list_item_preview_description"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 

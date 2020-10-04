@@ -13,7 +13,6 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import androidx.recyclerview.widget.GridLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.github.androidpirate.capsulereviews.BuildConfig
@@ -137,12 +136,12 @@ class TvShowDetailFragment : Fragment(), SimilarContentClickListener {
                 BuildConfig.MOVIE_DB_IMAGE_BASE_URL +
                         Constants.ADAPTER_POSTER_WIDTH +
                         networkTvShow.posterPath)
-            .placeholder(R.drawable.ic_image_placeholder)
+            .placeholder(R.drawable.ic_image_placeholder_white)
             .apply(RequestOptions.bitmapTransform(BlurTransformation(100)))
             .into(tvHeaderBg)
         Glide.with(requireContext())
             .load(BuildConfig.MOVIE_DB_IMAGE_BASE_URL + Constants.ADAPTER_POSTER_WIDTH + networkTvShow.posterPath)
-            .placeholder(R.drawable.ic_image_placeholder)
+            .placeholder(R.drawable.ic_image_placeholder_white)
             .into(tvPoster)
     }
 
@@ -219,7 +218,6 @@ class TvShowDetailFragment : Fragment(), SimilarContentClickListener {
             rvSimilar.visibility = View.INVISIBLE
         } else {
             adapter.submitList(similarShows)
-            rvSimilar.layoutManager = GridLayoutManager(requireContext(), 3)
             if(!flagDecoration) {
                 rvSimilar.addItemDecoration(GridSpacingItemDecoration(4, 30, true))
                 setFlagDecorationOn()

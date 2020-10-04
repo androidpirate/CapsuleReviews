@@ -4,58 +4,56 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="#000000"
     android:paddingBottom="@dimen/padding_16">
 
     <ImageView
         android:id="@+id/logo"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:src="@drawable/ic_logo_filled_white"
+        android:layout_width="@dimen/logo_width"
+        android:layout_height="@dimen/logo_height"
+        android:src="@drawable/ic_filled_logo_white"
+        android:contentDescription="@string/capsule_reviews_logo_content"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"/>
 
     <TextView
+        style="@style/SubHeadBoldTextStyle"
         android:id="@+id/tvToolbarTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="TV"
+        android:text="@string/tv_toolbar_title_content"
         android:gravity="center_vertical"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        android:textColor="#FDFDFD"
+        android:layout_marginStart="@dimen/margin_16"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="@id/logo"
-        android:layout_marginStart="@dimen/margin_64"/>
+        app:layout_constraintStart_toEndOf="@id/logo"/>
 
     <Button
+        style="@style/SubHeadTextStyle"
         android:id="@+id/tvNetworkSpinner"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="#000000"
-        android:text="Networks"
+        android:background="@android:color/transparent"
+        android:text="@string/tv_toolbar_networks_spinner_content"
         android:textAllCaps="false"
-        android:textColor="#FDFDFD"
-        android:textSize="20sp"
+        android:maxLines="1"
         android:drawableEnd="@drawable/ic_filled_dropdown_white"
+        android:layout_marginStart="@dimen/margin_16"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toEndOf="@id/tvToolbarTitle"
-        android:layout_marginStart="@dimen/margin_32"/>
+        app:layout_constraintStart_toEndOf="@id/tvToolbarTitle"/>
 
     <Button
+        style="@style/SubHeadTextStyle"
         android:id="@+id/tvGenreSpinner"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="#000000"
-        android:text="Genres"
+        android:background="@android:color/transparent"
+        android:text="@string/tv_toolbar_genres_spinner_content"
         android:textAllCaps="false"
-        android:textColor="#FDFDFD"
-        android:textSize="20sp"
+        android:maxLines="1"
         android:drawableEnd="@drawable/ic_filled_dropdown_white"
+        android:layout_marginStart="@dimen/margin_16"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toEndOf="@id/tvNetworkSpinner"
-        android:layout_marginStart="@dimen/margin_32"/>
+        app:layout_constraintStart_toEndOf="@id/tvNetworkSpinner"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

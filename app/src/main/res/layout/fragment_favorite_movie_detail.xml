@@ -18,89 +18,80 @@
             android:layout_height="wrap_content">
 
             <TextView
+                style="@style/TitleTextStyle"
                 android:id="@+id/movieTitle"
                 android:layout_width="@dimen/match_constraint"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
-                android:textColor="#FDFDFD"
-                android:textSize="32sp"
-                android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:text="Movie Title" />
+                tools:text="Movie Title"/>
 
             <include
-                android:id="@+id/movieSummary"
                 layout="@layout/movie_summary"
+                android:id="@+id/movieSummary"
                 android:layout_width="@dimen/match_constraint"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_16"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/movieTitle" />
+                app:layout_constraintTop_toBottomOf="@id/movieTitle"/>
 
             <TextView
+                style="@style/UserRatingStyle"
                 android:id="@+id/userRating"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:drawableStartCompat="@drawable/ic_rating"
-                android:textColor="@color/colorAccent"
-                android:textSize="36sp"
-                android:textStyle="bold"
-                tools:text="6.9"
+                app:drawableStartCompat="@drawable/ic_outline_rating_accent"
                 android:drawablePadding="@dimen/padding_8"
                 android:layout_marginTop="@dimen/margin_16"
                 app:layout_constraintHorizontal_bias="0.45"
                 app:layout_constraintTop_toBottomOf="@id/movieSummary"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent" />
+                app:layout_constraintEnd_toEndOf="parent"
+                tools:text="6.9"/>
 
             <TextView
+                style="@style/SubHeadBoldTextStyle"
                 android:id="@+id/bingeStatusTitle"
                 android:layout_width="@dimen/match_constraint"
                 android:layout_height="wrap_content"
-                android:text="@string/binge_status_title_content"
-                android:textColor="#FDFDFD"
-                android:textSize="22sp"
-                android:textStyle="bold"
                 android:gravity="start"
+                android:text="@string/binge_status_title_content"
                 android:layout_marginTop="@dimen/margin_16"
                 app:layout_constraintTop_toBottomOf="@id/userRating"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"/>
 
             <TextView
+                style="@style/ContentTextStyle"
                 android:id="@+id/bingeStatus"
                 android:layout_width="@dimen/match_constraint"
                 android:layout_height="wrap_content"
-                android:textColor="#FDFDFD"
-                android:textSize="16sp"
-                android:layout_marginTop="@dimen/margin_16"
+                android:layout_marginTop="@dimen/margin_8"
                 app:layout_constraintTop_toBottomOf="@id/bingeStatusTitle"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"/>
 
             <TextView
+                style="@style/SubHeadBoldTextStyle"
                 android:id="@+id/overviewTitle"
                 android:layout_width="@dimen/match_constraint"
                 android:layout_height="wrap_content"
+                android:gravity="start"
                 android:text="@string/overview_title_content"
-                android:textColor="#FDFDFD"
-                android:textSize="22sp"
-                android:textStyle="bold"
                 android:layout_marginTop="@dimen/margin_16"
                 app:layout_constraintTop_toBottomOf="@id/bingeStatus"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"/>
 
             <TextView
+                style="@style/ContentTextStyle"
                 android:id="@+id/overview"
                 android:layout_width="@dimen/match_constraint"
                 android:layout_height="wrap_content"
-                android:textColor="#FDFDFD"
-                android:textSize="16sp"
-                android:layout_marginTop="@dimen/margin_16"
+                android:layout_marginTop="@dimen/margin_8"
                 app:layout_constraintTop_toBottomOf="@id/overviewTitle"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"/>

@@ -10,10 +10,10 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:text="Displays settings and additional info."
         android:gravity="center_vertical|center_horizontal"
         android:textColor="@color/colorWhite"
         android:textSize="22sp"
-        android:textStyle="bold"
-        android:text="Displays settings and additional info."/>
+        android:textStyle="bold"/>
 
 </FrameLayout>

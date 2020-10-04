@@ -153,7 +153,7 @@ class MoviesListFragment : Fragment(), ItemClickListener {
                 BuildConfig.MOVIE_DB_IMAGE_BASE_URL +
                         Constants.SHOWCASE_POSTER_WIDTH +
                         showCaseMoviePosterPath)
-            .placeholder(R.drawable.ic_image_placeholder)
+            .placeholder(R.drawable.ic_image_placeholder_white)
             .into(scPoster)
     }
 

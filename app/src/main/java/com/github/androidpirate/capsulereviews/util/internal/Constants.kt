@@ -44,5 +44,14 @@ public final class Constants {
         // Binge status Alert Dialog constants
         const val BINGE_STATUS_ALERT_DIALOG_TITLE = "Select Binge Status"
         const val ALERT_DIALOG_CANCEL = "CANCEL"
+        // ContentFormatter constants
+        const val NO_DATA_AVAILABLE = "Data not available."
+        const val RELEASE_DATE_DELIMITER = "-"
+        const val RELEASE_DATE_YEAR = 0
+        const val RELEASE_DATE_MONTH = 1
+        const val RELEASE_DATE_DAY = 2
+        const val MOVIE_RUNTIME_HOUR_UNIT = "h"
+        const val MOVIE_RUNTIME_MINUTE_UNIT = "m"
+        const val TV_SHOW_RUNTIME_UNIT = "mins"
     }
 }

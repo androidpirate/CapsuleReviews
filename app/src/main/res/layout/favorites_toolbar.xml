@@ -4,20 +4,17 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="#000000"
     android:paddingBottom="@dimen/padding_16">
 
     <TextView
+        style="@style/SubTitleBoldTextStyle"
         android:id="@+id/favoriteToolbarTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Favorites"
+        android:text="@string/favorites_toolbar_title_content"
         android:gravity="center_vertical"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        android:textColor="#FDFDFD"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -146,7 +146,6 @@ class PagedTvShowsListFragment : Fragment(), PagedItemClickListener {
     }
 
     private fun setRecyclerView() {
-        rvPagedTvShows.layoutManager = GridLayoutManager(requireContext(), 3)
         if(!flagDecoration) {
             rvPagedTvShows.addItemDecoration(GridSpacingItemDecoration(4, 30, true))
             setFlagDecorationOn()

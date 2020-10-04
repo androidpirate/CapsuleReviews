@@ -123,7 +123,6 @@ class PagedMoviesListFragment : Fragment(), PagedItemClickListener {
     }
 
     private fun setRecyclerView() {
-        rvPagedMovies.layoutManager = GridLayoutManager(requireContext(), 3)
         if(!flagDecoration) {
             rvPagedMovies.addItemDecoration(GridSpacingItemDecoration(4, 30, true))
             setFlagDecorationOn()

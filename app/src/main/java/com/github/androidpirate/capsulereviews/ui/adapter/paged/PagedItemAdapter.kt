@@ -45,7 +45,7 @@ class PagedItemAdapter<T>(private val fragment: FragmentType, val clickListener:
         private fun setItemThumbnail(posterPath: String) {
             Glide.with(itemView.context)
                 .load(BuildConfig.MOVIE_DB_IMAGE_BASE_URL + Constants.ADAPTER_POSTER_WIDTH+ posterPath)
-                .placeholder(R.drawable.ic_image_placeholder)
+                .placeholder(R.drawable.ic_image_placeholder_white)
                 .into(itemView.ivListItem)
         }
 

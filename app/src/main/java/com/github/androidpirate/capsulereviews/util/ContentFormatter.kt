@@ -3,36 +3,29 @@ package com.github.androidpirate.capsulereviews.util
 import com.github.androidpirate.capsulereviews.data.network.response.genre.NetworkGenre
 import com.github.androidpirate.capsulereviews.data.network.response.tvShow.NetworkCreatedBy
 import com.github.androidpirate.capsulereviews.data.network.response.tvShow.NetworkNetworkInfo
+import com.github.androidpirate.capsulereviews.util.internal.Constants
 import java.text.DecimalFormat
 
 class ContentFormatter {
 
     companion object {
-        private const val NO_DATA_AVAILABLE = "No data available."
-        private const val RELEASE_DATE_DELIMITER = "-"
-        private const val RELEASE_DATE_YEAR = 0
-        private const val RELEASE_DATE_MONTH = 1
-        private const val RELEASE_DATE_DAY = 2
-        private const val MOVIE_RUNTIME_HOUR_UNIT = "h"
-        private const val MOVIE_RUNTIME_MINUTE_UNIT = "m"
-        private const val TV_SHOW_RUNTIME_UNIT = "mins"
 
         fun formatReleaseDate(releaseDate: String): String {
-            val dateArray = releaseDate.split(RELEASE_DATE_DELIMITER)
-            val year = dateArray[RELEASE_DATE_YEAR]
-            val month = dateArray[RELEASE_DATE_MONTH]
-            val day = dateArray[RELEASE_DATE_DAY]
+            val dateArray = releaseDate.split(Constants.RELEASE_DATE_DELIMITER)
+            val year = dateArray[Constants.RELEASE_DATE_YEAR]
+            val month = dateArray[Constants.RELEASE_DATE_MONTH]
+            val day = dateArray[Constants.RELEASE_DATE_DAY]
             return "$day/$month/$year"
         }
 
         fun formatMovieRunTime(runTime: Int): String {
             val hour = runTime / 60
             val minute = runTime % 60
-            return "$hour $MOVIE_RUNTIME_HOUR_UNIT $minute $MOVIE_RUNTIME_MINUTE_UNIT"
+            return "$hour ${Constants.MOVIE_RUNTIME_HOUR_UNIT} $minute ${Constants.MOVIE_RUNTIME_MINUTE_UNIT}"
         }
 
         fun formatTvShowRunTime(runTime: Int): String {
-            return "$runTime $TV_SHOW_RUNTIME_UNIT"
+            return "$runTime ${Constants.TV_SHOW_RUNTIME_UNIT}"
         }
 
         fun formatGenres(networkGenres: List<NetworkGenre>): String {
@@ -52,7 +45,7 @@ class ContentFormatter {
                 val formatter = DecimalFormat("#,###")
                 "$ ${formatter.format(budget)}"
             } else {
-                NO_DATA_AVAILABLE
+                Constants.NO_DATA_AVAILABLE
             }
         }
 
@@ -61,7 +54,7 @@ class ContentFormatter {
                 val formatter = DecimalFormat("#,###")
                 "$ ${formatter.format(revenue)}"
             } else {
-                NO_DATA_AVAILABLE
+                Constants.NO_DATA_AVAILABLE
             }
         }
 
