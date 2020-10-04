@@ -4,27 +4,27 @@
 
     <item
         android:id="@+id/moviesListFragment"
-        android:icon="@drawable/ic_outline_movie_black"
+        android:icon="@drawable/ic_outline_movie_white"
         android:title="@string/bottom_nav_movies"/>
 
     <item
         android:id="@+id/tvShowsListFragment"
-        android:icon="@drawable/ic_outline_tv_black"
+        android:icon="@drawable/ic_outline_tv_white"
         android:title="@string/bottom_nav_tv_shows"/>
 
     <item
         android:id="@+id/searchFragment"
-        android:icon="@drawable/ic_outline_search_black"
+        android:icon="@drawable/ic_outline_search_white"
         android:title="@string/bottom_nav_discover"/>
 
     <item
         android:id="@+id/favoritesFragment"
-        android:icon="@drawable/ic_outline_favorite_black"
+        android:icon="@drawable/ic_outline_favorite_white"
         android:title="@string/bottom_nav_favorites"/>
 
     <item
         android:id="@+id/moreFragment"
-        android:icon="@drawable/ic_outline_more_black"
+        android:icon="@drawable/ic_outline_more_white"
         android:title="@string/bottom_nav_more"/>
 
 </menu>
