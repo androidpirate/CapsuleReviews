@@ -78,4 +78,7 @@
     <!-- Favorites Fragment resources -->
     <string name="favorites_toolbar_title_content">Favorites</string>
     <string name="binge_status_title_content">Binge Status</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="cancel_button_content_description">Cancel movie genre selection.</string>
 </resources>
