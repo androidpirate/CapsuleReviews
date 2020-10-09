@@ -5,19 +5,22 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.github.androidpirate.capsulereviews.R
 import com.github.androidpirate.capsulereviews.ui.adapter.pager.PagerListItemAdapter
 import com.github.androidpirate.capsulereviews.ui.adapter.pager.PagerListItemClickListener
-import com.github.androidpirate.capsulereviews.util.internal.Constants
+import com.github.androidpirate.capsulereviews.ui.dialog.BingeStatusDialogFragment
 import com.github.androidpirate.capsulereviews.viewmodel.FavoritesViewModel
 import com.github.androidpirate.capsulereviews.viewmodel.ViewModelFactory
 import kotlinx.android.synthetic.main.fragment_favorite_tv_shows_list.*
 
-class FavoriteTvShowsListFragment : Fragment(), PagerListItemClickListener {
+class FavoriteTvShowsListFragment :
+    Fragment(),
+    PagerListItemClickListener,
+    BingeStatusDialogFragment.BingeStatusDialogListener {
+
     private lateinit var viewModel: FavoritesViewModel
     private lateinit var adapter: PagerListItemAdapter
 
@@ -53,23 +56,9 @@ class FavoriteTvShowsListFragment : Fragment(), PagerListItemClickListener {
         rvTvShows.adapter = adapter
     }
 
-    private fun showListItemAlertDialog(itemId: Int) {
-        val status = arrayOf(
-            Constants.DEFAULT_BINGE_STATUS,
-            Constants.BINGING_BINGE_STATUS,
-            Constants.SEEN_BINGE_STATUS)
-        val builder: AlertDialog.Builder = AlertDialog
-            .Builder(requireContext(), R.style.BingeStatusAlertDialogTheme)
-        builder.setTitle(Constants.BINGE_STATUS_ALERT_DIALOG_TITLE)
-            .setItems(status) {
-                    _, which ->
-                viewModel.updateFavoriteStatus(status[which], itemId)
-            }
-            .setNegativeButton(Constants.ALERT_DIALOG_CANCEL) {
-                    dialog, _ ->
-                dialog.cancel()
-            }
-        builder.show()
+    private fun showBingeStatusDialog(itemId: Int) {
+        val bingeStatusDialog = BingeStatusDialogFragment.newInstance(this, itemId)
+        bingeStatusDialog.show(parentFragmentManager, TAG)
     }
 
     override fun onPagerItemClick(itemId: Int) {
@@ -82,10 +71,16 @@ class FavoriteTvShowsListFragment : Fragment(), PagerListItemClickListener {
     }
 
     override fun onChangeStatusClick(itemId: Int) {
-        showListItemAlertDialog(itemId)
+        showBingeStatusDialog(itemId)
+    }
+
+    override fun onStatusSelected(status: String, itemId: Int) {
+        viewModel.updateFavoriteStatus(status, itemId)
     }
 
     companion object {
+        const val TAG = "FavoriteTvShowsListFragment"
+
         fun newInstance(): FavoriteTvShowsListFragment {
             return FavoriteTvShowsListFragment()
         }
