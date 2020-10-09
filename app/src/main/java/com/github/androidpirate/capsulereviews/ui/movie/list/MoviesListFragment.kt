@@ -19,6 +19,7 @@ import com.github.androidpirate.capsulereviews.data.db.entity.DBMovie
 import com.github.androidpirate.capsulereviews.data.db.entity.DBMovieShowcase
 import com.github.androidpirate.capsulereviews.ui.adapter.list.ListItemAdapter
 import com.github.androidpirate.capsulereviews.ui.adapter.list.ItemClickListener
+import com.github.androidpirate.capsulereviews.ui.dialog.MovieGenresDialogFragment
 import com.github.androidpirate.capsulereviews.util.internal.Constants
 import com.github.androidpirate.capsulereviews.util.internal.FragmentType.*
 import com.github.androidpirate.capsulereviews.util.internal.GenericSortType
@@ -31,8 +32,10 @@ import com.github.androidpirate.capsulereviews.viewmodel.ViewModelFactory
 import com.github.androidpirate.capsulereviews.viewmodel.MoviesListViewModel
 import kotlinx.android.synthetic.main.fragment_movies_list.*
 import kotlinx.android.synthetic.main.movie_showcase.*
+import kotlinx.android.synthetic.main.movie_toolbar.*
+import java.util.*
 
-class MoviesListFragment : Fragment(), ItemClickListener {
+class MoviesListFragment : Fragment(), ItemClickListener, MovieGenresDialogFragment.MovieGenresDialogListener {
     private lateinit var popularNetworkMoviesAdapter: ListItemAdapter<DBMovie>
     private lateinit var topRatedNetworkMoviesAdapter: ListItemAdapter<DBMovie>
     private lateinit var nowPlayingNetworkMoviesAdapter: ListItemAdapter<DBMovie>
@@ -139,6 +142,9 @@ class MoviesListFragment : Fragment(), ItemClickListener {
         rvNowPlaying.adapter = nowPlayingNetworkMoviesAdapter
         rvUpcoming.adapter = upcomingNetworkMoviesAdapter
         rvTrending.adapter = trendingNetworkMoviesAdapter
+        movieGenreSpinner.setOnClickListener {
+            showMovieGenresAlertDialog()
+        }
     }
 
     private fun setShowcaseMovie(showCaseMovie: DBMovieShowcase) {
@@ -188,9 +194,14 @@ class MoviesListFragment : Fragment(), ItemClickListener {
     }
 
     private fun onShowcaseMovieClick(showCaseMovie: DBMovieShowcase) {
-        val action = MoviesListFragmentDirections
-            .actionMoviesListToDetail(showCaseMovie.movieId)
+        val action = MoviesListFragmentDirections.actionMoviesListToDetail(showCaseMovie.movieId)
         findNavController().navigate(action)
+    }
+
+    private fun showMovieGenresAlertDialog() {
+        val genresDialog = MovieGenresDialogFragment
+            .newInstance(this, Constants.DEFAULT_SELECTED_POSITION)
+        genresDialog.show(requireActivity().supportFragmentManager, Constants.MOVIES_LIST_FRAG_TAG)
     }
 
     private fun navigateToPagedMoviesList(action: NavDirections) {
@@ -240,5 +251,11 @@ class MoviesListFragment : Fragment(), ItemClickListener {
                     .actionMoviesListToDetail((item as DBMovie).id)
                 navigateToDetails(action)
             }
+    }
+
+    override fun onGenreSelected(genre: GenreType) {
+        val action = MoviesListFragmentDirections
+            .actionMoviesListToPagedMovies(POPULAR, genre)
+        navigateToPagedMoviesList(action)
     }
 }
