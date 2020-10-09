@@ -1,41 +1,41 @@
 package com.github.androidpirate.capsulereviews.viewmodel
 
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
+import androidx.paging.PagedList
+import com.github.androidpirate.capsulereviews.data.network.response.movies.NetworkMoviesListItem
 import com.github.androidpirate.capsulereviews.data.repo.MoviesRepository
+import com.github.androidpirate.capsulereviews.util.internal.GenericSortType
 import com.github.androidpirate.capsulereviews.util.internal.GenreType.*
 import com.github.androidpirate.capsulereviews.util.internal.GenericSortType.*
+import com.github.androidpirate.capsulereviews.util.internal.GenreType
 import com.github.androidpirate.capsulereviews.util.internal.SortType.*
 
-class PagedMoviesListViewModel(repo: MoviesRepository) : ViewModel() {
+class PagedMoviesListViewModel(private val repo: MoviesRepository) : ViewModel() {
 
-    val popularMovies = repo.getPagedMovies(
+    val genericSort = MutableLiveData<GenericSortType>(POPULAR)
+
+    fun setGenericSort(genericSortType: GenericSortType) = apply { genericSort.value = genericSortType }
+
+    val moviesByGenericSortType: LiveData<PagedList<NetworkMoviesListItem>> =
+        Transformations.switchMap(genericSort, ::getMoviesByGenericSort)
+
+    private fun getMoviesByGenericSort(genericSort: GenericSortType) = repo.getPagedMovies(
+        scope = viewModelScope,
+        genericSort = genericSort,
+        sort = POPULAR_DESCENDING,
+        genre = ALL
+    )
+
+    val genre = MutableLiveData<GenreType>(ALL)
+
+    fun setGenre(movieGenre: GenreType) = apply { genre.value = movieGenre }
+
+    val moviesByGenre: LiveData<PagedList<NetworkMoviesListItem>> =
+        Transformations.switchMap(genre, ::getMoviesByGenre)
+    private fun getMoviesByGenre(genre: GenreType) = repo.getPagedMovies(
         scope = viewModelScope,
         genericSort = POPULAR,
         sort = POPULAR_DESCENDING,
-        genre = ALL)
-
-    val topRatedMovies = repo.getPagedMovies(
-        scope = viewModelScope,
-        genericSort = TOP_RATED,
-        sort = POPULAR_DESCENDING,
-        genre = ALL)
-
-    val nowPlayingMovies = repo.getPagedMovies(
-        scope = viewModelScope,
-        genericSort = NOW_PLAYING,
-        sort = POPULAR_DESCENDING,
-        genre = ALL)
-
-    val upcomingMovies = repo.getPagedMovies(
-        scope = viewModelScope,
-        genericSort = UPCOMING,
-        sort = POPULAR_DESCENDING,
-        genre = ALL)
-
-    val trendingMovies = repo.getPagedMovies(
-        scope = viewModelScope,
-        genericSort = TRENDING,
-        sort = POPULAR_DESCENDING,
-        genre = ALL)
+        genre = genre
+    )
 }

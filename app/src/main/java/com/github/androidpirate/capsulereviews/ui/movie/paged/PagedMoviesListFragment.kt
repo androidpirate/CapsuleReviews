@@ -9,33 +9,37 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import androidx.recyclerview.widget.GridLayoutManager
 import com.github.androidpirate.capsulereviews.R
 import com.github.androidpirate.capsulereviews.data.network.response.movies.NetworkMoviesListItem
 import com.github.androidpirate.capsulereviews.ui.adapter.paged.PagedItemAdapter
 import com.github.androidpirate.capsulereviews.util.GridSpacingItemDecoration
 import com.github.androidpirate.capsulereviews.ui.adapter.paged.PagedItemClickListener
+import com.github.androidpirate.capsulereviews.ui.dialog.MovieGenresDialogFragment
 import com.github.androidpirate.capsulereviews.util.internal.Constants
 import com.github.androidpirate.capsulereviews.util.internal.FragmentType.*
-import com.github.androidpirate.capsulereviews.util.internal.GenericSortType
-import com.github.androidpirate.capsulereviews.util.internal.GenericSortType.*
+import com.github.androidpirate.capsulereviews.util.internal.GenreType
 import com.github.androidpirate.capsulereviews.viewmodel.PagedMoviesListViewModel
 import com.github.androidpirate.capsulereviews.viewmodel.ViewModelFactory
 import kotlinx.android.synthetic.main.fragment_paged_movies_list.*
 import kotlinx.android.synthetic.main.paged_movies_toolbar.*
 
-class PagedMoviesListFragment : Fragment(), PagedItemClickListener {
+class PagedMoviesListFragment :
+    Fragment(),
+    PagedItemClickListener,
+    MovieGenresDialogFragment.MovieGenresDialogListener {
+
     private val args: PagedMoviesListFragmentArgs by navArgs()
     private lateinit var viewModel: PagedMoviesListViewModel
     private lateinit var adapter: PagedItemAdapter<NetworkMoviesListItem>
-    private lateinit var genericSort: GenericSortType
     private var flagDecoration = false
+    private var moviesByGenre = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val factory = ViewModelFactory(requireActivity().application)
         viewModel = ViewModelProvider(this, factory).get(PagedMoviesListViewModel::class.java)
-        genericSort = args.genericSortType
+        viewModel.setGenericSort(args.genericSortType)
+        viewModel.setGenre(args.genreType)
         adapter = PagedItemAdapter(fragment = PAGED_MOVIE_LIST, clickListener = this)
     }
 
@@ -52,46 +56,10 @@ class PagedMoviesListFragment : Fragment(), PagedItemClickListener {
         btUp.setOnClickListener {
             findNavController().navigate(R.id.action_paged_movies_list_to_list)
         }
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        when(genericSort) {
-            POPULAR -> {
-                viewModel.popularMovies.observe(viewLifecycleOwner, Observer {
-                    if(it != null) {
-                        adapter.submitList(it)
-                    }
-                })
-            }
-            TOP_RATED -> {
-                viewModel.topRatedMovies.observe(viewLifecycleOwner, Observer {
-                    if(it != null) {
-                        adapter.submitList(it)
-                    }
-                })
-            }
-            NOW_PLAYING -> {
-                viewModel.nowPlayingMovies.observe(viewLifecycleOwner, Observer {
-                    if(it != null) {
-                        adapter.submitList(it)
-                    }
-                })
-            }
-            UPCOMING -> {
-                viewModel.upcomingMovies.observe(viewLifecycleOwner, Observer {
-                    if(it != null) {
-                        adapter.submitList(it)
-                    }
-                })
-            }
-            TRENDING -> {
-                viewModel.trendingMovies.observe(viewLifecycleOwner, Observer {
-                    if(it != null) {
-                        adapter.submitList(it)
-                    }
-                })
-            }
+        if(args.genreType == GenreType.ALL) {
+            getMoviesByGenericSort()
+        } else {
+            getMoviesByGenre()
         }
         displayContainerScreen()
         setupViews()
@@ -108,21 +76,34 @@ class PagedMoviesListFragment : Fragment(), PagedItemClickListener {
     }
 
     private fun setupViews() {
-        setToolbarTitle()
-        setRecyclerView()
+        setupToolbar()
+        setupRecyclerView()
     }
 
-    private fun setToolbarTitle() {
-        when(genericSort) {
-            POPULAR -> movieToolbarTitle.text = Constants.MOVIE_POPULAR_TITLE
-            TOP_RATED -> movieToolbarTitle.text = Constants.MOVIE_TOP_RATED_TITLE
-            NOW_PLAYING -> movieToolbarTitle.text = Constants.MOVIE_NOW_PLAYING_TITLE
-            UPCOMING -> movieToolbarTitle.text = Constants.MOVIE_UPCOMING_TITLE
-            TRENDING -> movieToolbarTitle.text = Constants.MOVIE_TRENDING_TITLE
+    private fun setupToolbar() {
+        if(moviesByGenre) {
+            displaySpinner()
+            movieGenreSpinner.text = Constants.getMovieGenresKey(args.genreType)
+            movieGenreSpinner.setOnClickListener {
+                showMovieGenresAlertDialog()
+            }
+        } else {
+            displayToolbarTitle()
+            movieToolbarTitle.text = Constants.getGenericSortKey(args.genericSortType)
         }
     }
 
-    private fun setRecyclerView() {
+    private fun displaySpinner() {
+        movieToolbarTitle.visibility = View.GONE
+        movieGenreSpinner.visibility = View.VISIBLE
+    }
+
+    private fun displayToolbarTitle() {
+        movieToolbarTitle.visibility = View.VISIBLE
+        movieGenreSpinner.visibility = View.GONE
+    }
+
+    private fun setupRecyclerView() {
         if(!flagDecoration) {
             rvPagedMovies.addItemDecoration(GridSpacingItemDecoration(4, 30, true))
             setFlagDecorationOn()
@@ -134,9 +115,38 @@ class PagedMoviesListFragment : Fragment(), PagedItemClickListener {
         flagDecoration = true
     }
 
+    private fun getMoviesByGenericSort() {
+        viewModel.moviesByGenericSortType.observe(viewLifecycleOwner, Observer {
+            if(it != null) {
+                adapter.submitList(it)
+            }
+        })
+    }
+
+    private fun getMoviesByGenre() {
+        moviesByGenre = true
+        viewModel.moviesByGenre.observe(viewLifecycleOwner, Observer {
+            if(it != null) {
+                adapter.submitList(it)
+            }
+        })
+    }
+
+    private fun showMovieGenresAlertDialog() {
+        val genrePosition = Constants.getMovieGenrePosition(args.genreType)
+        val genresDialog = MovieGenresDialogFragment.newInstance(this, genrePosition)
+        genresDialog.show(requireActivity().supportFragmentManager, Constants.PAGED_MOVIES_LIST_FRAG_TAG)
+    }
+
     override fun <T> onPagedItemClick(item: T) {
         val action = PagedMoviesListFragmentDirections
             .actionPagedMoviesListToDetail((item as NetworkMoviesListItem).id)
+        findNavController().navigate(action)
+    }
+
+    override fun onGenreSelected(genre: GenreType) {
+        val action = PagedMoviesListFragmentDirections
+            .actionPagedMoviesListToSelf(args.genericSortType, genre)
         findNavController().navigate(action)
     }
 }

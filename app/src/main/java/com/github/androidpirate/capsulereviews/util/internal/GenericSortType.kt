@@ -5,5 +5,11 @@ enum class GenericSortType {
     TOP_RATED,
     UPCOMING,
     NOW_PLAYING,
-    TRENDING
+    TRENDING;
+
+    companion object {
+        fun getAllTypesArray(): Array<GenericSortType> {
+            return arrayOf(POPULAR, TOP_RATED, UPCOMING, NOW_PLAYING, TRENDING)
+        }
+    }
 }
