@@ -11,7 +11,7 @@ import com.github.androidpirate.capsulereviews.util.internal.Constants
 import kotlinx.android.synthetic.main.genres_list_item.view.*
 
 class MovieGenresAdapter(private val listener: GenreClickListener, selectedGenre: Int):
-    RecyclerView.Adapter<MovieGenresAdapter.GenreHolder>() {
+    RecyclerView.Adapter<GenreHolder>() {
 
     private var index = selectedGenre
     private val movieGenres: Array<String> = Constants.getMovieGenresArray()
@@ -43,12 +43,5 @@ class MovieGenresAdapter(private val listener: GenreClickListener, selectedGenre
 
     override fun getItemCount(): Int {
         return movieGenres.size
-    }
-
-    inner class GenreHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
-
-        fun onBindGenre(genre: String) {
-            itemView.genreTitle.text = genre
-        }
     }
 }

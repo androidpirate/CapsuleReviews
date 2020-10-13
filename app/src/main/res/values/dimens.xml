@@ -42,4 +42,6 @@
     <dimen name="logo_height">40dp</dimen>
     <!-- Button More -->
     <dimen name="button_more_height">50dp</dimen>
+    <dimen name="dialog_cancel_button_width">40dp</dimen>
+    <dimen name="dialog_cancel_button_height">40dp</dimen>
 </resources>
