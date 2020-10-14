@@ -33,9 +33,12 @@ import com.github.androidpirate.capsulereviews.viewmodel.MoviesListViewModel
 import kotlinx.android.synthetic.main.fragment_movies_list.*
 import kotlinx.android.synthetic.main.movie_showcase.*
 import kotlinx.android.synthetic.main.movie_toolbar.*
-import java.util.*
 
-class MoviesListFragment : Fragment(), ItemClickListener, MovieGenresDialogFragment.MovieGenresDialogListener {
+class MoviesListFragment :
+    Fragment(),
+    ItemClickListener,
+    MovieGenresDialogFragment.MovieGenresDialogListener {
+
     private lateinit var popularNetworkMoviesAdapter: ListItemAdapter<DBMovie>
     private lateinit var topRatedNetworkMoviesAdapter: ListItemAdapter<DBMovie>
     private lateinit var nowPlayingNetworkMoviesAdapter: ListItemAdapter<DBMovie>
@@ -143,7 +146,7 @@ class MoviesListFragment : Fragment(), ItemClickListener, MovieGenresDialogFragm
         rvUpcoming.adapter = upcomingNetworkMoviesAdapter
         rvTrending.adapter = trendingNetworkMoviesAdapter
         movieGenreSpinner.setOnClickListener {
-            showMovieGenresAlertDialog()
+            showMovieGenresDialog()
         }
     }
 
@@ -198,7 +201,7 @@ class MoviesListFragment : Fragment(), ItemClickListener, MovieGenresDialogFragm
         findNavController().navigate(action)
     }
 
-    private fun showMovieGenresAlertDialog() {
+    private fun showMovieGenresDialog() {
         val genresDialog = MovieGenresDialogFragment
             .newInstance(this, Constants.DEFAULT_SELECTED_POSITION)
         genresDialog.show(requireActivity().supportFragmentManager, Constants.MOVIES_LIST_FRAG_TAG)
