@@ -19,6 +19,7 @@ import com.github.androidpirate.capsulereviews.data.db.entity.DBTvShow
 import com.github.androidpirate.capsulereviews.data.db.entity.DBTvShowShowcase
 import com.github.androidpirate.capsulereviews.ui.adapter.list.ListItemAdapter
 import com.github.androidpirate.capsulereviews.ui.adapter.list.ItemClickListener
+import com.github.androidpirate.capsulereviews.ui.dialog.TvShowGenresDialogFragment
 import com.github.androidpirate.capsulereviews.util.internal.Constants
 import com.github.androidpirate.capsulereviews.util.internal.FragmentType.*
 import com.github.androidpirate.capsulereviews.util.internal.GenericSortType
@@ -31,8 +32,13 @@ import com.github.androidpirate.capsulereviews.viewmodel.TvShowsListViewModel
 import com.github.androidpirate.capsulereviews.viewmodel.ViewModelFactory
 import kotlinx.android.synthetic.main.fragment_tv_shows_list.*
 import kotlinx.android.synthetic.main.tv_showcase.*
+import kotlinx.android.synthetic.main.tv_toolbar.*
 
-class TvShowsListFragment : Fragment(), ItemClickListener {
+class TvShowsListFragment :
+    Fragment(),
+    ItemClickListener,
+    TvShowGenresDialogFragment.TvShowGenresDialogListener{
+
     private lateinit var popularShowsAdapter: ListItemAdapter<DBTvShow>
     private lateinit var topRatedShowsAdapter: ListItemAdapter<DBTvShow>
     private lateinit var trendingShowsAdapter: ListItemAdapter<DBTvShow>
@@ -163,6 +169,9 @@ class TvShowsListFragment : Fragment(), ItemClickListener {
         rvPopularOnNetflix.adapter = popularNetflixAdapter
         rvPopularOnHulu.adapter = popularHuluAdapter
         rvPopularOnDisneyPlus.adapter = popularDisneyPlusAdapter
+        tvGenreSpinner.setOnClickListener {
+            showTvGenresDialog()
+        }
     }
 
     private fun setShowCaseTvShow(showcaseTvShow: DBTvShowShowcase) {
@@ -215,6 +224,12 @@ class TvShowsListFragment : Fragment(), ItemClickListener {
         val action = TvShowsListFragmentDirections
             .actionTvShowsListToDetail(showcaseTvShowId)
         findNavController().navigate(action)
+    }
+
+    private fun showTvGenresDialog() {
+        val genresDialog = TvShowGenresDialogFragment
+            .newInstance(this, Constants.DEFAULT_SELECTED_POSITION)
+        genresDialog.show(requireActivity().supportFragmentManager, Constants.TV_SHOWS_LIST_FRAG_TAG)
     }
 
     private fun navigateToPagedTvShowsList(action: NavDirections) {
@@ -272,4 +287,8 @@ class TvShowsListFragment : Fragment(), ItemClickListener {
             }
     }
 
+    override fun onGenreSelected(genre: GenreType) {
+        val action = TvShowsListFragmentDirections.actionTvShowsListToPagedTvShows(POPULAR, NONE, genre)
+        navigateToPagedTvShowsList(action)
+    }
 }
