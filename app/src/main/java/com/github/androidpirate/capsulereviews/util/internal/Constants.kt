@@ -91,43 +91,16 @@ class Constants {
         const val GENRE_TALK = "Talk"
         const val GENRE_WAR_POLITICS = "War & Politics"
         const val GENRE_TYPE_ERROR_MESSAGE = "No such genre type."
-        // Movie Genre Ids
-        const val MOVIE_ACTION_ID = 28
-        const val MOVIE_ADVENTURE_ID = 12
-        const val MOVIE_ANIMATION_ID = 16
-        const val MOVIE_COMEDY_ID = 35
-        const val MOVIE_CRIME_ID = 80
-        const val MOVIE_DOCUMENTARY_ID = 99
-        const val MOVIE_DRAMA_ID = 18
-        const val MOVIE_FAMILY_ID = 10751
-        const val MOVIE_FANTASY_ID = 14
-        const val MOVIE_HISTORY_ID = 36
-        const val MOVIE_HORROR_ID = 27
-        const val MOVIE_MUSIC_ID = 10402
-        const val MOVIE_MYSTERY_ID = 9648
-        const val MOVIE_ROMANCE_ID = 10749
-        const val MOVIE_SCI_FI_ID = 878
-        const val MOVIE_TV_MOVIE_ID = 10770
-        const val MOVIE_THRILLER_ID = 53
-        const val MOVIE_WAR_ID = 10752
-        const val MOVIE_WESTERN_ID = 37
-        // Tv Show Genre Ids
-        const val TV_ACTION_ADVENTURE_ID = 10759
-        const val TV_ANIMATION_ID = 16
-        const val TV_COMEDY_ID = 35
-        const val TV_CRIME_ID = 80
-        const val TV_DOCUMENTARY_ID = 99
-        const val TV_DRAMA_ID = 18
-        const val TV_FAMILY_ID = 10751
-        const val TV_KIDS_ID = 10762
-        const val TV_MYSTERY_ID = 9648
-        const val TV_NEWS_ID = 10763
-        const val TV_REALITY_ID = 10764
-        const val TV_SCI_FI_FANTASY_ID = 10756
-        const val TV_SOAP_ID = 10766
-        const val TV_TALK_ID = 10767
-        const val TV_WAR_POLITICS_ID = 10768
-        const val TV_WESTERN_ID = 37
+        // Network Titles
+        const val NETWORK_ALL = "All Networks"
+        const val NETWORK_PRIME = "Amazon Prime"
+        const val NETWORK_APPLE = "Apple TV"
+        const val NETWORK_DISNEY = "Disney Plus"
+        const val NETWORK_HBO_NOW = "HBO Now"
+        const val NETWORK_HBO_MAX = "HBO Max"
+        const val NETWORK_HULU = "Hulu"
+        const val NETWORK_NETFLIX = "Netflix"
+        const val NETWORK_PEACOCK = "Peacock"
 
         fun getBingeStatusArray(): Array<String> {
             return arrayOf(
@@ -235,5 +208,21 @@ class Constants {
             val key = getTvGenresKey(genre)
             return getTvGenresArray().indexOf(key)
         }
+
+        fun getNetworksArray(): Array<String> {
+            return arrayOf(
+                NETWORK_ALL,
+                NETWORK_PRIME,
+                NETWORK_APPLE,
+                NETWORK_DISNEY,
+                NETWORK_HBO_NOW,
+                NETWORK_HBO_MAX,
+                NETWORK_HULU,
+                NETWORK_NETFLIX,
+                NETWORK_PEACOCK
+            )
+        }
+
+
     }
 }
