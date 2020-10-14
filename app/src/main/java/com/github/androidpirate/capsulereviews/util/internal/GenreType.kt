@@ -20,14 +20,29 @@ enum class GenreType(val id: Int) {
     TV_MOVIE(10770),
     THRILLER(53),
     WAR(10752),
-    WESTERN(37);
+    WESTERN(37),
+    TV_ACTION_ADVENTURE(10759),
+    TV_KIDS(10762),
+    TV_NEWS(10763),
+    TV_REALITY(10764),
+    TV_SCI_FI_FANTASY(10756),
+    TV_SOAP(10766),
+    TV_TALK(10767),
+    TV_WAR_POLITICS(10768);
 
     companion object {
-        fun getAllTypesArray(): Array<GenreType> {
+        fun getMovieGenreTypes(): Array<GenreType> {
             return arrayOf(
                 ALL, ACTION, ADVENTURE, ANIMATION, COMEDY, CRIME, DOCUMENTARY,
                 DRAMA, FAMILY, FANTASY, HISTORY, HORROR, MUSIC, MYSTERY, ROMANCE,
                 SCI_FI, TV_MOVIE, THRILLER, WAR, WESTERN)
+        }
+
+        fun getTvGenreTypes(): Array<GenreType> {
+            return arrayOf(
+                TV_ACTION_ADVENTURE, ANIMATION, COMEDY, CRIME, DOCUMENTARY, DRAMA, FAMILY,
+                TV_KIDS, MYSTERY, TV_NEWS, TV_REALITY, TV_SCI_FI_FANTASY, TV_SOAP, TV_TALK,
+                TV_WAR_POLITICS, WESTERN)
         }
     }
 

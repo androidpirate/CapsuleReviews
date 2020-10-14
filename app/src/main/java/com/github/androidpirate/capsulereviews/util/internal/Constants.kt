@@ -6,7 +6,9 @@ class Constants {
         const val COMMA_SEPARATOR = ","
         // Fragment constants
         const val MOVIES_LIST_FRAG_TAG = "MoviesListFragment"
+        const val TV_SHOWS_LIST_FRAG_TAG = "TvShowsListFragment"
         const val PAGED_MOVIES_LIST_FRAG_TAG = "PagedMoviesListFragment"
+        const val PAGED_TV_SHOWS_LIST_FRAG_TAG = "PagedTvShowsListFragment"
         // Adapter constants
         const val ADAPTER_UNKNOWN_FRAGMENT_MESSAGE = "Unknown fragment type"
         const val ADAPTER_UNKNOWN_VIEW_TYPE_MESSAGE = "Unknown view type"
@@ -25,11 +27,11 @@ class Constants {
         const val MOVIE_UPCOMING_TITLE = "Upcoming Movies"
         const val MOVIE_TRENDING_TITLE = "Trending Movies"
         const val TV_POPULAR_TITLE = "Popular TV Shows"
-        const val TV_TOP_RATED_TITLE = "Top Rated TV shows"
+        const val TV_TOP_RATED_TITLE = "Top Rated TV Shows"
         const val TV_TRENDING_TITLE = "Trending TV Shows"
-        const val TV_TRENDING_NETFLIX_TITLE = "Trending TV Shows on Netflix"
-        const val TV_TRENDING_HULU_TITLE = "Trending TV Shows on Hulu"
-        const val TV_TRENDING_DISNEY_TITLE = "Trending TV Shows on Disney Plus"
+        const val TV_TRENDING_NETFLIX_TITLE = "Trending Shows on Netflix"
+        const val TV_TRENDING_HULU_TITLE = "Trending Shows on Hulu"
+        const val TV_TRENDING_DISNEY_TITLE = "Trending Shows on Disney Plus"
         // Favorite content constants
         const val EMPTY_POSTER_PATH = ""
         const val EMPTY_FIELD_STRING = ""
@@ -88,6 +90,7 @@ class Constants {
         const val GENRE_SOAP = "Soap"
         const val GENRE_TALK = "Talk"
         const val GENRE_WAR_POLITICS = "War & Politics"
+        const val GENRE_TYPE_ERROR_MESSAGE = "No such genre type."
         // Movie Genre Ids
         const val MOVIE_ACTION_ID = 28
         const val MOVIE_ADVENTURE_ID = 12
@@ -182,7 +185,7 @@ class Constants {
 
         fun getMovieGenresMap(): Map<String, GenreType> {
             val movieGenresArray = getMovieGenresArray()
-            val genreTypes = GenreType.getAllTypesArray()
+            val genreTypes = GenreType.getMovieGenreTypes()
             return movieGenresArray.zip(genreTypes).toMap()
         }
 
@@ -215,6 +218,22 @@ class Constants {
                 GENRE_WAR_POLITICS,
                 GENRE_WESTERN
             )
+        }
+
+        fun getTvGenresMap(): Map<String, GenreType> {
+            val tvShowsGenresArray = getTvGenresArray()
+            val genreTypes = GenreType.getTvGenreTypes()
+            return tvShowsGenresArray.zip(genreTypes).toMap()
+        }
+
+        fun getTvGenresKey(value: GenreType) : String {
+            val tvShowGenresMap = getTvGenresMap()
+            return tvShowGenresMap.keys.first { value == tvShowGenresMap[it] }
+        }
+
+        fun getTvGenrePosition(genre: GenreType): Int {
+            val key = getTvGenresKey(genre)
+            return getTvGenresArray().indexOf(key)
         }
     }
 }

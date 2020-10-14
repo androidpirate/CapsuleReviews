@@ -9,7 +9,7 @@ enum class GenericSortType {
 
     companion object {
         fun getAllTypesArray(): Array<GenericSortType> {
-            return arrayOf(POPULAR, TOP_RATED, UPCOMING, NOW_PLAYING, TRENDING)
+            return arrayOf(POPULAR, TOP_RATED, NOW_PLAYING, UPCOMING, TRENDING)
         }
     }
 }
