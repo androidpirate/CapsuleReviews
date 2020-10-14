@@ -16,19 +16,51 @@
         android:contentDescription="@string/navigate_up_button_description"
         android:layout_marginStart="@dimen/margin_16"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"/>
 
     <TextView
-        style="@style/SubTitleBoldTextStyle"
+        style="@style/SubTitleTextStyle"
         android:id="@+id/tvToolbarTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
-        android:textAllCaps="false"
-        android:layout_marginStart="@dimen/margin_64"
+        android:layout_marginStart="@dimen/margin_8"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="@id/btUp"
+        app:layout_constraintStart_toEndOf="@id/btUp"
         tools:text="Tv Shows"/>
+
+    <Button
+        style="@style/SubTitleTextStyle"
+        android:id="@+id/tvNetworkSpinner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:text="@string/tv_toolbar_networks_spinner_content"
+        android:textAllCaps="false"
+        android:maxLines="1"
+        android:visibility="gone"
+        android:drawableEnd="@drawable/ic_filled_dropdown_white"
+        android:layout_marginStart="@dimen/margin_8"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@id/btUp"/>
+
+    <Button
+        style="@style/SubTitleTextStyle"
+        android:id="@+id/tvGenreSpinner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:text="@string/movie_toolbar_genres_spinner_content"
+        android:textAllCaps="false"
+        android:maxLines="1"
+        android:visibility="gone"
+        android:drawableEnd="@drawable/ic_filled_dropdown_white"
+        android:layout_marginStart="@dimen/margin_8"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@id/tvNetworkSpinner"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
