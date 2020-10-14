@@ -7,18 +7,15 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.github.androidpirate.capsulereviews.R
-import com.github.androidpirate.capsulereviews.util.internal.Constants
 import kotlinx.android.synthetic.main.genres_list_item.view.*
 
-class MovieGenresAdapter(private val listener: GenreClickListener, selectedGenre: Int):
-    RecyclerView.Adapter<GenreHolder>() {
+class GenreAdapter(
+    private val genres: Array<String>,
+    private val listener: GenreClickListener,
+    selectedGenre: Int):
+    RecyclerView.Adapter<GenreAdapter.GenreHolder>() {
 
     private var index = selectedGenre
-    private val movieGenres: Array<String> = Constants.getMovieGenresArray()
-
-    interface GenreClickListener {
-        fun onGenreClick(itemPosition: Int)
-    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GenreHolder {
         val view = LayoutInflater
@@ -28,7 +25,7 @@ class MovieGenresAdapter(private val listener: GenreClickListener, selectedGenre
     }
 
     override fun onBindViewHolder(holder: GenreHolder, position: Int) {
-        holder.onBindGenre(movieGenres[position])
+        holder.onBindGenre(genres[position])
         holder.itemView.genreTitle.setOnClickListener {
             listener.onGenreClick(position)
         }
@@ -42,6 +39,12 @@ class MovieGenresAdapter(private val listener: GenreClickListener, selectedGenre
     }
 
     override fun getItemCount(): Int {
-        return movieGenres.size
+        return genres.size
+    }
+
+    class GenreHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
+        fun onBindGenre(genre: String) {
+            itemView.genreTitle.text = genre
+        }
     }
 }
