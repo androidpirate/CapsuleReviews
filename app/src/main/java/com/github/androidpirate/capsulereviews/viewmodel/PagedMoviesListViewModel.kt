@@ -32,6 +32,7 @@ class PagedMoviesListViewModel(private val repo: MoviesRepository) : ViewModel()
 
     val moviesByGenre: LiveData<PagedList<NetworkMoviesListItem>> =
         Transformations.switchMap(genre, ::getMoviesByGenre)
+
     private fun getMoviesByGenre(genre: GenreType) = repo.getPagedMovies(
         scope = viewModelScope,
         genericSort = POPULAR,
