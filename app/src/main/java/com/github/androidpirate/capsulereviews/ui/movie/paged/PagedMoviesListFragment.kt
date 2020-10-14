@@ -85,7 +85,7 @@ class PagedMoviesListFragment :
             displaySpinner()
             movieGenreSpinner.text = Constants.getMovieGenresKey(args.genreType)
             movieGenreSpinner.setOnClickListener {
-                showMovieGenresAlertDialog()
+                showMovieGenreDialog()
             }
         } else {
             displayToolbarTitle()
@@ -132,7 +132,7 @@ class PagedMoviesListFragment :
         })
     }
 
-    private fun showMovieGenresAlertDialog() {
+    private fun showMovieGenreDialog() {
         val genrePosition = Constants.getMovieGenrePosition(args.genreType)
         val genresDialog = MovieGenresDialogFragment.newInstance(this, genrePosition)
         genresDialog.show(requireActivity().supportFragmentManager, Constants.PAGED_MOVIES_LIST_FRAG_TAG)
