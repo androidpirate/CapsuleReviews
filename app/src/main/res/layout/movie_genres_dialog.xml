@@ -11,7 +11,6 @@
         android:id="@+id/movieGenres"
         android:layout_width="@dimen/match_constraint"
         android:layout_height="@dimen/match_constraint"
-        android:layout_marginTop="?attr/actionBarSize"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toTopOf="@id/cancelButton"
@@ -21,11 +20,12 @@
 
     <ImageView
         android:id="@+id/cancelButton"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="@dimen/dialog_cancel_button_width"
+        android:layout_height="@dimen/dialog_cancel_button_height"
         android:src="@drawable/ic_filled_cancel_white"
         android:contentDescription="@string/cancel_button_content_description"
-        android:layout_marginBottom="@dimen/margin_8"
+        android:layout_marginTop="@dimen/margin_16"
+        android:layout_marginBottom="@dimen/margin_16"
         app:layout_constraintTop_toBottomOf="@id/movieGenres"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
