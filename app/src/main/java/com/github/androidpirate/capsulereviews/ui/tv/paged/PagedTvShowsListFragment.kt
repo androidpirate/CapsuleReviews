@@ -9,14 +9,15 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import androidx.recyclerview.widget.GridLayoutManager
 import com.github.androidpirate.capsulereviews.R
 import com.github.androidpirate.capsulereviews.data.network.response.tvShows.NetworkTvShowsListItem
 import com.github.androidpirate.capsulereviews.ui.adapter.paged.PagedItemAdapter
 import com.github.androidpirate.capsulereviews.ui.adapter.paged.PagedItemClickListener
+import com.github.androidpirate.capsulereviews.ui.dialog.TvShowGenresDialogFragment
 import com.github.androidpirate.capsulereviews.util.GridSpacingItemDecoration
 import com.github.androidpirate.capsulereviews.util.internal.*
 import com.github.androidpirate.capsulereviews.util.internal.GenericSortType.*
+import com.github.androidpirate.capsulereviews.util.internal.GenreType.*
 import com.github.androidpirate.capsulereviews.util.internal.NetworkType.*
 import com.github.androidpirate.capsulereviews.viewmodel.PagedTvShowsListViewModel
 import com.github.androidpirate.capsulereviews.viewmodel.ViewModelFactory
@@ -25,7 +26,11 @@ import kotlinx.android.synthetic.main.fragment_paged_movies_list.loadingScreen
 import kotlinx.android.synthetic.main.fragment_paged_tv_shows_list.*
 import kotlinx.android.synthetic.main.paged_tv_shows_toolbar.*
 
-class PagedTvShowsListFragment : Fragment(), PagedItemClickListener {
+class PagedTvShowsListFragment :
+    Fragment(),
+    PagedItemClickListener,
+    TvShowGenresDialogFragment.TvShowGenresDialogListener{
+
     private val args: PagedTvShowsListFragmentArgs by navArgs()
     private lateinit var viewModel: PagedTvShowsListViewModel
     private lateinit var adapter: PagedItemAdapter<NetworkTvShowsListItem>
@@ -33,14 +38,19 @@ class PagedTvShowsListFragment : Fragment(), PagedItemClickListener {
     private lateinit var genre: GenreType
     private lateinit var network: NetworkType
     private var flagDecoration = false
+    private var tvShowsByNetwork = false
+    private var tvShowsByGenre = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val factory = ViewModelFactory(requireActivity().application)
         viewModel = ViewModelProvider(this, factory).get(PagedTvShowsListViewModel::class.java)
         genericSort = args.genericSortType
+        viewModel.setGenericSort(genericSort)
         network = args.network
+        viewModel.setNetwork(network)
         genre = args.genre
+        viewModel.setGenre(genre)
         adapter = PagedItemAdapter(fragment = FragmentType.PAGED_TV_LIST, clickListener = this)
     }
 
@@ -57,57 +67,17 @@ class PagedTvShowsListFragment : Fragment(), PagedItemClickListener {
         btUp.setOnClickListener {
             findNavController().navigate(R.id.action_paged_tv_shows_list_to_list)
         }
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        if(network != NONE) {
-            when(network) {
-                NETFLIX -> {
-                    viewModel.trendingTvShowsOnNetflix.observe(viewLifecycleOwner, Observer {
-                        if(it != null) {
-                            adapter.submitList(it)
-                        }
-                    })
-                }
-                HULU -> {
-                    viewModel.trendingTvShowsOnHulu.observe(viewLifecycleOwner, Observer {
-                        if(it != null) {
-                            adapter.submitList(it)
-                        }
-                    })
-                }
-                DISNEY_PLUS -> {
-                    viewModel.trendingTvShowsOnDisney.observe(viewLifecycleOwner, Observer {
-                        if(it != null) {
-                            adapter.submitList(it)
-                        }
-                    })
-                }
+        when {
+            network != NONE -> {
+                tvShowsByNetwork = true
+                getTvShowsByNetwork()
             }
-        } else {
-            when(genericSort) {
-                POPULAR -> {
-                    viewModel.popularTvShows.observe(viewLifecycleOwner, Observer {
-                        if(it != null) {
-                            adapter.submitList(it)
-                        }
-                    })
-                }
-                TOP_RATED -> {
-                    viewModel.topRatedTvShows.observe(viewLifecycleOwner, Observer {
-                        if(it != null) {
-                            adapter.submitList(it)
-                        }
-                    })
-                }
-                TRENDING -> {
-                    viewModel.trendingTvShows.observe(viewLifecycleOwner, Observer {
-                        if(it != null) {
-                            adapter.submitList(it)
-                        }
-                    })
-                }
+            genre != ALL -> {
+                tvShowsByGenre = true
+                getTvShowsByGenre()
+            }
+            else -> {
+                getTvShowsByGenericSort()
             }
         }
         displayContainerScreen()
@@ -125,8 +95,41 @@ class PagedTvShowsListFragment : Fragment(), PagedItemClickListener {
     }
 
     private fun setupViews() {
-        setToolbarTitle()
+        setupToolbar()
         setRecyclerView()
+    }
+
+    private fun setupToolbar() {
+        if(tvShowsByNetwork) {
+            displaySpinners()
+        }
+        if(tvShowsByGenre) {
+            displaySpinners()
+            tvGenreSpinner.text = Constants.getTvGenresKey(args.genre)
+            // TODO: Add a function in Constants to handle networkKey
+            tvNetworkSpinner.text = args.network.toString()
+            tvNetworkSpinner.setOnClickListener {
+                // TODO: Not Implemented Yet
+            }
+            tvGenreSpinner.setOnClickListener {
+                showTvGenresDialog()
+            }
+        } else {
+            displayToolbarTitle()
+        }
+    }
+
+    private fun displaySpinners() {
+        tvToolbarTitle.visibility = View.GONE
+        tvNetworkSpinner.visibility = View.VISIBLE
+        tvGenreSpinner.visibility = View.VISIBLE
+    }
+
+    private fun displayToolbarTitle() {
+        tvToolbarTitle.visibility = View.VISIBLE
+        tvNetworkSpinner.visibility = View.GONE
+        tvGenreSpinner.visibility = View.GONE
+        setToolbarTitle()
     }
 
     private fun setToolbarTitle() {
@@ -157,9 +160,45 @@ class PagedTvShowsListFragment : Fragment(), PagedItemClickListener {
         flagDecoration = true
     }
 
+    private fun getTvShowsByNetwork() {
+        viewModel.tvShowsByNetwork.observe(viewLifecycleOwner, Observer {
+            if(it != null) {
+                adapter.submitList(it)
+            }
+        })
+    }
+
+    private fun getTvShowsByGenre() {
+        viewModel.tvShowsByGenre.observe(viewLifecycleOwner, Observer {
+            if(it != null) {
+                adapter.submitList(it)
+            }
+        })
+    }
+
+    private fun getTvShowsByGenericSort() {
+        viewModel.tvShowsByGenericSortType.observe(viewLifecycleOwner, Observer {
+            if(it != null) {
+                adapter.submitList(it)
+            }
+        })
+    }
+
+    private fun showTvGenresDialog() {
+        val genrePosition = Constants.getTvGenrePosition(args.genre)
+        val genresDialog = TvShowGenresDialogFragment.newInstance(this, genrePosition)
+        genresDialog.show(requireActivity().supportFragmentManager, Constants.PAGED_TV_SHOWS_LIST_FRAG_TAG)
+    }
+
     override fun <T> onPagedItemClick(item: T) {
         val action = PagedTvShowsListFragmentDirections
             .actionPagedTvShowsListToDetail((item as NetworkTvShowsListItem).id)
+        findNavController().navigate(action)
+    }
+
+    override fun onGenreSelected(genre: GenreType) {
+        val action = PagedTvShowsListFragmentDirections
+            .actionPagedTvShowsListToSelf(args.genericSortType, NONE, genre)
         findNavController().navigate(action)
     }
 }
