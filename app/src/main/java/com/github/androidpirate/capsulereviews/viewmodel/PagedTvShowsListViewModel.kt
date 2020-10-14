@@ -7,9 +7,7 @@ import com.github.androidpirate.capsulereviews.data.repo.TvShowsRepository
 import com.github.androidpirate.capsulereviews.util.internal.GenericSortType
 import com.github.androidpirate.capsulereviews.util.internal.GenericSortType.*
 import com.github.androidpirate.capsulereviews.util.internal.GenreType
-import com.github.androidpirate.capsulereviews.util.internal.GenreType.*
 import com.github.androidpirate.capsulereviews.util.internal.NetworkType
-import com.github.androidpirate.capsulereviews.util.internal.NetworkType.*
 import com.github.androidpirate.capsulereviews.util.internal.SortType.*
 
 class PagedTvShowsListViewModel(private val repo: TvShowsRepository): ViewModel() {
@@ -25,7 +23,7 @@ class PagedTvShowsListViewModel(private val repo: TvShowsRepository): ViewModel(
         scope = viewModelScope,
         genericSort = genericSort,
         sort = POPULAR_DESCENDING,
-        network = NONE,
+        network = NetworkType.ALL,
         genre = ALL
     )
 
@@ -40,11 +38,11 @@ class PagedTvShowsListViewModel(private val repo: TvShowsRepository): ViewModel(
         scope = viewModelScope,
         genericSort = POPULAR,
         sort = POPULAR_DESCENDING,
-        network = NONE,
+        network = NetworkType.ALL,
         genre = genre
     )
 
-    val network = MutableLiveData<NetworkType>(NONE)
+    val network = MutableLiveData<NetworkType>(NetworkType.ALL)
 
     fun setNetwork(tvNetwork: NetworkType) = apply { network.value = tvNetwork }
 

@@ -25,7 +25,6 @@ import com.github.androidpirate.capsulereviews.util.internal.FragmentType.*
 import com.github.androidpirate.capsulereviews.util.internal.GenericSortType
 import com.github.androidpirate.capsulereviews.util.internal.GenericSortType.*
 import com.github.androidpirate.capsulereviews.util.internal.GenreType
-import com.github.androidpirate.capsulereviews.util.internal.GenreType.*
 import com.github.androidpirate.capsulereviews.util.internal.NetworkType
 import com.github.androidpirate.capsulereviews.util.internal.NetworkType.*
 import com.github.androidpirate.capsulereviews.viewmodel.TvShowsListViewModel
@@ -122,21 +121,21 @@ class TvShowsListFragment :
             fragment = TV_LIST,
             clickListener = this,
             genericSort = POPULAR,
-            network = NONE,
+            network = NetworkType.ALL,
             genre = ALL
         )
         topRatedShowsAdapter = ListItemAdapter(
             fragment = TV_LIST,
             clickListener = this,
             genericSort = TOP_RATED,
-            network = NONE,
+            network = NetworkType.ALL,
             genre = ALL
         )
         trendingShowsAdapter = ListItemAdapter(
             fragment = TV_LIST,
             clickListener = this,
             genericSort = TRENDING,
-            network = NONE,
+            network = NetworkType.ALL,
             genre = ALL
         )
         popularNetflixAdapter = ListItemAdapter(
@@ -243,7 +242,7 @@ class TvShowsListFragment :
         network: NetworkType,
         genre: GenreType) {
             if(isLast) {
-                if(network != NONE) {
+                if(network != NetworkType.ALL) {
                     when(network) {
                         NETFLIX -> {
                             val action = TvShowsListFragmentDirections
@@ -265,17 +264,20 @@ class TvShowsListFragment :
                     when(genericSort) {
                         POPULAR -> {
                             val action = TvShowsListFragmentDirections
-                                .actionTvShowsListToPagedTvShows(POPULAR, NONE, ALL)
+                                .actionTvShowsListToPagedTvShows(POPULAR,
+                                    NetworkType.ALL, ALL)
                             navigateToPagedTvShowsList(action)
                         }
                         TOP_RATED -> {
                             val action = TvShowsListFragmentDirections
-                                .actionTvShowsListToPagedTvShows(TOP_RATED, NONE, ALL)
+                                .actionTvShowsListToPagedTvShows(TOP_RATED,
+                                    NetworkType.ALL, ALL)
                             navigateToPagedTvShowsList(action)
                         }
                         TRENDING -> {
                             val action = TvShowsListFragmentDirections
-                                .actionTvShowsListToPagedTvShows(TRENDING, NONE, ALL)
+                                .actionTvShowsListToPagedTvShows(TRENDING,
+                                    NetworkType.ALL, ALL)
                             navigateToPagedTvShowsList(action)
                         }
                     }
@@ -288,7 +290,8 @@ class TvShowsListFragment :
     }
 
     override fun onGenreSelected(genre: GenreType) {
-        val action = TvShowsListFragmentDirections.actionTvShowsListToPagedTvShows(POPULAR, NONE, genre)
+        val action = TvShowsListFragmentDirections.actionTvShowsListToPagedTvShows(POPULAR,
+            NetworkType.ALL, genre)
         navigateToPagedTvShowsList(action)
     }
 }

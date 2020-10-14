@@ -17,7 +17,6 @@ import com.github.androidpirate.capsulereviews.ui.dialog.TvShowGenresDialogFragm
 import com.github.androidpirate.capsulereviews.util.GridSpacingItemDecoration
 import com.github.androidpirate.capsulereviews.util.internal.*
 import com.github.androidpirate.capsulereviews.util.internal.GenericSortType.*
-import com.github.androidpirate.capsulereviews.util.internal.GenreType.*
 import com.github.androidpirate.capsulereviews.util.internal.NetworkType.*
 import com.github.androidpirate.capsulereviews.viewmodel.PagedTvShowsListViewModel
 import com.github.androidpirate.capsulereviews.viewmodel.ViewModelFactory
@@ -68,7 +67,7 @@ class PagedTvShowsListFragment :
             findNavController().navigate(R.id.action_paged_tv_shows_list_to_list)
         }
         when {
-            network != NONE -> {
+            network != NetworkType.ALL -> {
                 tvShowsByNetwork = true
                 getTvShowsByNetwork()
             }
@@ -133,7 +132,7 @@ class PagedTvShowsListFragment :
     }
 
     private fun setToolbarTitle() {
-        if(network != NONE) {
+        if(network != NetworkType.ALL) {
             when(network) {
                 NETFLIX -> tvToolbarTitle.text = Constants.TV_TRENDING_NETFLIX_TITLE
                 HULU -> tvToolbarTitle.text = Constants.TV_TRENDING_HULU_TITLE
@@ -198,7 +197,8 @@ class PagedTvShowsListFragment :
 
     override fun onGenreSelected(genre: GenreType) {
         val action = PagedTvShowsListFragmentDirections
-            .actionPagedTvShowsListToSelf(args.genericSortType, NONE, genre)
+            .actionPagedTvShowsListToSelf(args.genericSortType,
+                NetworkType.ALL, genre)
         findNavController().navigate(action)
     }
 }

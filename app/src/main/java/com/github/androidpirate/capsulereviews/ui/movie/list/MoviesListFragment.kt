@@ -25,9 +25,7 @@ import com.github.androidpirate.capsulereviews.util.internal.FragmentType.*
 import com.github.androidpirate.capsulereviews.util.internal.GenericSortType
 import com.github.androidpirate.capsulereviews.util.internal.GenericSortType.*
 import com.github.androidpirate.capsulereviews.util.internal.GenreType
-import com.github.androidpirate.capsulereviews.util.internal.GenreType.*
 import com.github.androidpirate.capsulereviews.util.internal.NetworkType
-import com.github.androidpirate.capsulereviews.util.internal.NetworkType.*
 import com.github.androidpirate.capsulereviews.viewmodel.ViewModelFactory
 import com.github.androidpirate.capsulereviews.viewmodel.MoviesListViewModel
 import kotlinx.android.synthetic.main.fragment_movies_list.*
@@ -106,35 +104,35 @@ class MoviesListFragment :
             fragment = MOVIE_LIST,
             clickListener = this,
             genericSort = POPULAR,
-            network = NONE,
+            network = NetworkType.ALL,
             genre = ALL
         )
         topRatedNetworkMoviesAdapter = ListItemAdapter(
             fragment = MOVIE_LIST,
             clickListener = this,
             genericSort = TOP_RATED,
-            network = NONE,
+            network = NetworkType.ALL,
             genre = ALL
         )
         nowPlayingNetworkMoviesAdapter = ListItemAdapter(
             fragment = MOVIE_LIST,
             clickListener = this,
             genericSort = NOW_PLAYING,
-            network = NONE,
+            network = NetworkType.ALL,
             genre = ALL
         )
         upcomingNetworkMoviesAdapter = ListItemAdapter(
             fragment = MOVIE_LIST,
             clickListener = this,
             genericSort = UPCOMING,
-            network = NONE,
+            network = NetworkType.ALL,
             genre = ALL
         )
         trendingNetworkMoviesAdapter = ListItemAdapter(
             fragment = MOVIE_LIST,
             clickListener = this,
             genericSort = TRENDING,
-            network = NONE,
+            network = NetworkType.ALL,
             genre = ALL
         )
     }

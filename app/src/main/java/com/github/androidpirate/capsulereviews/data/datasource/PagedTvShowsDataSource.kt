@@ -33,11 +33,11 @@ class PagedTvShowsDataSource (
         scope.launch {
             withContext(Dispatchers.IO) {
                 response =
-                    if(genre == GenreType.ALL && network == NetworkType.NONE) {
+                    if(genre == GenreType.ALL && network == NetworkType.ALL) {
                         getPagedTvShowsWithGenericSort(page, genericSort)
-                    } else if(genre == GenreType.ALL && network != NetworkType.NONE) {
+                    } else if(genre == GenreType.ALL && network != NetworkType.ALL) {
                         getPagedTvShowsWithNetwork(page, network, sort)
-                    } else if(genre != GenreType.ALL && network == NetworkType.NONE) {
+                    } else if(genre != GenreType.ALL && network == NetworkType.ALL) {
                         getPagedTvShowsWithGenre(page, genre, sort)
                     } else {
                         getPagedTvShowsWithGenreAndNetwork(page, genre, network, sort)
@@ -55,11 +55,11 @@ class PagedTvShowsDataSource (
         scope.launch {
             withContext(Dispatchers.IO) {
                 response =
-                    if(genre == GenreType.ALL && network == NetworkType.NONE) {
+                    if(genre == GenreType.ALL && network == NetworkType.ALL) {
                         getPagedTvShowsWithGenericSort(params.key, genericSort)
-                    } else if(genre == GenreType.ALL && network != NetworkType.NONE) {
+                    } else if(genre == GenreType.ALL && network != NetworkType.ALL) {
                         getPagedTvShowsWithNetwork(params.key, network, sort)
-                    } else if(genre != GenreType.ALL && network == NetworkType.NONE) {
+                    } else if(genre != GenreType.ALL && network == NetworkType.ALL) {
                         getPagedTvShowsWithGenre(params.key, genre, sort)
                     } else {
                         getPagedTvShowsWithGenreAndNetwork(params.key, genre, network, sort)
