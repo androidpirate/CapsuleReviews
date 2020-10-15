@@ -15,7 +15,7 @@ class NetworkAdapter(
     selectedNetwork: Int):
 RecyclerView.Adapter<NetworkAdapter.NetworkHolder>() {
 
-    private val networks = Constants.getNetworksArray()
+    private val networks = Constants.getTvNetworksArray()
     private var index = selectedNetwork
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NetworkHolder {

@@ -9,5 +9,21 @@ enum class NetworkType(val id: Int) {
     HBO_MAX(3186),
     HULU(453),
     NETFLIX(213),
-    PEACOCK(3353)
+    PEACOCK(3353);
+
+    companion object {
+        fun getNetworkTypes(): Array<NetworkType> {
+            return arrayOf(
+                ALL,
+                AMAZON_PRIME,
+                APPLE_TV,
+                DISNEY_PLUS,
+                HBO_NOW,
+                HBO_MAX,
+                HULU,
+                NETFLIX,
+                PEACOCK
+            )
+        }
+    }
 }

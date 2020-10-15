@@ -101,6 +101,7 @@ class Constants {
         const val NETWORK_HULU = "Hulu"
         const val NETWORK_NETFLIX = "Netflix"
         const val NETWORK_PEACOCK = "Peacock"
+        const val NETWORK_TYPE_ERROR_MESSAGE = "No such network type."
 
         fun getBingeStatusArray(): Array<String> {
             return arrayOf(
@@ -209,7 +210,7 @@ class Constants {
             return getTvGenresArray().indexOf(key)
         }
 
-        fun getNetworksArray(): Array<String> {
+        fun getTvNetworksArray(): Array<String> {
             return arrayOf(
                 NETWORK_ALL,
                 NETWORK_PRIME,
@@ -223,6 +224,20 @@ class Constants {
             )
         }
 
+        fun getTvNetworksMap(): Map<String, NetworkType> {
+            val tvNetworksArray = getTvNetworksArray()
+            val networkTypes = NetworkType.getNetworkTypes()
+            return tvNetworksArray.zip(networkTypes).toMap()
+        }
 
+        fun getTvNetworksKey(value: NetworkType) : String {
+            val tvNetworksMap = getTvNetworksMap()
+            return tvNetworksMap.keys.first { value == tvNetworksMap[it] }
+        }
+
+        fun getTvNetworkPosition(network: NetworkType): Int {
+            val key = getTvNetworksKey(network)
+            return getTvNetworksArray().indexOf(key)
+        }
     }
 }
