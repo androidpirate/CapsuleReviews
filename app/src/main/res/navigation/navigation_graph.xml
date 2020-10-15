@@ -96,7 +96,7 @@
         <argument
             android:name="network"
             app:argType="com.github.androidpirate.capsulereviews.util.internal.NetworkType"
-            android:defaultValue="NONE"/>
+            android:defaultValue="ALL"/>
         <argument
             android:name="genre"
             app:argType="com.github.androidpirate.capsulereviews.util.internal.GenreType"

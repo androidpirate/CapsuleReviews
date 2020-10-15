@@ -24,10 +24,10 @@ class PagedTvShowsListViewModel(private val repo: TvShowsRepository): ViewModel(
         genericSort = genericSort,
         sort = POPULAR_DESCENDING,
         network = NetworkType.ALL,
-        genre = ALL
+        genre = GenreType.ALL
     )
 
-    val genre = MutableLiveData<GenreType>(ALL)
+    val genre = MutableLiveData<GenreType>(GenreType.ALL)
 
     fun setGenre(tvGenre: GenreType) = apply { genre.value = tvGenre }
 
@@ -54,6 +54,6 @@ class PagedTvShowsListViewModel(private val repo: TvShowsRepository): ViewModel(
         genericSort = POPULAR,
         sort = POPULAR_DESCENDING,
         network = network,
-        genre = ALL
+        genre = GenreType.ALL
     )
 }

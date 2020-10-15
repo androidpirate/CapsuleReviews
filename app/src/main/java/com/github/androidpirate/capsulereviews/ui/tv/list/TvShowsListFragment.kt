@@ -122,42 +122,42 @@ class TvShowsListFragment :
             clickListener = this,
             genericSort = POPULAR,
             network = NetworkType.ALL,
-            genre = ALL
+            genre = GenreType.ALL
         )
         topRatedShowsAdapter = ListItemAdapter(
             fragment = TV_LIST,
             clickListener = this,
             genericSort = TOP_RATED,
             network = NetworkType.ALL,
-            genre = ALL
+            genre = GenreType.ALL
         )
         trendingShowsAdapter = ListItemAdapter(
             fragment = TV_LIST,
             clickListener = this,
             genericSort = TRENDING,
             network = NetworkType.ALL,
-            genre = ALL
+            genre = GenreType.ALL
         )
         popularNetflixAdapter = ListItemAdapter(
             fragment = TV_LIST,
             clickListener = this,
             genericSort = POPULAR,
             network = NETFLIX,
-            genre = ALL
+            genre = GenreType.ALL
         )
         popularHuluAdapter = ListItemAdapter(
             fragment = TV_LIST,
             clickListener = this,
             genericSort = POPULAR,
             network = HULU,
-            genre = ALL
+            genre = GenreType.ALL
         )
         popularDisneyPlusAdapter = ListItemAdapter(
             fragment = TV_LIST,
             clickListener = this,
             genericSort = POPULAR,
             network = DISNEY_PLUS,
-            genre = ALL
+            genre = GenreType.ALL
         )
     }
 
@@ -246,17 +246,17 @@ class TvShowsListFragment :
                     when(network) {
                         NETFLIX -> {
                             val action = TvShowsListFragmentDirections
-                                .actionTvShowsListToPagedTvShows(POPULAR, NETFLIX, ALL)
+                                .actionTvShowsListToPagedTvShows(POPULAR, NETFLIX, GenreType.ALL)
                             navigateToPagedTvShowsList(action)
                         }
                         HULU -> {
                             val action = TvShowsListFragmentDirections
-                                .actionTvShowsListToPagedTvShows(POPULAR, HULU,  ALL)
+                                .actionTvShowsListToPagedTvShows(POPULAR, HULU,  GenreType.ALL)
                             navigateToPagedTvShowsList(action)
                         }
                         DISNEY_PLUS -> {
                             val action = TvShowsListFragmentDirections
-                                .actionTvShowsListToPagedTvShows(POPULAR, DISNEY_PLUS, ALL)
+                                .actionTvShowsListToPagedTvShows(POPULAR, DISNEY_PLUS, GenreType.ALL)
                             navigateToPagedTvShowsList(action)
                         }
                     }
@@ -265,19 +265,19 @@ class TvShowsListFragment :
                         POPULAR -> {
                             val action = TvShowsListFragmentDirections
                                 .actionTvShowsListToPagedTvShows(POPULAR,
-                                    NetworkType.ALL, ALL)
+                                    NetworkType.ALL, GenreType.ALL)
                             navigateToPagedTvShowsList(action)
                         }
                         TOP_RATED -> {
                             val action = TvShowsListFragmentDirections
                                 .actionTvShowsListToPagedTvShows(TOP_RATED,
-                                    NetworkType.ALL, ALL)
+                                    NetworkType.ALL, GenreType.ALL)
                             navigateToPagedTvShowsList(action)
                         }
                         TRENDING -> {
                             val action = TvShowsListFragmentDirections
                                 .actionTvShowsListToPagedTvShows(TRENDING,
-                                    NetworkType.ALL, ALL)
+                                    NetworkType.ALL, GenreType.ALL)
                             navigateToPagedTvShowsList(action)
                         }
                     }

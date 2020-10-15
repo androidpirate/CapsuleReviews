@@ -25,7 +25,9 @@ import com.github.androidpirate.capsulereviews.util.internal.FragmentType.*
 import com.github.androidpirate.capsulereviews.util.internal.GenericSortType
 import com.github.androidpirate.capsulereviews.util.internal.GenericSortType.*
 import com.github.androidpirate.capsulereviews.util.internal.GenreType
+import com.github.androidpirate.capsulereviews.util.internal.GenreType.*
 import com.github.androidpirate.capsulereviews.util.internal.NetworkType
+import com.github.androidpirate.capsulereviews.util.internal.NetworkType.*
 import com.github.androidpirate.capsulereviews.viewmodel.ViewModelFactory
 import com.github.androidpirate.capsulereviews.viewmodel.MoviesListViewModel
 import kotlinx.android.synthetic.main.fragment_movies_list.*
@@ -105,35 +107,35 @@ class MoviesListFragment :
             clickListener = this,
             genericSort = POPULAR,
             network = NetworkType.ALL,
-            genre = ALL
+            genre = GenreType.ALL
         )
         topRatedNetworkMoviesAdapter = ListItemAdapter(
             fragment = MOVIE_LIST,
             clickListener = this,
             genericSort = TOP_RATED,
             network = NetworkType.ALL,
-            genre = ALL
+            genre = GenreType.ALL
         )
         nowPlayingNetworkMoviesAdapter = ListItemAdapter(
             fragment = MOVIE_LIST,
             clickListener = this,
             genericSort = NOW_PLAYING,
             network = NetworkType.ALL,
-            genre = ALL
+            genre = GenreType.ALL
         )
         upcomingNetworkMoviesAdapter = ListItemAdapter(
             fragment = MOVIE_LIST,
             clickListener = this,
             genericSort = UPCOMING,
             network = NetworkType.ALL,
-            genre = ALL
+            genre = GenreType.ALL
         )
         trendingNetworkMoviesAdapter = ListItemAdapter(
             fragment = MOVIE_LIST,
             clickListener = this,
             genericSort = TRENDING,
             network = NetworkType.ALL,
-            genre = ALL
+            genre = GenreType.ALL
         )
     }
 
