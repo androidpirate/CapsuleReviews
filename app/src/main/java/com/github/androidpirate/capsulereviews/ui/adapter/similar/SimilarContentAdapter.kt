@@ -47,6 +47,7 @@ class SimilarContentAdapter<T>(
         private fun setSimilarItemThumbnail(posterPath: String) {
             Glide.with(itemView.context)
                 .load(BuildConfig.MOVIE_DB_IMAGE_BASE_URL + Constants.ADAPTER_POSTER_WIDTH + posterPath)
+                .placeholder(R.drawable.ic_no_preview)
                 .into(itemView.ivSimilarListItem)
         }
     }
