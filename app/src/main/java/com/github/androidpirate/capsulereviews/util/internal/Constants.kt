@@ -175,6 +175,7 @@ class Constants {
 
         fun getTvGenresArray(): Array<String> {
             return arrayOf(
+                GENRE_ALL,
                 GENRE_ACTION_ADVENTURE,
                 GENRE_ANIMATION,
                 GENRE_COMEDY,

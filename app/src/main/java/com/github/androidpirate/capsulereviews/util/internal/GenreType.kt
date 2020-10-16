@@ -40,7 +40,7 @@ enum class GenreType(val id: Int) {
 
         fun getTvGenreTypes(): Array<GenreType> {
             return arrayOf(
-                TV_ACTION_ADVENTURE, ANIMATION, COMEDY, CRIME, DOCUMENTARY, DRAMA, FAMILY,
+                ALL, TV_ACTION_ADVENTURE, ANIMATION, COMEDY, CRIME, DOCUMENTARY, DRAMA, FAMILY,
                 TV_KIDS, MYSTERY, TV_NEWS, TV_REALITY, TV_SCI_FI_FANTASY, TV_SOAP, TV_TALK,
                 TV_WAR_POLITICS, WESTERN)
         }
