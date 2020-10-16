@@ -6,6 +6,16 @@
     android:layout_height="wrap_content"
     android:paddingBottom="@dimen/padding_16">
 
+    <ImageView
+        android:id="@+id/logo"
+        android:layout_width="@dimen/logo_width"
+        android:layout_height="@dimen/logo_height"
+        android:src="@drawable/ic_capsule_reviews_logo"
+        android:contentDescription="@string/capsule_reviews_logo_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
     <TextView
         style="@style/SubTitleBoldTextStyle"
         android:id="@+id/favoriteToolbarTitle"
@@ -13,8 +23,9 @@
         android:layout_height="wrap_content"
         android:text="@string/favorites_toolbar_title_content"
         android:gravity="center_vertical"
+        android:layout_marginStart="@dimen/margin_16"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"/>
+        app:layout_constraintStart_toEndOf="@id/logo"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

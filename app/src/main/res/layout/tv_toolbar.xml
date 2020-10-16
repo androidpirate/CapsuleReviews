@@ -10,7 +10,7 @@
         android:id="@+id/logo"
         android:layout_width="@dimen/logo_width"
         android:layout_height="@dimen/logo_height"
-        android:src="@drawable/ic_filled_logo_white"
+        android:src="@drawable/ic_capsule_reviews_logo"
         android:contentDescription="@string/capsule_reviews_logo_content"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
