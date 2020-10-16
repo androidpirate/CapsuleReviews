@@ -28,13 +28,13 @@ class ViewModelFactory(application: Application): ViewModelProvider.Factory {
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         return when {
             modelClass.isAssignableFrom(MoviesListViewModel::class.java) -> {
-                MoviesListViewModel(moviesRepo) as T
+                MoviesListViewModel(moviesRepo, favoritesRepo) as T
             }
             modelClass.isAssignableFrom(MovieDetailViewModel::class.java) -> {
                 MovieDetailViewModel(moviesRepo, favoritesRepo) as T
             }
             modelClass.isAssignableFrom(TvShowsListViewModel::class.java) -> {
-                TvShowsListViewModel(tvShowsRepo) as T
+                TvShowsListViewModel(tvShowsRepo, favoritesRepo) as T
             }
             modelClass.isAssignableFrom(TvShowDetailViewModel::class.java) -> {
                 TvShowDetailViewModel(tvShowsRepo, favoritesRepo) as T

@@ -27,11 +27,14 @@ import com.github.androidpirate.capsulereviews.util.internal.GenericSortType
 import com.github.androidpirate.capsulereviews.util.internal.GenericSortType.*
 import com.github.androidpirate.capsulereviews.util.internal.GenreType
 import com.github.androidpirate.capsulereviews.util.internal.NetworkType
-import com.github.androidpirate.capsulereviews.util.internal.NetworkType.*
 import com.github.androidpirate.capsulereviews.viewmodel.TvShowsListViewModel
 import com.github.androidpirate.capsulereviews.viewmodel.ViewModelFactory
 import kotlinx.android.synthetic.main.fragment_tv_shows_list.*
-import kotlinx.android.synthetic.main.tv_showcase.*
+import kotlinx.android.synthetic.main.tv_showcase.scAddFavorite
+import kotlinx.android.synthetic.main.tv_showcase.scInfo
+import kotlinx.android.synthetic.main.tv_showcase.scPlay
+import kotlinx.android.synthetic.main.tv_showcase.scPoster
+import kotlinx.android.synthetic.main.tv_showcase.scTitle
 import kotlinx.android.synthetic.main.tv_toolbar.*
 
 class TvShowsListFragment :
@@ -47,9 +50,12 @@ class TvShowsListFragment :
     private lateinit var popularHuluAdapter: ListItemAdapter<DBTvShow>
     private lateinit var popularDisneyPlusAdapter: ListItemAdapter<DBTvShow>
     private lateinit var viewModel: TvShowsListViewModel
+    private var isShowcaseFavorite = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val factory = ViewModelFactory(requireActivity().application)
+        viewModel = ViewModelProvider(this, factory).get(TvShowsListViewModel::class.java)
         setupAdapters()
     }
 
@@ -63,47 +69,24 @@ class TvShowsListFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setupViews()
         displayLoadingScreen()
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        val factory = ViewModelFactory(requireActivity().application)
-        viewModel = ViewModelProvider(this, factory).get(TvShowsListViewModel::class.java)
-        viewModel.popularTvShows.observe(viewLifecycleOwner, Observer {
-            if(it != null) {
-                popularShowsAdapter.submitList(it)
-            }
-        })
-        viewModel.topRatedTvShows.observe(viewLifecycleOwner, Observer {
-            if(it != null) {
-                topRatedShowsAdapter.submitList(it)
-            }
-        })
-        viewModel.trendingTvShows.observe(viewLifecycleOwner, Observer {
-            if(it != null) {
-                trendingShowsAdapter.submitList(it)
-            }
-        })
+        viewModel.popularTvShows.observe(viewLifecycleOwner, Observer(popularShowsAdapter::submitList))
+        viewModel.topRatedTvShows.observe(viewLifecycleOwner, Observer(topRatedShowsAdapter::submitList))
+        viewModel.trendingTvShows.observe(viewLifecycleOwner, Observer(trendingShowsAdapter::submitList))
+        viewModel.popularOnNetflix.observe(viewLifecycleOwner, Observer(popularNetflixAdapter::submitList))
+        viewModel.popularOnHulu.observe(viewLifecycleOwner, Observer(popularHuluAdapter::submitList))
+        viewModel.popularOnDisneyPlus.observe(viewLifecycleOwner, Observer(popularDisneyPlusAdapter::submitList))
+        setupViews()
         viewModel.showcaseTvShow.observe(viewLifecycleOwner, Observer {
             if(it != null) {
                 setShowCaseTvShow(it)
+                viewModel.setIsShowcaseFavorite(it.tvShowId)
             }
         })
-        viewModel.popularOnNetflix.observe(viewLifecycleOwner, Observer {
+        viewModel.getIsShowcaseFavorite().observe(viewLifecycleOwner, Observer {
             if(it != null) {
-                popularNetflixAdapter.submitList(it)
-            }
-        })
-        viewModel.popularOnHulu.observe(viewLifecycleOwner, Observer {
-            if(it != null) {
-                popularHuluAdapter.submitList(it)
-            }
-        })
-        viewModel.popularOnDisneyPlus.observe(viewLifecycleOwner, Observer {
-            if(it != null) {
-                popularDisneyPlusAdapter.submitList(it)
+                isShowcaseFavorite = it
+                setFavoriteButtonState()
             }
         })
     }
@@ -144,21 +127,21 @@ class TvShowsListFragment :
             fragment = TV_LIST,
             clickListener = this,
             genericSort = POPULAR,
-            network = NETFLIX,
+            network = NetworkType.NETFLIX,
             genre = GenreType.ALL
         )
         popularHuluAdapter = ListItemAdapter(
             fragment = TV_LIST,
             clickListener = this,
             genericSort = POPULAR,
-            network = HULU,
+            network = NetworkType.HULU,
             genre = GenreType.ALL
         )
         popularDisneyPlusAdapter = ListItemAdapter(
             fragment = TV_LIST,
             clickListener = this,
             genericSort = POPULAR,
-            network = DISNEY_PLUS,
+            network = NetworkType.DISNEY_PLUS,
             genre = GenreType.ALL
         )
     }
@@ -199,9 +182,7 @@ class TvShowsListFragment :
     }
 
     private fun setShowCaseTvShowClickListeners(showcaseTvShow: DBTvShowShowcase) {
-        scAddFavorite.setOnClickListener {
-            // TODO 7: Implement adding to favorites here
-        }
+        setFavoriteListener(showcaseTvShow)
 
         scInfo.setOnClickListener {
             onShowcaseTvShowClick(showcaseTvShow.tvShowId)
@@ -230,6 +211,22 @@ class TvShowsListFragment :
         findNavController().navigate(action)
     }
 
+    private fun setFavoriteListener(showcaseTvShow: DBTvShowShowcase) {
+        scAddFavorite.setOnClickListener {
+            if(!isShowcaseFavorite) {
+                viewModel.insertShowcaseMovieToFavorites(showcaseTvShow)
+                setFavoriteButtonState()
+            } else {
+                viewModel.deleteShowcaseMovieFromFavorites(showcaseTvShow)
+                setFavoriteButtonState()
+            }
+        }
+    }
+
+    private fun setFavoriteButtonState() {
+        scAddFavorite.isActivated = isShowcaseFavorite
+    }
+
     private fun showTvGenresDialog() {
         val genresDialog = TvShowGenresDialogFragment
             .newInstance(this, Constants.DEFAULT_SELECTED_POSITION)
@@ -254,19 +251,19 @@ class TvShowsListFragment :
             if(isLast) {
                 if(network != NetworkType.ALL) {
                     when(network) {
-                        NETFLIX -> {
+                        NetworkType.NETFLIX -> {
                             val action = TvShowsListFragmentDirections
-                                .actionTvShowsListToPagedTvShows(POPULAR, NETFLIX, GenreType.ALL)
+                                .actionTvShowsListToPagedTvShows(POPULAR, NetworkType.NETFLIX, GenreType.ALL)
                             navigateToPagedTvShowsList(action)
                         }
-                        HULU -> {
+                        NetworkType.HULU -> {
                             val action = TvShowsListFragmentDirections
-                                .actionTvShowsListToPagedTvShows(POPULAR, HULU,  GenreType.ALL)
+                                .actionTvShowsListToPagedTvShows(POPULAR, NetworkType.HULU,  GenreType.ALL)
                             navigateToPagedTvShowsList(action)
                         }
-                        DISNEY_PLUS -> {
+                        NetworkType.DISNEY_PLUS -> {
                             val action = TvShowsListFragmentDirections
-                                .actionTvShowsListToPagedTvShows(POPULAR, DISNEY_PLUS, GenreType.ALL)
+                                .actionTvShowsListToPagedTvShows(POPULAR, NetworkType.DISNEY_PLUS, GenreType.ALL)
                             navigateToPagedTvShowsList(action)
                         }
                     }

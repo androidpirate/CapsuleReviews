@@ -25,9 +25,7 @@ import com.github.androidpirate.capsulereviews.util.internal.FragmentType.*
 import com.github.androidpirate.capsulereviews.util.internal.GenericSortType
 import com.github.androidpirate.capsulereviews.util.internal.GenericSortType.*
 import com.github.androidpirate.capsulereviews.util.internal.GenreType
-import com.github.androidpirate.capsulereviews.util.internal.GenreType.*
 import com.github.androidpirate.capsulereviews.util.internal.NetworkType
-import com.github.androidpirate.capsulereviews.util.internal.NetworkType.*
 import com.github.androidpirate.capsulereviews.viewmodel.ViewModelFactory
 import com.github.androidpirate.capsulereviews.viewmodel.MoviesListViewModel
 import kotlinx.android.synthetic.main.fragment_movies_list.*
@@ -45,9 +43,12 @@ class MoviesListFragment :
     private lateinit var upcomingNetworkMoviesAdapter: ListItemAdapter<DBMovie>
     private lateinit var trendingNetworkMoviesAdapter: ListItemAdapter<DBMovie>
     private lateinit var viewModel: MoviesListViewModel
+    private var isShowcaseFavorite = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val factory = ViewModelFactory(requireActivity().application)
+        viewModel = ViewModelProvider(this, factory).get(MoviesListViewModel::class.java)
         setupAdapters()
     }
 
@@ -59,34 +60,25 @@ class MoviesListFragment :
         return inflater.inflate(R.layout.fragment_movies_list, container, false)
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        val factory = ViewModelFactory(requireActivity().application)
-        viewModel = ViewModelProvider(this, factory).get(MoviesListViewModel::class.java)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         displayLoadingScreen()
-    }
-
-    override fun onStart() {
-        super.onStart()
-        viewModel.popularMovies.observe(viewLifecycleOwner, Observer {
-            popularNetworkMoviesAdapter.submitList(it)
-        })
-        viewModel.topRatedMovies.observe(viewLifecycleOwner, Observer {
-            topRatedNetworkMoviesAdapter.submitList(it)
-        })
-        viewModel.nowPlayingMovies.observe(viewLifecycleOwner, Observer {
-            nowPlayingNetworkMoviesAdapter.submitList(it)
-        })
-        viewModel.upcomingMovies.observe(viewLifecycleOwner, Observer {
-            upcomingNetworkMoviesAdapter.submitList(it)
-        })
-        viewModel.trendingMovies.observe(viewLifecycleOwner, Observer {
-            trendingNetworkMoviesAdapter.submitList(it)
-        })
+        viewModel.popularMovies.observe(viewLifecycleOwner, Observer(popularNetworkMoviesAdapter::submitList))
+        viewModel.topRatedMovies.observe(viewLifecycleOwner, Observer(topRatedNetworkMoviesAdapter::submitList))
+        viewModel.nowPlayingMovies.observe(viewLifecycleOwner, Observer(nowPlayingNetworkMoviesAdapter::submitList))
+        viewModel.upcomingMovies.observe(viewLifecycleOwner, Observer(upcomingNetworkMoviesAdapter::submitList))
+        viewModel.trendingMovies.observe(viewLifecycleOwner, Observer(trendingNetworkMoviesAdapter::submitList))
         setupViews()
-        viewModel.showcaseMovie.observe(viewLifecycleOwner, Observer { it ->
+        viewModel.showcaseMovie.observe(viewLifecycleOwner, Observer {
             if(it != null) {
                 setShowcaseMovie(it)
+                viewModel.setIsShowcaseFavorite(it.movieId)
+            }
+        })
+        viewModel.getIsShowcaseFavorite().observe(viewLifecycleOwner, Observer {
+            if(it != null) {
+                isShowcaseFavorite = it
+                setFavoriteButtonState()
             }
         })
     }
@@ -171,9 +163,7 @@ class MoviesListFragment :
     }
 
     private fun setShowcaseMovieClickListeners(showCaseMovie: DBMovieShowcase) {
-        scAddFavorite.setOnClickListener {
-            // TODO 7: Implement adding to favorites here
-        }
+       setFavoriteListener(showCaseMovie)
 
         scInfo.setOnClickListener {
             onShowcaseMovieClick(showCaseMovie)
@@ -199,6 +189,22 @@ class MoviesListFragment :
     private fun onShowcaseMovieClick(showCaseMovie: DBMovieShowcase) {
         val action = MoviesListFragmentDirections.actionMoviesListToDetail(showCaseMovie.movieId)
         findNavController().navigate(action)
+    }
+
+    private fun setFavoriteListener(showCaseMovie: DBMovieShowcase) {
+        scAddFavorite.setOnClickListener {
+            if(!isShowcaseFavorite) {
+                viewModel.insertShowcaseMovieToFavorites(showCaseMovie)
+                setFavoriteButtonState()
+            } else {
+                viewModel.deleteShowcaseMovieFromFavorites(showCaseMovie)
+                setFavoriteButtonState()
+            }
+        }
+    }
+
+    private fun setFavoriteButtonState() {
+        scAddFavorite.isActivated = isShowcaseFavorite
     }
 
     private fun showMovieGenresDialog() {
