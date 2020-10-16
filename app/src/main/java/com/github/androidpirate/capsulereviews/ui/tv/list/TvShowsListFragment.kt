@@ -19,6 +19,7 @@ import com.github.androidpirate.capsulereviews.data.db.entity.DBTvShow
 import com.github.androidpirate.capsulereviews.data.db.entity.DBTvShowShowcase
 import com.github.androidpirate.capsulereviews.ui.adapter.list.ListItemAdapter
 import com.github.androidpirate.capsulereviews.ui.adapter.list.ItemClickListener
+import com.github.androidpirate.capsulereviews.ui.dialog.TvNetworksDialogFragment
 import com.github.androidpirate.capsulereviews.ui.dialog.TvShowGenresDialogFragment
 import com.github.androidpirate.capsulereviews.util.internal.Constants
 import com.github.androidpirate.capsulereviews.util.internal.FragmentType.*
@@ -36,7 +37,8 @@ import kotlinx.android.synthetic.main.tv_toolbar.*
 class TvShowsListFragment :
     Fragment(),
     ItemClickListener,
-    TvShowGenresDialogFragment.TvShowGenresDialogListener{
+    TvShowGenresDialogFragment.TvShowGenresDialogListener,
+    TvNetworksDialogFragment.NetworksDialogListener {
 
     private lateinit var popularShowsAdapter: ListItemAdapter<DBTvShow>
     private lateinit var topRatedShowsAdapter: ListItemAdapter<DBTvShow>
@@ -171,6 +173,9 @@ class TvShowsListFragment :
         tvGenreSpinner.setOnClickListener {
             showTvGenresDialog()
         }
+        tvNetworkSpinner.setOnClickListener {
+            showTvNetworksDialog()
+        }
     }
 
     private fun setShowCaseTvShow(showcaseTvShow: DBTvShowShowcase) {
@@ -229,6 +234,11 @@ class TvShowsListFragment :
         val genresDialog = TvShowGenresDialogFragment
             .newInstance(this, Constants.DEFAULT_SELECTED_POSITION)
         genresDialog.show(requireActivity().supportFragmentManager, Constants.TV_SHOWS_LIST_FRAG_TAG)
+    }
+
+    private fun showTvNetworksDialog() {
+        val networksDialog = TvNetworksDialogFragment.newInstance(this, Constants.DEFAULT_SELECTED_POSITION)
+        networksDialog.show(requireActivity().supportFragmentManager,   Constants.TV_SHOWS_LIST_FRAG_TAG)
     }
 
     private fun navigateToPagedTvShowsList(action: NavDirections) {
@@ -290,8 +300,21 @@ class TvShowsListFragment :
     }
 
     override fun onGenreSelected(genre: GenreType) {
-        val action = TvShowsListFragmentDirections.actionTvShowsListToPagedTvShows(POPULAR,
-            NetworkType.ALL, genre)
+        val action = TvShowsListFragmentDirections
+            .actionTvShowsListToPagedTvShows(
+                POPULAR,
+                NetworkType.ALL,
+                genre)
+        navigateToPagedTvShowsList(action)
+    }
+
+    override fun onNetworkSelected(network: NetworkType) {
+        val action = TvShowsListFragmentDirections
+            .actionTvShowsListToPagedTvShows(
+                POPULAR,
+                network,
+                GenreType.ALL
+            )
         navigateToPagedTvShowsList(action)
     }
 }
