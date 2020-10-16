@@ -13,6 +13,7 @@ import com.github.androidpirate.capsulereviews.R
 import com.github.androidpirate.capsulereviews.data.network.response.tvShows.NetworkTvShowsListItem
 import com.github.androidpirate.capsulereviews.ui.adapter.paged.PagedItemAdapter
 import com.github.androidpirate.capsulereviews.ui.adapter.paged.PagedItemClickListener
+import com.github.androidpirate.capsulereviews.ui.dialog.TvNetworksDialogFragment
 import com.github.androidpirate.capsulereviews.ui.dialog.TvShowGenresDialogFragment
 import com.github.androidpirate.capsulereviews.util.GridSpacingItemDecoration
 import com.github.androidpirate.capsulereviews.util.internal.*
@@ -28,7 +29,8 @@ import kotlinx.android.synthetic.main.paged_tv_shows_toolbar.*
 class PagedTvShowsListFragment :
     Fragment(),
     PagedItemClickListener,
-    TvShowGenresDialogFragment.TvShowGenresDialogListener{
+    TvShowGenresDialogFragment.TvShowGenresDialogListener,
+    TvNetworksDialogFragment.NetworksDialogListener {
 
     private val args: PagedTvShowsListFragmentArgs by navArgs()
     private lateinit var viewModel: PagedTvShowsListViewModel
@@ -71,7 +73,7 @@ class PagedTvShowsListFragment :
                 tvShowsByNetwork = true
                 getTvShowsByNetwork()
             }
-            genre != ALL -> {
+            genre != GenreType.ALL -> {
                 tvShowsByGenre = true
                 getTvShowsByGenre()
             }
@@ -99,22 +101,16 @@ class PagedTvShowsListFragment :
     }
 
     private fun setupToolbar() {
-        if(tvShowsByNetwork) {
-            displaySpinners()
-        }
-        if(tvShowsByGenre) {
-            displaySpinners()
-            tvGenreSpinner.text = Constants.getTvGenresKey(args.genre)
-            // TODO: Add a function in Constants to handle networkKey
-            tvNetworkSpinner.text = args.network.toString()
-            tvNetworkSpinner.setOnClickListener {
-                // TODO: Not Implemented Yet
+        when {
+            tvShowsByNetwork -> {
+                displaySpinners()
             }
-            tvGenreSpinner.setOnClickListener {
-                showTvGenresDialog()
+            tvShowsByGenre -> {
+                displaySpinners()
             }
-        } else {
-            displayToolbarTitle()
+            else -> {
+                displayToolbarTitle()
+            }
         }
     }
 
@@ -122,6 +118,14 @@ class PagedTvShowsListFragment :
         tvToolbarTitle.visibility = View.GONE
         tvNetworkSpinner.visibility = View.VISIBLE
         tvGenreSpinner.visibility = View.VISIBLE
+        tvGenreSpinner.text = Constants.getTvGenresKey(genre)
+        tvNetworkSpinner.text = Constants.getTvNetworksKey(network)
+        tvNetworkSpinner.setOnClickListener {
+            showTvNetworksDialog()
+        }
+        tvGenreSpinner.setOnClickListener {
+            showTvGenresDialog()
+        }
     }
 
     private fun displayToolbarTitle() {
@@ -184,9 +188,15 @@ class PagedTvShowsListFragment :
     }
 
     private fun showTvGenresDialog() {
-        val genrePosition = Constants.getTvGenrePosition(args.genre)
+        val genrePosition = Constants.getTvGenrePosition(genre)
         val genresDialog = TvShowGenresDialogFragment.newInstance(this, genrePosition)
         genresDialog.show(requireActivity().supportFragmentManager, Constants.PAGED_TV_SHOWS_LIST_FRAG_TAG)
+    }
+
+    private fun showTvNetworksDialog() {
+        val networkPosition = Constants.getTvNetworkPosition(network)
+        val networksDialog = TvNetworksDialogFragment.newInstance(this, networkPosition)
+        networksDialog.show(requireActivity().supportFragmentManager,   Constants.PAGED_TV_SHOWS_LIST_FRAG_TAG)
     }
 
     override fun <T> onPagedItemClick(item: T) {
@@ -197,8 +207,19 @@ class PagedTvShowsListFragment :
 
     override fun onGenreSelected(genre: GenreType) {
         val action = PagedTvShowsListFragmentDirections
-            .actionPagedTvShowsListToSelf(args.genericSortType,
-                NetworkType.ALL, genre)
+            .actionPagedTvShowsListToSelf(
+                genericSort,
+                NetworkType.ALL,
+                genre)
+        findNavController().navigate(action)
+    }
+
+    override fun onNetworkSelected(network: NetworkType) {
+        val action = PagedTvShowsListFragmentDirections
+            .actionPagedTvShowsListToSelf(
+                genericSort,
+                network,
+                GenreType.ALL)
         findNavController().navigate(action)
     }
 }
