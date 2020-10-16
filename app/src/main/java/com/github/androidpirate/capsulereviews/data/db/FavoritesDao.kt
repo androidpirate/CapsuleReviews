@@ -11,10 +11,10 @@ interface FavoritesDao {
     @Query("SELECT * FROM favorites")
     fun getFavorites(): LiveData<List<DBFavorite>>
 
-    @Query("SELECT * FROM favorites WHERE type = :typeMovie")
+    @Query("SELECT * FROM favorites WHERE type = :typeMovie ORDER BY bingeStatus")
     fun getFavoriteMovies(typeMovie: String = Constants.FAVORITE_MOVIE_TYPE): LiveData<List<DBFavorite>>
 
-    @Query("SELECT * FROM favorites WHERE type = :typeTvShow")
+    @Query("SELECT * FROM favorites WHERE type = :typeTvShow ORDER BY bingeStatus")
     fun getFavoriteTvShows(typeTvShow: String = Constants.FAVORITE_TV_SHOW_TYPE): LiveData<List<DBFavorite>>
 
     @Query("SELECT * FROM favorites WHERE id = :id")
