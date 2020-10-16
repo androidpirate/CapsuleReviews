@@ -135,8 +135,6 @@ interface MovieDbService {
                     .url()
                     .newBuilder()
                     .addQueryParameter("api_key", BuildConfig.MOVIE_DB_API_TOKEN)
-                    .addQueryParameter("language", BuildConfig.MOVIE_DB_LANG_VALUE)
-                    .addQueryParameter("with_original_language", BuildConfig.MOVIE_DB_ORIG_LANG_VALUE)
                     .build()
                 val updatedRequest = chain.request()
                     .newBuilder()
