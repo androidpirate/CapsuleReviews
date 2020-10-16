@@ -75,13 +75,12 @@ class PagedTvShowsDataSource (
     }
 
     override fun loadBefore(params: LoadParams<Int>, callback: LoadCallback<Int, NetworkTvShowsListItem>) {
-        TODO("Not yet implemented")
+        // Not used since recyclerview holds a reference in memory
     }
 
     private suspend fun getPagedTvShowsWithGenericSort(
         page: Int,
-        genericSort: GenericSortType)
-            : NetworkTvShowsResponse {
+        genericSort: GenericSortType): NetworkTvShowsResponse {
             return when(genericSort) {
                 POPULAR, UPCOMING, NOW_PLAYING -> api.getPagedPopularTvShows(page)
                 TOP_RATED -> api.getPagedTopRatedTvShows(page)
@@ -92,18 +91,14 @@ class PagedTvShowsDataSource (
     private suspend fun getPagedTvShowsWithNetwork(
         page: Int,
         network: NetworkType,
-        sort: SortType
-    )
-            : NetworkTvShowsResponse {
+        sort: SortType): NetworkTvShowsResponse {
         return api.getPagedTvShowsWithNetwork(page, network.id, sort.queryParameter)
     }
 
     private suspend fun getPagedTvShowsWithGenre(
         page: Int,
         genre: GenreType,
-        sort: SortType
-    )
-            : NetworkTvShowsResponse {
+        sort: SortType): NetworkTvShowsResponse {
             return api.getPagedTvShowsWithGenre(page, genre.id, sort.queryParameter)
     }
 
@@ -111,9 +106,7 @@ class PagedTvShowsDataSource (
         page: Int,
         genre: GenreType,
         network: NetworkType,
-        sort: SortType
-    )
-            : NetworkTvShowsResponse {
+        sort: SortType): NetworkTvShowsResponse {
             return api.getPagedTvShowsWithGenreAndNetwork(page, genre.id, network.id, sort.queryParameter)
     }
 }

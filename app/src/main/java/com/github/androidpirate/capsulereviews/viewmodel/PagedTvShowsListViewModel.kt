@@ -29,6 +29,10 @@ class PagedTvShowsListViewModel(private val repo: TvShowsRepository): ViewModel(
 
     val genre = MutableLiveData<GenreType>(GenreType.ALL)
 
+    fun getGenre(): GenreType {
+        return genre.value!!
+    }
+
     fun setGenre(tvGenre: GenreType) = apply { genre.value = tvGenre }
 
     val tvShowsByGenre: LiveData<PagedList<NetworkTvShowsListItem>> =
@@ -38,11 +42,15 @@ class PagedTvShowsListViewModel(private val repo: TvShowsRepository): ViewModel(
         scope = viewModelScope,
         genericSort = POPULAR,
         sort = POPULAR_DESCENDING,
-        network = NetworkType.ALL,
+        network = network.value!!,
         genre = genre
     )
 
     val network = MutableLiveData<NetworkType>(NetworkType.ALL)
+
+    fun getNetwork(): NetworkType {
+        return network.value!!
+    }
 
     fun setNetwork(tvNetwork: NetworkType) = apply { network.value = tvNetwork }
 
@@ -54,6 +62,6 @@ class PagedTvShowsListViewModel(private val repo: TvShowsRepository): ViewModel(
         genericSort = POPULAR,
         sort = POPULAR_DESCENDING,
         network = network,
-        genre = GenreType.ALL
+        genre = genre.value!!
     )
 }

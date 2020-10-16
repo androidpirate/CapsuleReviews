@@ -39,8 +39,7 @@ class PagedTvShowsListFragment :
     private lateinit var genre: GenreType
     private lateinit var network: NetworkType
     private var flagDecoration = false
-    private var tvShowsByNetwork = false
-    private var tvShowsByGenre = false
+    private var tvShowsByGenericSort = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -70,11 +69,11 @@ class PagedTvShowsListFragment :
         }
         when {
             network != NetworkType.ALL -> {
-                tvShowsByNetwork = true
+                tvShowsByGenericSort = false
                 getTvShowsByNetwork()
             }
             genre != GenreType.ALL -> {
-                tvShowsByGenre = true
+               tvShowsByGenericSort = false
                 getTvShowsByGenre()
             }
             else -> {
@@ -102,14 +101,10 @@ class PagedTvShowsListFragment :
 
     private fun setupToolbar() {
         when {
-            tvShowsByNetwork -> {
-                displaySpinners()
-            }
-            tvShowsByGenre -> {
-                displaySpinners()
-            }
-            else -> {
+            tvShowsByGenericSort -> {
                 displayToolbarTitle()
+            } else -> {
+                displaySpinners()
             }
         }
     }
@@ -206,20 +201,24 @@ class PagedTvShowsListFragment :
     }
 
     override fun onGenreSelected(genre: GenreType) {
+        viewModel.setGenre(genre)
+        network = viewModel.getNetwork()
         val action = PagedTvShowsListFragmentDirections
             .actionPagedTvShowsListToSelf(
                 genericSort,
-                NetworkType.ALL,
+                network,
                 genre)
         findNavController().navigate(action)
     }
 
     override fun onNetworkSelected(network: NetworkType) {
+        viewModel.setNetwork(network)
+        genre = viewModel.getGenre()
         val action = PagedTvShowsListFragmentDirections
             .actionPagedTvShowsListToSelf(
                 genericSort,
                 network,
-                GenreType.ALL)
+                genre)
         findNavController().navigate(action)
     }
 }
