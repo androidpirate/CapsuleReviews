@@ -8,54 +8,13 @@
 
     <TextView
         style="@style/SubHeadTextStyle"
-        android:id="@+id/releaseDate"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:layout_marginStart="@dimen/margin_32"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/separator_2"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        tools:text="1994"/>
-
-    <ImageView
-        android:id="@+id/separator_2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:contentDescription="@string/dot_separator_description"
-        android:src="@drawable/custom_dot_separator"
-        app:layout_constraintBottom_toBottomOf="@id/releaseDate"
-        app:layout_constraintEnd_toStartOf="@+id/status"
-        app:layout_constraintStart_toEndOf="@+id/releaseDate"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"/>
-
-    <TextView
-        style="@style/SubHeadTextStyle"
-        android:id="@+id/status"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:layout_marginEnd="@dimen/margin_32"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/separator_2"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        tools:text="Ongoing"/>
-
-    <TextView
-        style="@style/SubHeadTextStyle"
         android:id="@+id/genres"
         android:layout_width="@dimen/match_constraint"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
-        android:layout_marginTop="@dimen/margin_16"
-        android:paddingStart="@dimen/padding_16"
-        android:paddingEnd="@dimen/padding_16"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/releaseDate"
         tools:text="Comedy, Drama, Western, SciFi, Action, Adventure, Horror"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

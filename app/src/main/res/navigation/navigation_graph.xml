@@ -160,6 +160,13 @@
             android:name="movieId"
             app:argType="integer"
             android:defaultValue="0"/>
+        <action
+            android:id="@+id/action_favorite_to_movie_detail"
+            app:destination="@id/movieDetailFragment"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_right"
+            app:popExitAnim="@anim/slide_out_right"/>
     </fragment>
 
     <fragment
@@ -171,6 +178,13 @@
             android:name="tvShowId"
             app:argType="integer"
             android:defaultValue="0"/>
+        <action
+            android:id="@+id/action_favorite_to_tv_show_detail"
+            app:destination="@id/tvDetailFragment"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_right"
+            app:popExitAnim="@anim/slide_out_right"/>
     </fragment>
 
     <fragment

@@ -32,12 +32,56 @@
 
     <TextView
         style="@style/SubHeadBoldTextStyle"
+        android:id="@+id/releaseDateTitle"
+        android:layout_width="@dimen/match_constraint"
+        android:layout_height="wrap_content"
+        android:text="@string/release_date_title_content"
+        android:layout_marginTop="@dimen/margin_16"
+        app:layout_constraintTop_toBottomOf="@id/createdBy"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <TextView
+        style="@style/ContentTextStyle"
+        android:id="@+id/releaseDate"
+        android:layout_width="@dimen/match_constraint"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_8"
+        app:layout_constraintTop_toBottomOf="@id/releaseDateTitle"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:text="1994"/>
+
+    <TextView
+        style="@style/SubHeadBoldTextStyle"
+        android:id="@+id/statusTitle"
+        android:layout_width="@dimen/match_constraint"
+        android:layout_height="wrap_content"
+        android:text="@string/status_title_content"
+        android:layout_marginTop="@dimen/margin_16"
+        app:layout_constraintTop_toBottomOf="@id/releaseDate"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <TextView
+        style="@style/ContentTextStyle"
+        android:id="@+id/status"
+        android:layout_width="@dimen/match_constraint"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_8"
+        app:layout_constraintTop_toBottomOf="@id/statusTitle"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:text="Ongoing"/>
+
+    <TextView
+        style="@style/SubHeadBoldTextStyle"
         android:id="@+id/overviewTitle"
         android:layout_width="@dimen/match_constraint"
         android:layout_height="wrap_content"
         android:text="@string/overview_title_content"
         android:layout_marginTop="@dimen/margin_16"
-        app:layout_constraintTop_toBottomOf="@id/createdBy"
+        app:layout_constraintTop_toBottomOf="@id/status"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"/>
 

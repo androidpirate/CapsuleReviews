@@ -74,24 +74,36 @@
         tools:text="$230,884,728.00"/>
 
     <TextView
+        style="@style/SubHeadBoldTextStyle"
+        android:id="@+id/releaseDateTitle"
+        android:layout_width="@dimen/match_constraint"
+        android:layout_height="wrap_content"
+        android:text="@string/release_date_title_content"
+        android:layout_marginTop="@dimen/margin_16"
+        app:layout_constraintTop_toBottomOf="@id/revenue"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <TextView
+        style="@style/ContentTextStyle"
+        android:id="@+id/releaseDate"
+        android:layout_width="@dimen/match_constraint"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_8"
+        app:layout_constraintTop_toBottomOf="@id/releaseDateTitle"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:text="10/23/1998"/>
+
+    <TextView
         style="@style/IMDBLinkStyle"
         android:id="@+id/imdbLink"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/imdb_link_title_content"
         android:layout_marginTop="@dimen/margin_32"
-        app:layout_constraintTop_toBottomOf="@id/revenue"
+        app:drawableEndCompat="@drawable/ic_outline_next_accent"
+        app:layout_constraintTop_toBottomOf="@id/releaseDate"
         app:layout_constraintStart_toStartOf="parent"/>
-
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_outline_next_accent"
-        android:contentDescription="@string/next_icon_description"
-        android:layout_marginTop="@dimen/margin_32"
-        android:layout_marginStart="@dimen/margin_8"
-        app:layout_constraintStart_toEndOf="@id/imdbLink"
-        app:layout_constraintTop_toBottomOf="@id/revenue"
-        app:layout_constraintBottom_toBottomOf="@id/imdbLink"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

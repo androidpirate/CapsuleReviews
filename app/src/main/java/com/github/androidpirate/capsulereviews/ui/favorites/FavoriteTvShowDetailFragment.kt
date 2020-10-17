@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.github.androidpirate.capsulereviews.R
 import com.github.androidpirate.capsulereviews.data.db.entity.DBFavorite
@@ -45,16 +46,13 @@ class FavoriteTvShowDetailFragment : Fragment() {
 
     private fun setupViews(tvShow: DBFavorite) {
         tvShowTitle.text = tvShow.title
-        releaseDate.text = tvShow.releaseDate
         genres.text = tvShow.genres
-        status.text = tvShow.status
         userRating.text = tvShow.voteAverage.toString()
-        setBingeStatus(tvShow.bingeStatus)
+        status.text = tvShow.status
         overview.text = tvShow.overview
         network.text = tvShow.networks
-        createdBy.text = tvShow.createdBy
-        numberOfSeasons.text = tvShow.numberOfSeasons.toString()
-        numberOfEpisodes.text = tvShow.numberOfEpisodes.toString()
+        setBingeStatus(tvShow.bingeStatus)
+        setTvShowDetailLink(tvShow.id)
     }
 
     private fun setBingeStatus(bingeStatusString: String) {
@@ -75,6 +73,13 @@ class FavoriteTvShowDetailFragment : Fragment() {
                     .setTextColor(
                         ContextCompat.getColor(requireContext(), R.color.colorSeenBingeStatus))
             }
+        }
+    }
+
+    private fun setTvShowDetailLink(showId: Int) {
+        tvDetailLink.setOnClickListener {
+            val action = FavoriteTvShowDetailFragmentDirections.actionFavoriteToTvShowDetail(showId)
+            findNavController().navigate(action)
         }
     }
 }

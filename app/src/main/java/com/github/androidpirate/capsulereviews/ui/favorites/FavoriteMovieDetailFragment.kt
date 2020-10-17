@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.github.androidpirate.capsulereviews.R
 import com.github.androidpirate.capsulereviews.data.db.entity.DBFavorite
@@ -41,12 +42,12 @@ class FavoriteMovieDetailFragment : Fragment() {
 
     private fun setupViews(movie: DBFavorite) {
         movieTitle.text = movie.title
-        releaseDate.text = movie.releaseDate
-        runTime.text = movie.runtime
         genres.text = movie.genres
+        runTime.text = movie.runtime
         userRating.text = movie.voteAverage.toString()
         overview.text = movie.overview
         setBingeStatus(movie.bingeStatus)
+        setMovieDetailLink(movie.id)
     }
 
     private fun setBingeStatus(bingeStatusString: String) {
@@ -67,6 +68,13 @@ class FavoriteMovieDetailFragment : Fragment() {
                     .setTextColor(
                         ContextCompat.getColor(requireContext(), R.color.colorSeenBingeStatus))
             }
+        }
+    }
+
+    private fun setMovieDetailLink(movieId: Int) {
+        movieDetailLink.setOnClickListener {
+            val action = FavoriteMovieDetailFragmentDirections.actionFavoriteToMovieDetail(movieId)
+            findNavController().navigate(action)
         }
     }
 }
