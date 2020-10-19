@@ -6,5 +6,6 @@ enum class FragmentType {
     TV_LIST,
     TV_DETAIL,
     PAGED_MOVIE_LIST,
-    PAGED_TV_LIST
+    PAGED_TV_LIST,
+    SEARCH_RESULTS
 }

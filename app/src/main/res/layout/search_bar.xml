@@ -3,8 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:padding="@dimen/padding_16"
+    android:layout_height="?attr/actionBarSize"
     android:background="@color/colorDarkGrey">
 
     <ImageView
@@ -13,6 +12,7 @@
         android:layout_height="wrap_content"
         android:src="@drawable/ic_outline_back_white"
         android:contentDescription="@string/navigate_up_button_description"
+        android:layout_marginStart="@dimen/margin_16"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"/>
@@ -32,13 +32,27 @@
         style="@style/SearchContentTextStyle"
         android:id="@+id/etSearch"
         android:layout_width="@dimen/match_constraint"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/match_constraint"
         android:inputType="text"
         android:hint="@string/et_search_hint_content"
+        android:imeOptions="actionSearch"
         android:layout_marginStart="@dimen/margin_8"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@id/searchIcon"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintEnd_toStartOf="@id/clearButton"/>
+
+    <ImageView
+        android:id="@+id/clearButton"
+        android:layout_width="@dimen/clearButtonWidth"
+        android:layout_height="@dimen/clearButtonHeight"
+        android:contentDescription="@string/clear_query_button_description"
+        android:src="@drawable/ic_filled_cancel_white"
+        android:visibility="invisible"
+        android:layout_marginEnd="@dimen/margin_8"
+        app:layout_constraintStart_toEndOf="@id/etSearch"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

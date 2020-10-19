@@ -102,6 +102,9 @@ class Constants {
         const val NETWORK_NETFLIX = "Netflix"
         const val NETWORK_PEACOCK = "Peacock"
         const val NETWORK_TYPE_ERROR_MESSAGE = "No such network type."
+        // Search Fragment constants
+        const val MEDIA_TYPE_MOVIE = "movie"
+        const val MEDIA_TYPE_TV = "tv"
 
         fun getBingeStatusArray(): Array<String> {
             return arrayOf(

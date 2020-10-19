@@ -9,6 +9,7 @@ import com.bumptech.glide.Glide
 import com.github.androidpirate.capsulereviews.BuildConfig
 import com.github.androidpirate.capsulereviews.R
 import com.github.androidpirate.capsulereviews.data.network.response.movies.NetworkMoviesListItem
+import com.github.androidpirate.capsulereviews.data.network.response.multiSearch.NetworkMultiSearchListItem
 import com.github.androidpirate.capsulereviews.data.network.response.tvShows.NetworkTvShowsListItem
 import com.github.androidpirate.capsulereviews.util.internal.Constants
 import com.github.androidpirate.capsulereviews.util.internal.FragmentType
@@ -38,13 +39,14 @@ class PagedItemAdapter<T>(private val fragment: FragmentType, val clickListener:
             when(fragment) {
                 PAGED_MOVIE_LIST -> setItemThumbnail((item as NetworkMoviesListItem).posterPath)
                 PAGED_TV_LIST -> setItemThumbnail((item as NetworkTvShowsListItem).posterPath)
+                SEARCH_RESULTS -> setItemThumbnail((item as NetworkMultiSearchListItem).posterPath)
                 else -> throw IllegalArgumentException("${Constants.ADAPTER_UNKNOWN_FRAGMENT_MESSAGE} $fragment")
             }
         }
 
         private fun setItemThumbnail(posterPath: String) {
             Glide.with(itemView.context)
-                .load(BuildConfig.MOVIE_DB_IMAGE_BASE_URL + Constants.ADAPTER_POSTER_WIDTH+ posterPath)
+                .load(BuildConfig.MOVIE_DB_IMAGE_BASE_URL + Constants.ADAPTER_POSTER_WIDTH + posterPath)
                 .placeholder(R.drawable.ic_no_preview)
                 .into(itemView.ivListItem)
         }
