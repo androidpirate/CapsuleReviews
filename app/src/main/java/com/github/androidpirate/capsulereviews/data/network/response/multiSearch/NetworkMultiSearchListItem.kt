@@ -27,5 +27,5 @@ data class NetworkMultiSearchListItem(
     @SerializedName("video")
     val video: Boolean,
     @SerializedName("vote_average")
-    val voteAverage: Int
+    val voteAverage: Double
 )
