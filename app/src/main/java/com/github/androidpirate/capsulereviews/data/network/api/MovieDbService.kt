@@ -126,7 +126,9 @@ interface MovieDbService {
      *    Multi Search Endpoints
      ******************************/
     @GET("search/multi")
-    suspend fun getSearchResults(@Query("query") query: String): NetworkMultiSearchResponse
+    suspend fun getSearchResults(
+        @Query("page") page: Int,
+        @Query("query") query: String): NetworkMultiSearchResponse
 
     companion object {
         operator fun invoke(): MovieDbService {
