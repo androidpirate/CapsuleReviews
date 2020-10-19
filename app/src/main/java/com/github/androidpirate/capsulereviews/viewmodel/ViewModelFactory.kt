@@ -7,11 +7,13 @@ import com.github.androidpirate.capsulereviews.data.db.AppDatabase
 import com.github.androidpirate.capsulereviews.data.network.api.MovieDbService
 import com.github.androidpirate.capsulereviews.data.repo.FavoritesRepository
 import com.github.androidpirate.capsulereviews.data.repo.MoviesRepository
+import com.github.androidpirate.capsulereviews.data.repo.SearchRepository
 import com.github.androidpirate.capsulereviews.data.repo.TvShowsRepository
 import java.lang.IllegalStateException
 
 @Suppress("UNCHECKED_CAST")
 class ViewModelFactory(application: Application): ViewModelProvider.Factory {
+
     private val movieDbService = MovieDbService.invoke()
     private val appDatabase = AppDatabase.invoke(application.applicationContext)
     private val moviesRepo = MoviesRepository(
@@ -21,9 +23,8 @@ class ViewModelFactory(application: Application): ViewModelProvider.Factory {
         movieDbService,
         appDatabase.tvShowListDao()
     )
-    private val favoritesRepo = FavoritesRepository(
-        appDatabase.favoritesDao()
-    )
+    private val favoritesRepo = FavoritesRepository(appDatabase.favoritesDao())
+    private val searchRepo = SearchRepository(movieDbService)
 
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         return when {
@@ -47,6 +48,9 @@ class ViewModelFactory(application: Application): ViewModelProvider.Factory {
             }
             modelClass.isAssignableFrom(FavoritesViewModel::class.java) -> {
                 FavoritesViewModel(favoritesRepo) as T
+            }
+            modelClass.isAssignableFrom(PagedSearchResultsViewModel::class.java) -> {
+                PagedSearchResultsViewModel(searchRepo) as T
             }
             else -> throw IllegalStateException("No such view model class.")
         }
