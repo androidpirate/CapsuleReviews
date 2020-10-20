@@ -24,31 +24,40 @@ interface MovieDbService {
     suspend fun getPopularMovies(): NetworkMoviesResponse
 
     @GET("movie/popular")
-    suspend fun getPagedPopularMovies(@Query("page") page: Int): NetworkMoviesResponse
+    suspend fun getPagedPopularMovies(
+        @Query("page") page: Int): NetworkMoviesResponse
 
     @GET("movie/top_rated")
     suspend fun getTopRatedMovies(): NetworkMoviesResponse
 
     @GET("movie/top_rated")
-    suspend fun getPagedTopRatedMovies(@Query("page") page: Int): NetworkMoviesResponse
+    suspend fun getPagedTopRatedMovies(
+        @Query("page") page: Int): NetworkMoviesResponse
 
     @GET("movie/now_playing")
-    suspend fun getNowPlayingMovies(): NetworkMoviesResponse
+    suspend fun getNowPlayingMovies(
+        @Query("sort_by") sort: String): NetworkMoviesResponse
 
     @GET("movie/now_playing")
-    suspend fun getPagedNowPlayingMovies(@Query("page") page: Int): NetworkMoviesResponse
+    suspend fun getPagedNowPlayingMovies(
+        @Query("page") page: Int,
+        @Query("sort_by") sort: String): NetworkMoviesResponse
 
     @GET("movie/upcoming")
-    suspend fun getUpcomingMovies(): NetworkMoviesResponse
+    suspend fun getUpcomingMovies(
+        @Query("sort_by") sort: String): NetworkMoviesResponse
 
     @GET("movie/upcoming")
-    suspend fun getPagedUpcomingMovies(@Query("page") page: Int): NetworkMoviesResponse
+    suspend fun getPagedUpcomingMovies(
+        @Query("page") page: Int,
+        @Query("sort_by") sort: String): NetworkMoviesResponse
 
     @GET("trending/movie/week")
     suspend fun getTrendingMovies(): NetworkMoviesResponse
 
     @GET("trending/movie/week")
-    suspend fun getPagedTrendingMovies(@Query("page") page: Int): NetworkMoviesResponse
+    suspend fun getPagedTrendingMovies(
+        @Query("page") page: Int): NetworkMoviesResponse
 
     @GET("discover/movie")
     suspend fun getPagedMoviesWithGenre(
@@ -57,13 +66,16 @@ interface MovieDbService {
         @Query("sort_by") sort: String): NetworkMoviesResponse
 
     @GET("movie/{movie_id}/similar")
-    suspend fun getSimilarMovies(@Path("movie_id") movieId: Int): NetworkMoviesResponse
+    suspend fun getSimilarMovies(
+        @Path("movie_id") movieId: Int): NetworkMoviesResponse
 
     @GET("movie/{movie_id}")
-    suspend fun getMovieDetails(@Path("movie_id") movieId: Int): NetworkMovie
+    suspend fun getMovieDetails(
+        @Path("movie_id") movieId: Int): NetworkMovie
 
     @GET("movie/{movie_id}/videos")
-    suspend fun getMovieVideos(@Path("movie_id") movieId: Int): NetworkVideosResponse
+    suspend fun getMovieVideos(
+        @Path("movie_id") movieId: Int): NetworkVideosResponse
 
     /******************************
      *    Tv Shows Endpoints
@@ -72,24 +84,26 @@ interface MovieDbService {
     suspend fun getPopularTvShows(): NetworkTvShowsResponse
 
     @GET("tv/popular")
-    suspend fun getPagedPopularTvShows(@Query("page") page: Int): NetworkTvShowsResponse
+    suspend fun getPagedPopularTvShows(
+        @Query("page") page: Int): NetworkTvShowsResponse
 
     @GET("tv/top_rated")
     suspend fun getTopRatedTvShows(): NetworkTvShowsResponse
 
     @GET("tv/top_rated")
-    suspend fun getPagedTopRatedTvShows(@Query("page") page: Int): NetworkTvShowsResponse
+    suspend fun getPagedTopRatedTvShows(
+        @Query("page") page: Int): NetworkTvShowsResponse
 
     @GET("trending/tv/week")
     suspend fun getTrendingTvShows(): NetworkTvShowsResponse
 
     @GET("trending/tv/week")
-    suspend fun getPagedTrendingTvShows(@Query("page") page: Int): NetworkTvShowsResponse
+    suspend fun getPagedTrendingTvShows(
+        @Query("page") page: Int): NetworkTvShowsResponse
 
     @GET("discover/tv")
     suspend fun getPopularTvShowsOnNetwork(
-        @Query("with_networks") networkId: Int
-    ): NetworkTvShowsResponse
+        @Query("with_networks") networkId: Int): NetworkTvShowsResponse
 
     @GET("discover/tv")
     suspend fun getPagedTvShowsWithNetwork(
@@ -111,16 +125,20 @@ interface MovieDbService {
         @Query("sort_by") sort: String): NetworkTvShowsResponse
 
     @GET("tv/{tv_id}/similar")
-    suspend fun getSimilarTvShows(@Path("tv_id") tvId: Int): NetworkTvShowsResponse
+    suspend fun getSimilarTvShows(
+        @Path("tv_id") tvId: Int): NetworkTvShowsResponse
 
     @GET("tv/{tv_id}")
-    suspend fun getTvShowDetails(@Path("tv_id") tvId: Int): NetworkTvShow
+    suspend fun getTvShowDetails(
+        @Path("tv_id") tvId: Int): NetworkTvShow
 
     @GET("tv/{tv_id}/videos")
-    suspend fun getTvShowVideos(@Path("tv_id") tvId: Int): NetworkVideosResponse
+    suspend fun getTvShowVideos(
+        @Path("tv_id") tvId: Int): NetworkVideosResponse
 
     @GET("tv/{tv_id}/external_ids")
-    suspend fun getTvShowExternalIDs(@Path("tv_id") tvId: Int) : NetworkTvShowExternalIDs
+    suspend fun getTvShowExternalIDs(
+        @Path("tv_id") tvId: Int) : NetworkTvShowExternalIDs
 
     /******************************
      *    Multi Search Endpoints

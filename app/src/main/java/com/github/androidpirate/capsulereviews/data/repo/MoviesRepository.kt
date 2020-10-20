@@ -3,6 +3,7 @@ package com.github.androidpirate.capsulereviews.data.repo
 import androidx.lifecycle.LiveData
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
+import com.github.androidpirate.capsulereviews.BuildConfig
 import com.github.androidpirate.capsulereviews.data.datasource.PagedMoviesDataSourceFactory
 import com.github.androidpirate.capsulereviews.data.db.MovieListDao
 import com.github.androidpirate.capsulereviews.data.db.entity.DBMovie
@@ -86,7 +87,7 @@ class MoviesRepository(
     }
 
     suspend fun fetchAndPersistNowPlayingMovies() {
-        val nowPlayingMovies = api.getNowPlayingMovies().networkMoviesListItems
+        val nowPlayingMovies = api.getNowPlayingMovies(BuildConfig.RELEASE_DATE_DESC).networkMoviesListItems
         nowPlayingMovies.forEach {
             if(dao.isRowIsExist(it.id)) {
                 dao.updateNowPlayingMovie(it.id)
@@ -97,7 +98,7 @@ class MoviesRepository(
     }
 
     suspend fun fetchAndPersistUpcomingMovies() {
-        val upcomingMovies = api.getUpcomingMovies().networkMoviesListItems
+        val upcomingMovies = api.getUpcomingMovies(BuildConfig.RELEASE_DATE_DESC).networkMoviesListItems
         upcomingMovies.forEach {
             if(dao.isRowIsExist(it.id)) {
                 dao.updateUpcomingMovie(it.id)

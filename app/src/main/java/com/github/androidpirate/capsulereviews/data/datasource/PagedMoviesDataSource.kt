@@ -1,6 +1,7 @@
 package com.github.androidpirate.capsulereviews.data.datasource
 
 import androidx.paging.PageKeyedDataSource
+import com.github.androidpirate.capsulereviews.BuildConfig
 import com.github.androidpirate.capsulereviews.data.network.api.MovieDbService
 import com.github.androidpirate.capsulereviews.data.network.response.movies.NetworkMoviesListItem
 import com.github.androidpirate.capsulereviews.data.network.response.movies.NetworkMoviesResponse
@@ -70,8 +71,8 @@ class PagedMoviesDataSource(
         return when(genericSort) {
             POPULAR -> api.getPagedPopularMovies(page)
             TOP_RATED -> api.getPagedTopRatedMovies(page)
-            NOW_PLAYING -> api.getPagedNowPlayingMovies(page)
-            UPCOMING -> api.getPagedUpcomingMovies(page)
+            NOW_PLAYING -> api.getPagedNowPlayingMovies(page, BuildConfig.RELEASE_DATE_DESC)
+            UPCOMING -> api.getPagedUpcomingMovies(page, BuildConfig.RELEASE_DATE_DESC)
             TRENDING -> api.getPagedTrendingMovies(page)
         }
     }
