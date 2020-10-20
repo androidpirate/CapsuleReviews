@@ -21,6 +21,7 @@ class TvShowDetailViewModel(
     private val tvShowVideoKey = MutableLiveData<String>()
     private val similarTvShows = MutableLiveData<List<NetworkTvShowsListItem>>()
     private val imdbId = MutableLiveData<String> ()
+    private var imdbEndpoint = MutableLiveData<String>()
     private var isFavorite = MutableLiveData<Boolean>()
 
     fun getTvShowDetails(showId: Int): LiveData<NetworkTvShow> {
@@ -89,5 +90,13 @@ class TvShowDetailViewModel(
                 isFavorite.postValue(false)
             }
         }
+    }
+
+    fun setImdbEndpoint(imdbEndpoint: String) {
+        this.imdbEndpoint.apply { value  = imdbEndpoint}
+    }
+
+    fun getImdbEndpoint(): LiveData<String> {
+        return imdbEndpoint
     }
 }

@@ -39,15 +39,18 @@ import kotlinx.android.synthetic.main.movie_summary.*
 class MovieDetailFragment : Fragment(), SimilarContentClickListener {
     private val args: MovieDetailFragmentArgs by navArgs()
     private lateinit var networkMovie: NetworkMovie
-    private var videoKey: String = ""
     private lateinit var adapter: SimilarContentAdapter<NetworkMoviesListItem>
     private lateinit var similarMovies: List<NetworkMoviesListItem>
     private lateinit var viewModel: MovieDetailViewModel
+    private var videoKey: String = Constants.EMPTY_VIDEO_KEY
+    private var imdbEndpoint: String = Constants.EMPTY_FIELD_STRING
     private var isFavorite = false
     private var flagDecoration = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val factory = ViewModelFactory(requireActivity().application)
+        viewModel = ViewModelProvider(this, factory).get(MovieDetailViewModel::class.java)
         adapter = SimilarContentAdapter(fragment = MOVIE_DETAIL, clickListener = this)
         requireActivity().onBackPressedDispatcher.addCallback(
             this,
@@ -69,22 +72,12 @@ class MovieDetailFragment : Fragment(), SimilarContentClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         displayLoadingScreen()
-        btUp.setOnClickListener {
-            findNavController().navigate(R.id.action_movie_detail_to_list)
-        }
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        val factory = ViewModelFactory(requireActivity().application)
-        viewModel = ViewModelProvider(this, factory).get(MovieDetailViewModel::class.java)
         viewModel.getMovieDetails(args.movieId).observe(viewLifecycleOwner, Observer {
             networkMovie = it
             setMoviePoster()
             setMovieDetails()
             setFavoriteButtonState()
             setIMDBLink()
-            setFavoriteListener()
         })
         viewModel.getIsFavorite().observe(viewLifecycleOwner, Observer {
             if(it != null) {
@@ -100,6 +93,14 @@ class MovieDetailFragment : Fragment(), SimilarContentClickListener {
             similarMovies = it
             setSimilarMovies()
         })
+        viewModel.getImdbEndpoint().observe(viewLifecycleOwner, Observer {
+            if(it.isNotEmpty() || it.isNotBlank()) {
+                imdbEndpoint = it
+            }
+        })
+        setupUpNavigation()
+        setFavoriteListener()
+        setShareListener()
         displayContainerScreen()
     }
 
@@ -149,7 +150,8 @@ class MovieDetailFragment : Fragment(), SimilarContentClickListener {
 
     private fun setIMDBLink() {
         val imdbEndpoint = BuildConfig.IMDB_BASE_URL + networkMovie.imdbId
-        imdbLink.setOnClickListener {
+        viewModel.setImdbEndpoint(imdbEndpoint)
+        this.imdbLink.setOnClickListener {
             if(imdbEndpoint != BuildConfig.IMDB_BASE_URL) {
                 val uri = Uri.parse(imdbEndpoint);
                 val intent = Intent(Intent.ACTION_VIEW, uri);
@@ -164,6 +166,12 @@ class MovieDetailFragment : Fragment(), SimilarContentClickListener {
         }
     }
 
+    private fun setupUpNavigation() {
+        btUp.setOnClickListener {
+            findNavController().navigate(R.id.action_movie_detail_to_list)
+        }
+    }
+
     private fun setFavoriteListener() {
         btFavorite.setOnClickListener {
             if(!isFavorite) {
@@ -173,6 +181,20 @@ class MovieDetailFragment : Fragment(), SimilarContentClickListener {
                 viewModel.deleteFavoriteMovie(networkMovie)
                 setFavoriteButtonState()
             }
+        }
+    }
+
+    private fun setShareListener() {
+        btShare.setOnClickListener {
+            val sendIntent: Intent = Intent().apply {
+                action = Intent.ACTION_SEND
+                putExtra(Intent.EXTRA_SUBJECT, Constants.INTENT_MOVIE_SUBJECT)
+                putExtra(Intent.EXTRA_TEXT, imdbEndpoint)
+                type = Constants.INTENT_TYPE_TEXT
+            }
+
+            val shareIntent = Intent.createChooser(sendIntent, null)
+            startActivity(shareIntent)
         }
     }
 

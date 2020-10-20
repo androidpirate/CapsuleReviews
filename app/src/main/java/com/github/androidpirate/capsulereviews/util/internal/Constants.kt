@@ -105,6 +105,10 @@ class Constants {
         // Search Fragment constants
         const val MEDIA_TYPE_MOVIE = "movie"
         const val MEDIA_TYPE_TV = "tv"
+        // Intent constants
+        const val INTENT_MOVIE_SUBJECT = "Check out this movie:"
+        const val INTENT_TV_SUBJECT = "Check out this tv show:"
+        const val INTENT_TYPE_TEXT = "text/plain"
 
         fun getBingeStatusArray(): Array<String> {
             return arrayOf(

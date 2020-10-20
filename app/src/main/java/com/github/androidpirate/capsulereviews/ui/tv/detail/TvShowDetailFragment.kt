@@ -42,16 +42,19 @@ import kotlinx.android.synthetic.main.tv_summary.*
 class TvShowDetailFragment : Fragment(), SimilarContentClickListener {
     private val args: TvShowDetailFragmentArgs by navArgs()
     private lateinit var networkTvShow: NetworkTvShow
-    private var videoKey: String = ""
     private lateinit var adapter: SimilarContentAdapter<NetworkTvShowsListItem>
     private lateinit var similarShows: List<NetworkTvShowsListItem>
-    private var imdbId: String = ""
     private lateinit var viewModel: TvShowDetailViewModel
+    private var videoKey: String = Constants.EMPTY_VIDEO_KEY
+    private var imdbId: String = Constants.EMPTY_FIELD_STRING
+    private var imdbEndpoint: String = Constants.EMPTY_FIELD_STRING
     private var isFavorite = false
     private var flagDecoration = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val factory = ViewModelFactory(requireActivity().application)
+        viewModel = ViewModelProvider(this, factory).get(TvShowDetailViewModel::class.java)
         adapter = SimilarContentAdapter(fragment = TV_DETAIL,clickListener = this)
         requireActivity().onBackPressedDispatcher.addCallback(
             this,
@@ -74,23 +77,12 @@ class TvShowDetailFragment : Fragment(), SimilarContentClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         displayLoadingScreen()
-        btUp.setOnClickListener {
-            findNavController().navigate(R.id.action_tv_detail_to_list)
-        }
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        val factory = ViewModelFactory(requireActivity().application)
-        viewModel = ViewModelProvider(this, factory).get(TvShowDetailViewModel::class.java)
         viewModel.getTvShowDetails(args.showId).observe(viewLifecycleOwner, Observer {
-            if(it != null) {
-                networkTvShow = it
-                setTvShowPoster()
-                setTvShowDetails()
-                setFavoriteButtonState()
-                setIMDBLink()
-            }
+            networkTvShow = it
+            setTvShowPoster()
+            setTvShowDetails()
+            setFavoriteButtonState()
+            setIMDBLink()
         })
         viewModel.getIsFavorite().observe(viewLifecycleOwner, Observer {
             if(it != null) {
@@ -116,8 +108,16 @@ class TvShowDetailFragment : Fragment(), SimilarContentClickListener {
                 setIMDBLink()
             }
         })
+        viewModel.getImdbEndpoint().observe(viewLifecycleOwner, Observer {
+            if(it.isNotEmpty() || it.isNotBlank()) {
+                imdbEndpoint = it
+            }
+        })
+        setupUpNavigation()
         setFavoriteListener()
+        setShareListener()
         displayContainerScreen()
+
     }
 
     private fun displayLoadingScreen() {
@@ -168,6 +168,7 @@ class TvShowDetailFragment : Fragment(), SimilarContentClickListener {
 
     private fun setIMDBLink() {
         val imdbEndpoint = BuildConfig.IMDB_BASE_URL + imdbId
+        viewModel.setImdbEndpoint(imdbEndpoint)
         imdbLink.setOnClickListener {
             if(imdbEndpoint != BuildConfig.IMDB_BASE_URL) {
                 val uri = Uri.parse(imdbEndpoint);
@@ -183,6 +184,12 @@ class TvShowDetailFragment : Fragment(), SimilarContentClickListener {
         }
     }
 
+    private fun setupUpNavigation() {
+        btUp.setOnClickListener {
+            findNavController().navigate(R.id.action_tv_detail_to_list)
+        }
+    }
+
     private fun setFavoriteListener() {
         btFavorite.setOnClickListener {
             if(!isFavorite) {
@@ -192,6 +199,20 @@ class TvShowDetailFragment : Fragment(), SimilarContentClickListener {
                 viewModel.deleteFavoriteTvShow(networkTvShow)
                 setFavoriteButtonState()
             }
+        }
+    }
+
+    private fun setShareListener() {
+        btShare.setOnClickListener {
+            val sendIntent: Intent = Intent().apply {
+                action = Intent.ACTION_SEND
+                putExtra(Intent.EXTRA_SUBJECT, Constants.INTENT_TV_SUBJECT)
+                putExtra(Intent.EXTRA_TEXT, imdbEndpoint)
+                type = Constants.INTENT_TYPE_TEXT
+            }
+
+            val shareIntent = Intent.createChooser(sendIntent, null)
+            startActivity(shareIntent)
         }
     }
 
