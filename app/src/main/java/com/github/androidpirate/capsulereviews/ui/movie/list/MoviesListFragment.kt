@@ -20,6 +20,7 @@ import com.github.androidpirate.capsulereviews.data.db.entity.DBMovieShowcase
 import com.github.androidpirate.capsulereviews.ui.adapter.list.ListItemAdapter
 import com.github.androidpirate.capsulereviews.ui.adapter.list.ItemClickListener
 import com.github.androidpirate.capsulereviews.ui.dialog.MovieGenresDialogFragment
+import com.github.androidpirate.capsulereviews.util.GridSpacingItemDecoration
 import com.github.androidpirate.capsulereviews.util.internal.Constants
 import com.github.androidpirate.capsulereviews.util.internal.FragmentType.*
 import com.github.androidpirate.capsulereviews.util.internal.GenericSortType
@@ -29,6 +30,7 @@ import com.github.androidpirate.capsulereviews.util.internal.NetworkType
 import com.github.androidpirate.capsulereviews.viewmodel.ViewModelFactory
 import com.github.androidpirate.capsulereviews.viewmodel.MoviesListViewModel
 import kotlinx.android.synthetic.main.fragment_movies_list.*
+import kotlinx.android.synthetic.main.fragment_search.*
 import kotlinx.android.synthetic.main.movie_showcase.*
 import kotlinx.android.synthetic.main.movie_toolbar.*
 
@@ -63,11 +65,6 @@ class MoviesListFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         displayLoadingScreen()
-        viewModel.popularMovies.observe(viewLifecycleOwner, Observer(popularNetworkMoviesAdapter::submitList))
-        viewModel.topRatedMovies.observe(viewLifecycleOwner, Observer(topRatedNetworkMoviesAdapter::submitList))
-        viewModel.nowPlayingMovies.observe(viewLifecycleOwner, Observer(nowPlayingNetworkMoviesAdapter::submitList))
-        viewModel.upcomingMovies.observe(viewLifecycleOwner, Observer(upcomingNetworkMoviesAdapter::submitList))
-        viewModel.trendingMovies.observe(viewLifecycleOwner, Observer(trendingNetworkMoviesAdapter::submitList))
         setupViews()
         viewModel.showcaseMovie.observe(viewLifecycleOwner, Observer {
             if(it != null) {
@@ -81,6 +78,12 @@ class MoviesListFragment :
                 setFavoriteButtonState()
             }
         })
+        viewModel.popularMovies.observe(viewLifecycleOwner, Observer(popularNetworkMoviesAdapter::submitList))
+        viewModel.topRatedMovies.observe(viewLifecycleOwner, Observer(topRatedNetworkMoviesAdapter::submitList))
+        viewModel.nowPlayingMovies.observe(viewLifecycleOwner, Observer(nowPlayingNetworkMoviesAdapter::submitList))
+        viewModel.upcomingMovies.observe(viewLifecycleOwner, Observer(upcomingNetworkMoviesAdapter::submitList))
+        viewModel.trendingMovies.observe(viewLifecycleOwner, Observer(trendingNetworkMoviesAdapter::submitList))
+        displayContainerScreen()
     }
 
     private fun displayLoadingScreen() {
@@ -137,6 +140,10 @@ class MoviesListFragment :
         rvNowPlaying.adapter = nowPlayingNetworkMoviesAdapter
         rvUpcoming.adapter = upcomingNetworkMoviesAdapter
         rvTrending.adapter = trendingNetworkMoviesAdapter
+        setGenreSpinnerListener()
+    }
+
+    private fun setGenreSpinnerListener() {
         movieGenreSpinner.setOnClickListener {
             showMovieGenresDialog()
         }
@@ -163,12 +170,24 @@ class MoviesListFragment :
     }
 
     private fun setShowcaseMovieClickListeners(showCaseMovie: DBMovieShowcase) {
-       setFavoriteListener(showCaseMovie)
+        setFavoriteListener(showCaseMovie)
+        setPlayTrailerListener(showCaseMovie)
+        setShowcaseDetailListener(showCaseMovie)
+    }
 
-        scInfo.setOnClickListener {
-            onShowcaseMovieClick(showCaseMovie)
+    private fun setFavoriteListener(showCaseMovie: DBMovieShowcase) {
+        scAddFavorite.setOnClickListener {
+            if(!isShowcaseFavorite) {
+                viewModel.insertShowcaseMovieToFavorites(showCaseMovie)
+                setFavoriteButtonState()
+            } else {
+                viewModel.deleteShowcaseMovieFromFavorites(showCaseMovie)
+                setFavoriteButtonState()
+            }
         }
+    }
 
+    private fun setPlayTrailerListener(showCaseMovie: DBMovieShowcase) {
         val trailerEndpoint = BuildConfig.YOUTUBE_BASE_URL + showCaseMovie.videoKey
         scPlay.setOnClickListener {
             if(trailerEndpoint != BuildConfig.YOUTUBE_BASE_URL) {
@@ -183,24 +202,17 @@ class MoviesListFragment :
                     .show()
             }
         }
-        displayContainerScreen()
+    }
+
+    private fun setShowcaseDetailListener(showCaseMovie: DBMovieShowcase) {
+        scInfo.setOnClickListener {
+            onShowcaseMovieClick(showCaseMovie)
+        }
     }
 
     private fun onShowcaseMovieClick(showCaseMovie: DBMovieShowcase) {
         val action = MoviesListFragmentDirections.actionMoviesListToDetail(showCaseMovie.movieId)
         findNavController().navigate(action)
-    }
-
-    private fun setFavoriteListener(showCaseMovie: DBMovieShowcase) {
-        scAddFavorite.setOnClickListener {
-            if(!isShowcaseFavorite) {
-                viewModel.insertShowcaseMovieToFavorites(showCaseMovie)
-                setFavoriteButtonState()
-            } else {
-                viewModel.deleteShowcaseMovieFromFavorites(showCaseMovie)
-                setFavoriteButtonState()
-            }
-        }
     }
 
     private fun setFavoriteButtonState() {
