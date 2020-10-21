@@ -45,7 +45,6 @@ class MovieDetailFragment : Fragment(), SimilarContentClickListener {
     private var videoKey: String = Constants.EMPTY_VIDEO_KEY
     private var imdbEndpoint: String = Constants.EMPTY_FIELD_STRING
     private var isFavorite = false
-    private var flagDecoration = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -104,6 +103,11 @@ class MovieDetailFragment : Fragment(), SimilarContentClickListener {
         displayContainerScreen()
     }
 
+    override fun onResume() {
+        super.onResume()
+        setFlagDecorationOn()
+    }
+
     private fun displayLoadingScreen() {
         loadingScreen.visibility = View.VISIBLE
         container.visibility = View.GONE
@@ -153,9 +157,9 @@ class MovieDetailFragment : Fragment(), SimilarContentClickListener {
         viewModel.setImdbEndpoint(imdbEndpoint)
         this.imdbLink.setOnClickListener {
             if(imdbEndpoint != BuildConfig.IMDB_BASE_URL) {
-                val uri = Uri.parse(imdbEndpoint);
-                val intent = Intent(Intent.ACTION_VIEW, uri);
-                startActivity(intent);
+                val uri = Uri.parse(imdbEndpoint)
+                val intent = Intent(Intent.ACTION_VIEW, uri)
+                startActivity(intent)
             } else {
                 Toast.makeText(
                     context,
@@ -221,19 +225,19 @@ class MovieDetailFragment : Fragment(), SimilarContentClickListener {
             rvSimilar.visibility = View.INVISIBLE
         } else {
             adapter.submitList(similarMovies)
-            if(!flagDecoration) {
-                rvSimilar.addItemDecoration(GridSpacingItemDecoration(4, 30, true))
-                setFlagDecorationOn()
-            }
             rvSimilar.adapter = adapter
         }
     }
 
     private fun setFlagDecorationOn() {
-        flagDecoration = true
+        if(!viewModel.getFlagDecoration()) {
+            rvSimilar.addItemDecoration(GridSpacingItemDecoration(4, 30, true))
+        }
+        viewModel.setFlagDecorationOn()
     }
 
     override fun <T> onItemClick(item: T) {
+        viewModel.setFlagDecorationOff()
         val action = MovieDetailFragmentDirections
             .actionMovieDetailToSelf((item as NetworkMoviesListItem).id)
         findNavController().navigate(action)

@@ -39,4 +39,18 @@ class PagedMoviesListViewModel(private val repo: MoviesRepository) : ViewModel()
         sort = POPULAR_DESCENDING,
         genre = genre
     )
+
+    private var flagDecoration = false
+
+    fun setFlagDecorationOn() {
+        flagDecoration = true
+    }
+
+    fun setFlagDecorationOff() {
+        flagDecoration = false
+    }
+
+    fun getFlagDecoration(): Boolean {
+        return flagDecoration
+    }
 }

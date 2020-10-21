@@ -21,6 +21,7 @@ import com.github.androidpirate.capsulereviews.util.internal.GenericSortType.*
 import com.github.androidpirate.capsulereviews.util.internal.NetworkType.*
 import com.github.androidpirate.capsulereviews.viewmodel.PagedTvShowsListViewModel
 import com.github.androidpirate.capsulereviews.viewmodel.ViewModelFactory
+import kotlinx.android.synthetic.main.fragment_paged_movies_list.*
 import kotlinx.android.synthetic.main.fragment_paged_movies_list.container
 import kotlinx.android.synthetic.main.fragment_paged_movies_list.loadingScreen
 import kotlinx.android.synthetic.main.fragment_paged_tv_shows_list.*
@@ -82,6 +83,11 @@ class PagedTvShowsListFragment :
         }
         displayContainerScreen()
         setupViews()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        setFlagDecorationOn()
     }
 
     private fun displayLoadingScreen() {
@@ -147,15 +153,14 @@ class PagedTvShowsListFragment :
     }
 
     private fun setRecyclerView() {
-        if(!flagDecoration) {
-            rvPagedTvShows.addItemDecoration(GridSpacingItemDecoration(4, 30, true))
-            setFlagDecorationOn()
-        }
         rvPagedTvShows.adapter = adapter
     }
 
     private fun setFlagDecorationOn() {
-        flagDecoration = true
+        if(!viewModel.getFlagDecoration()) {
+            rvPagedTvShows.addItemDecoration(GridSpacingItemDecoration(4, 30, true))
+        }
+        viewModel.setFlagDecorationOn()
     }
 
     private fun getTvShowsByNetwork() {
@@ -195,6 +200,7 @@ class PagedTvShowsListFragment :
     }
 
     override fun <T> onPagedItemClick(item: T) {
+        viewModel.setFlagDecorationOff()
         val action = PagedTvShowsListFragmentDirections
             .actionPagedTvShowsListToDetail((item as NetworkTvShowsListItem).id)
         findNavController().navigate(action)

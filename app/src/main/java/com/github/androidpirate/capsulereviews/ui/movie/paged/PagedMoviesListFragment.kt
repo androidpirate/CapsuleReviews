@@ -20,6 +20,7 @@ import com.github.androidpirate.capsulereviews.util.internal.FragmentType.*
 import com.github.androidpirate.capsulereviews.util.internal.GenreType
 import com.github.androidpirate.capsulereviews.viewmodel.PagedMoviesListViewModel
 import com.github.androidpirate.capsulereviews.viewmodel.ViewModelFactory
+import kotlinx.android.synthetic.main.detail_similar.*
 import kotlinx.android.synthetic.main.fragment_paged_movies_list.*
 import kotlinx.android.synthetic.main.paged_movies_toolbar.*
 
@@ -65,6 +66,11 @@ class PagedMoviesListFragment :
         setupViews()
     }
 
+    override fun onResume() {
+        super.onResume()
+        setFlagDecorationOn()
+    }
+
     private fun displayLoadingScreen() {
         loadingScreen.visibility = View.VISIBLE
         container.visibility = View.GONE
@@ -104,15 +110,14 @@ class PagedMoviesListFragment :
     }
 
     private fun setupRecyclerView() {
-        if(!flagDecoration) {
-            rvPagedMovies.addItemDecoration(GridSpacingItemDecoration(4, 30, true))
-            setFlagDecorationOn()
-        }
         rvPagedMovies.adapter = adapter
     }
 
     private fun setFlagDecorationOn() {
-        flagDecoration = true
+        if(!viewModel.getFlagDecoration()) {
+            rvPagedMovies.addItemDecoration(GridSpacingItemDecoration(4, 30, true))
+        }
+        viewModel.setFlagDecorationOn()
     }
 
     private fun getMoviesByGenericSort() {
@@ -139,6 +144,7 @@ class PagedMoviesListFragment :
     }
 
     override fun <T> onPagedItemClick(item: T) {
+        viewModel.setFlagDecorationOff()
         val action = PagedMoviesListFragmentDirections
             .actionPagedMoviesListToDetail((item as NetworkMoviesListItem).id)
         findNavController().navigate(action)

@@ -64,4 +64,18 @@ class PagedTvShowsListViewModel(private val repo: TvShowsRepository): ViewModel(
         network = network,
         genre = genre.value!!
     )
+
+    private var flagDecoration = false
+
+    fun setFlagDecorationOn() {
+        flagDecoration = true
+    }
+
+    fun setFlagDecorationOff() {
+        flagDecoration = false
+    }
+
+    fun getFlagDecoration(): Boolean {
+        return flagDecoration
+    }
 }

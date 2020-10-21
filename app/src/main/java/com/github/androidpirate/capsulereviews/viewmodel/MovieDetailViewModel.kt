@@ -90,4 +90,18 @@ class MovieDetailViewModel(
     fun getImdbEndpoint(): LiveData<String> {
         return imdbEndpoint
     }
+
+    private var flagDecoration = false
+
+    fun setFlagDecorationOn() {
+        flagDecoration = true
+    }
+
+    fun setFlagDecorationOff() {
+        flagDecoration = false
+    }
+
+    fun getFlagDecoration(): Boolean {
+        return flagDecoration
+    }
 }

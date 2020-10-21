@@ -49,7 +49,6 @@ class TvShowDetailFragment : Fragment(), SimilarContentClickListener {
     private var imdbId: String = Constants.EMPTY_FIELD_STRING
     private var imdbEndpoint: String = Constants.EMPTY_FIELD_STRING
     private var isFavorite = false
-    private var flagDecoration = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -118,6 +117,11 @@ class TvShowDetailFragment : Fragment(), SimilarContentClickListener {
         setShareListener()
         displayContainerScreen()
 
+    }
+
+    override fun onResume() {
+        super.onResume()
+        setFlagDecorationOn()
     }
 
     private fun displayLoadingScreen() {
@@ -239,19 +243,19 @@ class TvShowDetailFragment : Fragment(), SimilarContentClickListener {
             rvSimilar.visibility = View.INVISIBLE
         } else {
             adapter.submitList(similarShows)
-            if(!flagDecoration) {
-                rvSimilar.addItemDecoration(GridSpacingItemDecoration(4, 30, true))
-                setFlagDecorationOn()
-            }
             rvSimilar.adapter = adapter
         }
     }
 
     private fun setFlagDecorationOn() {
-        flagDecoration = true
+        if(!viewModel.getFlagDecoration()) {
+            rvSimilar.addItemDecoration(GridSpacingItemDecoration(4, 30, true))
+        }
+        viewModel.setFlagDecorationOn()
     }
 
     override fun <T> onItemClick(item: T) {
+        viewModel.setFlagDecorationOff()
         val action = TvShowDetailFragmentDirections
             .actionTvDetailToSelf((item as NetworkTvShowsListItem).id)
         findNavController().navigate(action)
