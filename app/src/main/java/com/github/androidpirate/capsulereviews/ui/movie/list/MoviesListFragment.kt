@@ -269,7 +269,7 @@ class MoviesListFragment :
                 }
             } else {
                 val action = MoviesListFragmentDirections
-                    .actionMoviesListToDetail((item as DBMovie).id)
+                    .actionMoviesListToDetail((item as DBMovie).id, MOVIE_LIST)
                 navigateToDetails(action)
             }
     }

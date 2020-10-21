@@ -24,7 +24,7 @@ import com.github.androidpirate.capsulereviews.util.GridSpacingItemDecoration
 import com.github.androidpirate.capsulereviews.ui.adapter.similar.SimilarContentAdapter
 import com.github.androidpirate.capsulereviews.ui.adapter.similar.SimilarContentClickListener
 import com.github.androidpirate.capsulereviews.util.internal.Constants
-import com.github.androidpirate.capsulereviews.util.internal.FragmentType.*
+import com.github.androidpirate.capsulereviews.util.internal.FragmentType
 import com.github.androidpirate.capsulereviews.viewmodel.MovieDetailViewModel
 import com.github.androidpirate.capsulereviews.viewmodel.ViewModelFactory
 import jp.wasabeef.glide.transformations.BlurTransformation
@@ -35,6 +35,8 @@ import kotlinx.android.synthetic.main.fragment_movie_detail.loadingScreen
 import kotlinx.android.synthetic.main.movie_header.*
 import kotlinx.android.synthetic.main.movie_info.*
 import kotlinx.android.synthetic.main.movie_summary.*
+import java.lang.IllegalArgumentException
+import java.lang.IllegalStateException
 
 class MovieDetailFragment : Fragment(), SimilarContentClickListener {
     private val args: MovieDetailFragmentArgs by navArgs()
@@ -50,7 +52,7 @@ class MovieDetailFragment : Fragment(), SimilarContentClickListener {
         super.onCreate(savedInstanceState)
         val factory = ViewModelFactory(requireActivity().application)
         viewModel = ViewModelProvider(this, factory).get(MovieDetailViewModel::class.java)
-        adapter = SimilarContentAdapter(fragment = MOVIE_DETAIL, clickListener = this)
+        adapter = SimilarContentAdapter(fragment = FragmentType.MOVIE_DETAIL, clickListener = this)
         requireActivity().onBackPressedDispatcher.addCallback(
             this,
             object : OnBackPressedCallback(true) {
@@ -172,7 +174,13 @@ class MovieDetailFragment : Fragment(), SimilarContentClickListener {
 
     private fun setupUpNavigation() {
         btUp.setOnClickListener {
-            findNavController().navigate(R.id.action_movie_detail_to_list)
+            when(args.baseDestination) {
+                FragmentType.MOVIE_LIST -> findNavController().navigate(R.id.action_movie_detail_to_list)
+                FragmentType.MOVIE_DETAIL -> findNavController().navigate(R.id.action_movie_detail_to_list)
+                FragmentType.FAVORITE_MOVIE_DETAIL -> findNavController().navigate(R.id.action_movie_detail_to_favorites)
+                FragmentType.SEARCH_RESULTS -> findNavController().navigate(R.id.action_movie_detail_to_search)
+                else -> throw IllegalArgumentException("No such Fragment Type")
+            }
         }
     }
 
@@ -243,7 +251,7 @@ class MovieDetailFragment : Fragment(), SimilarContentClickListener {
     override fun <T> onItemClick(item: T) {
         viewModel.setFlagDecorationOff()
         val action = MovieDetailFragmentDirections
-            .actionMovieDetailToSelf((item as NetworkMoviesListItem).id)
+            .actionMovieDetailToSelf((item as NetworkMoviesListItem).id, FragmentType.MOVIE_DETAIL)
         findNavController().navigate(action)
     }
 }

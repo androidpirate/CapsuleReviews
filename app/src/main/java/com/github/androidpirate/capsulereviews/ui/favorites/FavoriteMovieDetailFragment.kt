@@ -13,6 +13,7 @@ import androidx.navigation.fragment.navArgs
 import com.github.androidpirate.capsulereviews.R
 import com.github.androidpirate.capsulereviews.data.db.entity.DBFavorite
 import com.github.androidpirate.capsulereviews.util.internal.Constants
+import com.github.androidpirate.capsulereviews.util.internal.FragmentType
 import com.github.androidpirate.capsulereviews.viewmodel.FavoritesViewModel
 import com.github.androidpirate.capsulereviews.viewmodel.ViewModelFactory
 import kotlinx.android.synthetic.main.fragment_favorite_movie_detail.*
@@ -73,7 +74,8 @@ class FavoriteMovieDetailFragment : Fragment() {
 
     private fun setMovieDetailLink(movieId: Int) {
         movieDetailLink.setOnClickListener {
-            val action = FavoriteMovieDetailFragmentDirections.actionFavoriteToMovieDetail(movieId)
+            val action = FavoriteMovieDetailFragmentDirections
+                .actionFavoriteToMovieDetail(movieId, FragmentType.FAVORITE_MOVIE_DETAIL)
             findNavController().navigate(action)
         }
     }

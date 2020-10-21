@@ -150,7 +150,7 @@ class SearchFragment : Fragment(), PagedItemClickListener {
         val searchItem = item as NetworkMultiSearchListItem
         when(searchItem.mediaType) {
             Constants.MEDIA_TYPE_MOVIE -> {
-                val action = SearchFragmentDirections.searchToMovieDetail(searchItem.id)
+                val action = SearchFragmentDirections.searchToMovieDetail(searchItem.id, FragmentType.SEARCH_RESULTS)
                 findNavController().navigate(action)
             }
              Constants.MEDIA_TYPE_TV -> {

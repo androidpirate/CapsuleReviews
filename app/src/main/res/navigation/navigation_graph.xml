@@ -125,6 +125,74 @@
     </fragment>
 
     <fragment
+        android:id="@+id/movieDetailFragment"
+        android:name="com.github.androidpirate.capsulereviews.ui.movie.detail.MovieDetailFragment"
+        android:label="fragment_movie_detail"
+        tools:layout="@layout/fragment_movie_detail">
+        <argument
+            android:name="movieId"
+            app:argType="integer"
+            android:defaultValue="0"/>
+        <argument
+            android:name="baseDestination"
+            app:argType="com.github.androidpirate.capsulereviews.util.internal.FragmentType"
+            android:defaultValue="MOVIE_LIST"/>
+        <action
+            android:id="@+id/action_movie_detail_to_list"
+            app:destination="@id/moviesListFragment"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_right"
+            app:popExitAnim="@anim/slide_out_right"/>
+        <action
+            android:id="@+id/action_movie_detail_to_self"
+            app:destination="@id/movieDetailFragment"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_right"
+            app:popExitAnim="@anim/slide_out_right"/>
+        <action
+            android:id="@+id/action_movie_detail_to_favorites"
+            app:destination="@id/favoritesFragment"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_right"
+            app:popExitAnim="@anim/slide_out_right"/>
+        <action
+            android:id="@+id/action_movie_detail_to_search"
+            app:destination="@id/searchFragment"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_right"
+            app:popExitAnim="@anim/slide_out_right"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/tvDetailFragment"
+        android:name="com.github.androidpirate.capsulereviews.ui.tv.detail.TvShowDetailFragment"
+        android:label="fragment_tv_detail"
+        tools:layout="@layout/fragment_tv_detail">
+        <argument
+            android:name="showId"
+            app:argType="integer"
+            android:defaultValue="0"/>
+        <action
+            android:id="@+id/action_tv_detail_to_list"
+            app:destination="@id/tvShowsListFragment"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_right"
+            app:popExitAnim="@anim/slide_out_right"/>
+        <action
+            android:id="@+id/action_tv_detail_to_self"
+            app:destination="@id/tvDetailFragment"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_right"
+            app:popExitAnim="@anim/slide_out_right"/>
+    </fragment>
+
+    <fragment
         android:id="@+id/searchFragment"
         android:name="com.github.androidpirate.capsulereviews.ui.search.SearchFragment"
         android:label="fragment_search"
@@ -207,55 +275,5 @@
         android:name="com.github.androidpirate.capsulereviews.ui.more.MoreFragment"
         android:label="fragment_more"
         tools:layout="@layout/fragment_more"/>
-
-    <fragment
-        android:id="@+id/movieDetailFragment"
-        android:name="com.github.androidpirate.capsulereviews.ui.movie.detail.MovieDetailFragment"
-        android:label="fragment_movie_detail"
-        tools:layout="@layout/fragment_movie_detail">
-        <argument
-            android:name="movieId"
-            app:argType="integer"
-            android:defaultValue="0"/>
-        <action
-            android:id="@+id/action_movie_detail_to_list"
-            app:destination="@id/moviesListFragment"
-            app:enterAnim="@anim/slide_in_left"
-            app:exitAnim="@anim/slide_out_left"
-            app:popEnterAnim="@anim/slide_in_right"
-            app:popExitAnim="@anim/slide_out_right"/>
-        <action
-            android:id="@+id/action_movie_detail_to_self"
-            app:destination="@id/movieDetailFragment"
-            app:enterAnim="@anim/slide_in_left"
-            app:exitAnim="@anim/slide_out_left"
-            app:popEnterAnim="@anim/slide_in_right"
-            app:popExitAnim="@anim/slide_out_right"/>
-    </fragment>
-
-    <fragment
-        android:id="@+id/tvDetailFragment"
-        android:name="com.github.androidpirate.capsulereviews.ui.tv.detail.TvShowDetailFragment"
-        android:label="fragment_tv_detail"
-        tools:layout="@layout/fragment_tv_detail">
-        <argument
-            android:name="showId"
-            app:argType="integer"
-            android:defaultValue="0"/>
-        <action
-            android:id="@+id/action_tv_detail_to_list"
-            app:destination="@id/tvShowsListFragment"
-            app:enterAnim="@anim/slide_in_left"
-            app:exitAnim="@anim/slide_out_left"
-            app:popEnterAnim="@anim/slide_in_right"
-            app:popExitAnim="@anim/slide_out_right"/>
-        <action
-            android:id="@+id/action_tv_detail_to_self"
-            app:destination="@id/tvDetailFragment"
-            app:enterAnim="@anim/slide_in_left"
-            app:exitAnim="@anim/slide_out_left"
-            app:popEnterAnim="@anim/slide_in_right"
-            app:popExitAnim="@anim/slide_out_right"/>
-    </fragment>
 
 </navigation>
