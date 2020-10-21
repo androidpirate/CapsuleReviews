@@ -11,6 +11,7 @@ import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.NavDirections
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
@@ -24,6 +25,7 @@ import com.github.androidpirate.capsulereviews.util.GridSpacingItemDecoration
 import com.github.androidpirate.capsulereviews.ui.adapter.similar.SimilarContentAdapter
 import com.github.androidpirate.capsulereviews.ui.adapter.similar.SimilarContentClickListener
 import com.github.androidpirate.capsulereviews.util.internal.Constants
+import com.github.androidpirate.capsulereviews.util.internal.FragmentType
 import com.github.androidpirate.capsulereviews.util.internal.FragmentType.*
 import com.github.androidpirate.capsulereviews.viewmodel.TvShowDetailViewModel
 import com.github.androidpirate.capsulereviews.viewmodel.ViewModelFactory
@@ -38,6 +40,7 @@ import kotlinx.android.synthetic.main.tv_info.*
 import kotlinx.android.synthetic.main.tv_info.imdbLink
 import kotlinx.android.synthetic.main.tv_info.overview
 import kotlinx.android.synthetic.main.tv_summary.*
+import java.lang.IllegalArgumentException
 
 class TvShowDetailFragment : Fragment(), SimilarContentClickListener {
     private val args: TvShowDetailFragmentArgs by navArgs()
@@ -190,7 +193,16 @@ class TvShowDetailFragment : Fragment(), SimilarContentClickListener {
 
     private fun setupUpNavigation() {
         btUp.setOnClickListener {
-            findNavController().navigate(R.id.action_tv_detail_to_list)
+            when(args.baseDestination) {
+                FragmentType.TV_LIST, FragmentType.TV_DETAIL ->
+                    findNavController().navigate(R.id.action_tv_detail_to_list)
+                FragmentType.FAVORITE_TV_DETAIL ->
+                    findNavController().navigate(R.id.action_tv_detail_to_favorites)
+                FragmentType.SEARCH_RESULTS ->
+                    findNavController().navigate(R.id.action_tv_detail_to_search)
+                else ->
+                    throw IllegalArgumentException(Constants.ILLEGAL_BASE_FRAG_EXCEPTION)
+            }
         }
     }
 
@@ -258,10 +270,14 @@ class TvShowDetailFragment : Fragment(), SimilarContentClickListener {
         viewModel.setFlagDecorationOn()
     }
 
+    private fun navigateToSelf(action: NavDirections) {
+        findNavController().navigate(action)
+    }
+
     override fun <T> onItemClick(item: T) {
         viewModel.setFlagDecorationOff()
         val action = TvShowDetailFragmentDirections
-            .actionTvDetailToSelf((item as NetworkTvShowsListItem).id)
-        findNavController().navigate(action)
+            .actionTvDetailToSelf((item as NetworkTvShowsListItem).id, FragmentType.TV_DETAIL)
+        navigateToSelf(action)
     }
 }

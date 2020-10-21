@@ -176,6 +176,10 @@
             android:name="showId"
             app:argType="integer"
             android:defaultValue="0"/>
+        <argument
+            android:name="baseDestination"
+            app:argType="com.github.androidpirate.capsulereviews.util.internal.FragmentType"
+            android:defaultValue="TV_LIST"/>
         <action
             android:id="@+id/action_tv_detail_to_list"
             app:destination="@id/tvShowsListFragment"
@@ -186,6 +190,20 @@
         <action
             android:id="@+id/action_tv_detail_to_self"
             app:destination="@id/tvDetailFragment"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_right"
+            app:popExitAnim="@anim/slide_out_right"/>
+        <action
+            android:id="@+id/action_tv_detail_to_favorites"
+            app:destination="@id/favoritesFragment"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_right"
+            app:popExitAnim="@anim/slide_out_right"/>
+        <action
+            android:id="@+id/action_tv_detail_to_search"
+            app:destination="@id/searchFragment"
             app:enterAnim="@anim/slide_in_left"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_right"

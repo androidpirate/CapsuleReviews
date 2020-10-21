@@ -8,11 +8,13 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.NavDirections
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.github.androidpirate.capsulereviews.R
 import com.github.androidpirate.capsulereviews.data.db.entity.DBFavorite
 import com.github.androidpirate.capsulereviews.util.internal.Constants
+import com.github.androidpirate.capsulereviews.util.internal.FragmentType
 import com.github.androidpirate.capsulereviews.viewmodel.FavoritesViewModel
 import com.github.androidpirate.capsulereviews.viewmodel.ViewModelFactory
 import kotlinx.android.synthetic.main.fragment_favorite_movie_detail.*
@@ -78,8 +80,13 @@ class FavoriteTvShowDetailFragment : Fragment() {
 
     private fun setTvShowDetailLink(showId: Int) {
         tvDetailLink.setOnClickListener {
-            val action = FavoriteTvShowDetailFragmentDirections.actionFavoriteToTvShowDetail(showId)
-            findNavController().navigate(action)
+            val action = FavoriteTvShowDetailFragmentDirections
+                .actionFavoriteToTvShowDetail(showId, FragmentType.FAVORITE_TV_DETAIL)
+            navigateToDetails(action)
         }
+    }
+
+    private fun navigateToDetails(action: NavDirections) {
+        findNavController().navigate(action)
     }
 }

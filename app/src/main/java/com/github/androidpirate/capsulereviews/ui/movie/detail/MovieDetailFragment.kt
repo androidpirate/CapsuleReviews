@@ -175,11 +175,14 @@ class MovieDetailFragment : Fragment(), SimilarContentClickListener {
     private fun setupUpNavigation() {
         btUp.setOnClickListener {
             when(args.baseDestination) {
-                FragmentType.MOVIE_LIST -> findNavController().navigate(R.id.action_movie_detail_to_list)
-                FragmentType.MOVIE_DETAIL -> findNavController().navigate(R.id.action_movie_detail_to_list)
-                FragmentType.FAVORITE_MOVIE_DETAIL -> findNavController().navigate(R.id.action_movie_detail_to_favorites)
-                FragmentType.SEARCH_RESULTS -> findNavController().navigate(R.id.action_movie_detail_to_search)
-                else -> throw IllegalArgumentException("No such Fragment Type")
+                FragmentType.MOVIE_LIST, FragmentType.MOVIE_DETAIL ->
+                    findNavController().navigate(R.id.action_movie_detail_to_list)
+                FragmentType.FAVORITE_MOVIE_DETAIL ->
+                    findNavController().navigate(R.id.action_movie_detail_to_favorites)
+                FragmentType.SEARCH_RESULTS ->
+                    findNavController().navigate(R.id.action_movie_detail_to_search)
+                else ->
+                    throw IllegalArgumentException(Constants.ILLEGAL_BASE_FRAG_EXCEPTION)
             }
         }
     }

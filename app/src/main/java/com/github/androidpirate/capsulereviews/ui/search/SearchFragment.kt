@@ -11,6 +11,7 @@ import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.NavDirections
 import androidx.navigation.fragment.findNavController
 import com.github.androidpirate.capsulereviews.R
 import com.github.androidpirate.capsulereviews.data.network.response.multiSearch.NetworkMultiSearchListItem
@@ -145,17 +146,25 @@ class SearchFragment : Fragment(), PagedItemClickListener {
         hideClearButton()
     }
 
+    private fun navigateToMovieDetails(action: NavDirections) {
+        findNavController().navigate(action)
+    }
+
+    private fun navigateToTvDetails(action: NavDirections) {
+        findNavController().navigate(action)
+    }
+
     override fun <T> onPagedItemClick(item: T) {
         viewModel.setFlagDecorationOff()
         val searchItem = item as NetworkMultiSearchListItem
         when(searchItem.mediaType) {
             Constants.MEDIA_TYPE_MOVIE -> {
                 val action = SearchFragmentDirections.searchToMovieDetail(searchItem.id, FragmentType.SEARCH_RESULTS)
-                findNavController().navigate(action)
+                navigateToMovieDetails(action)
             }
              Constants.MEDIA_TYPE_TV -> {
-                 val action = SearchFragmentDirections.searchToTvShowDetail(searchItem.id)
-                 findNavController().navigate(action)
+                 val action = SearchFragmentDirections.searchToTvShowDetail(searchItem.id, FragmentType.SEARCH_RESULTS)
+                 navigateToTvDetails(action)
              }
         }
     }

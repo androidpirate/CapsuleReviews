@@ -109,6 +109,8 @@ class Constants {
         const val INTENT_MOVIE_SUBJECT = "Check out this movie:"
         const val INTENT_TV_SUBJECT = "Check out this tv show:"
         const val INTENT_TYPE_TEXT = "text/plain"
+        // Exception constants
+        const val ILLEGAL_BASE_FRAG_EXCEPTION = "No such FragmentType"
 
         fun getBingeStatusArray(): Array<String> {
             return arrayOf(

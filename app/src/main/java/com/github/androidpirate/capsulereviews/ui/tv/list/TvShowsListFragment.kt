@@ -21,12 +21,9 @@ import com.github.androidpirate.capsulereviews.ui.adapter.list.ListItemAdapter
 import com.github.androidpirate.capsulereviews.ui.adapter.list.ItemClickListener
 import com.github.androidpirate.capsulereviews.ui.dialog.TvNetworksDialogFragment
 import com.github.androidpirate.capsulereviews.ui.dialog.TvShowGenresDialogFragment
-import com.github.androidpirate.capsulereviews.util.internal.Constants
+import com.github.androidpirate.capsulereviews.util.internal.*
 import com.github.androidpirate.capsulereviews.util.internal.FragmentType.*
-import com.github.androidpirate.capsulereviews.util.internal.GenericSortType
 import com.github.androidpirate.capsulereviews.util.internal.GenericSortType.*
-import com.github.androidpirate.capsulereviews.util.internal.GenreType
-import com.github.androidpirate.capsulereviews.util.internal.NetworkType
 import com.github.androidpirate.capsulereviews.viewmodel.TvShowsListViewModel
 import com.github.androidpirate.capsulereviews.viewmodel.ViewModelFactory
 import kotlinx.android.synthetic.main.fragment_tv_shows_list.*
@@ -242,6 +239,10 @@ class TvShowsListFragment :
         findNavController().navigate(action)
     }
 
+    private fun navigateToDetails(action: NavDirections) {
+        findNavController().navigate(action)
+    }
+
     override fun <T> onItemClick(
         item: T,
         isLast: Boolean,
@@ -291,8 +292,8 @@ class TvShowsListFragment :
                 }
             } else {
                 val action = TvShowsListFragmentDirections
-                    .actionTvShowsListToDetail((item as DBTvShow).id)
-                findNavController().navigate(action)
+                    .actionTvShowsListToDetail((item as DBTvShow).id, FragmentType.TV_LIST)
+                navigateToDetails(action)
             }
     }
 
