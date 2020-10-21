@@ -15,6 +15,7 @@ class Constants {
         const val ADAPTER_POSTER_WIDTH = "w185/"
         // Item constants
         const val SHOWCASE_POSTER_WIDTH = "w342/"
+        const val SHOWCASE_ID = 0
         const val EMPTY_VIDEO_KEY = ""
         // Data source constants
         const val FIRST_PAGE = 1

@@ -2,6 +2,7 @@ package com.github.androidpirate.capsulereviews.data.db.entity
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.github.androidpirate.capsulereviews.util.internal.Constants
 
 @Entity(tableName = "movieShowcase")
 data class DBMovieShowcase(
@@ -11,11 +12,6 @@ data class DBMovieShowcase(
     val video: Boolean
 ) {
     @PrimaryKey(autoGenerate = false)
-    var id: Int = ID
-    var videoKey: String = EMPTY_VIDEO_KEY
-
-    companion object {
-        const val ID = 0
-        const val EMPTY_VIDEO_KEY = ""
-    }
+    var id: Int = Constants.SHOWCASE_ID
+    var videoKey: String = Constants.EMPTY_VIDEO_KEY
 }
