@@ -13,45 +13,51 @@ import kotlinx.coroutines.withContext
 class PagedSearchResultsDataSource(
     private val api: MovieDbService,
     private val scope: CoroutineScope,
-    private val queryString: String
-): PageKeyedDataSource<Int, NetworkMultiSearchListItem>() {
+    private val queryString: String): PageKeyedDataSource<Int, NetworkMultiSearchListItem>() {
 
     private lateinit var response: NetworkMultiSearchResponse
     private var page = Constants.FIRST_PAGE
 
     override fun loadInitial(
-        params: LoadInitialParams<Int>, callback: LoadInitialCallback<Int, NetworkMultiSearchListItem>) {
-        scope.launch {
-            withContext(Dispatchers.IO) {
-                response = getSearchResults(page, queryString)
-                callback.onResult(
-                    response.networkMultiSearchListItems,
-                    null,
-                    page + Constants.PAGE_LOAD_INCREMENT
-                )
-            }
-        }
-    }
-
-    override fun loadAfter(
-        params: LoadParams<Int>, callback: LoadCallback<Int, NetworkMultiSearchListItem>) {
-        scope.launch {
-            withContext(Dispatchers.IO) {
-                response = getSearchResults(params.key, queryString)
-                if(response.totalPages >= params.key) {
+        params: LoadInitialParams<Int>,
+        callback: LoadInitialCallback<Int, NetworkMultiSearchListItem>) {
+            scope.launch {
+                withContext(Dispatchers.IO) {
+                    response = getSearchResults(page, queryString)
                     callback.onResult(
                         response.networkMultiSearchListItems,
-                        params.key + Constants.PAGE_LOAD_INCREMENT
+                        null,
+                        page + Constants.PAGE_LOAD_INCREMENT
                     )
                 }
             }
-        }
     }
 
-    override fun loadBefore(params: LoadParams<Int>, callback: LoadCallback<Int, NetworkMultiSearchListItem>) {
+    override fun loadAfter(
+        params: LoadParams<Int>,
+        callback: LoadCallback<Int, NetworkMultiSearchListItem>) {
+            scope.launch {
+                withContext(Dispatchers.IO) {
+                    response = getSearchResults(params.key, queryString)
+                    if(response.totalPages >= params.key) {
+                        callback.onResult(
+                            response.networkMultiSearchListItems,
+                            params.key + Constants.PAGE_LOAD_INCREMENT
+                        )
+                    }
+                }
+            }
     }
 
-    private suspend fun getSearchResults(page: Int, queryString: String): NetworkMultiSearchResponse {
-        return api.getSearchResults(page, queryString)
+    override fun loadBefore(
+        params: LoadParams<Int>,
+        callback: LoadCallback<Int, NetworkMultiSearchListItem>) {
+        // Not used
+    }
+
+    private suspend fun getSearchResults(
+        page: Int,
+        queryString: String): NetworkMultiSearchResponse {
+            return api.getSearchResults(page, queryString)
     }
 }

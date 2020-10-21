@@ -15,8 +15,7 @@ class PagedTvShowsDataSourceFactory(
     private val genericSort: GenericSortType,
     private val sort: SortType,
     private val network: NetworkType,
-    private val genre: GenreType
-): DataSource.Factory<Int, NetworkTvShowsListItem>() {
+    private val genre: GenreType): DataSource.Factory<Int, NetworkTvShowsListItem>() {
 
     override fun create(): DataSource<Int, NetworkTvShowsListItem> {
         return PagedTvShowsDataSource(api, scope, genericSort, sort, network, genre)

@@ -21,34 +21,33 @@ class PagedTvShowsDataSource (
     private val genericSort: GenericSortType,
     private val sort: SortType,
     private val network: NetworkType,
-    private val genre: GenreType
-): PageKeyedDataSource<Int, NetworkTvShowsListItem> (){
+    private val genre: GenreType): PageKeyedDataSource<Int, NetworkTvShowsListItem> (){
 
     private lateinit var response: NetworkTvShowsResponse
     private var page = Constants.FIRST_PAGE
 
     override fun loadInitial(
-        params: LoadInitialParams<Int>, callback: LoadInitialCallback<Int, NetworkTvShowsListItem>
-    ) {
-        scope.launch {
-            withContext(Dispatchers.IO) {
-                response =
-                    if(genre == GenreType.ALL && network == NetworkType.ALL) {
-                        getPagedTvShowsWithGenericSort(page, genericSort)
-                    } else if(genre == GenreType.ALL && network != NetworkType.ALL) {
-                        getPagedTvShowsWithNetwork(page, network, sort)
-                    } else if(genre != GenreType.ALL && network == NetworkType.ALL) {
-                        getPagedTvShowsWithGenre(page, genre, sort)
-                    } else {
-                        getPagedTvShowsWithGenreAndNetwork(page, genre, network, sort)
-                    }
-                callback.onResult(
-                    response.networkTvShowsListItems,
-                    null,
-                    page + Constants.PAGE_LOAD_INCREMENT
-                )
+        params: LoadInitialParams<Int>,
+        callback: LoadInitialCallback<Int, NetworkTvShowsListItem>) {
+            scope.launch {
+                withContext(Dispatchers.IO) {
+                    response =
+                        if(genre == GenreType.ALL && network == NetworkType.ALL) {
+                            getPagedTvShowsWithGenericSort(page, genericSort)
+                        } else if(genre == GenreType.ALL && network != NetworkType.ALL) {
+                            getPagedTvShowsWithNetwork(page, network, sort)
+                        } else if(genre != GenreType.ALL && network == NetworkType.ALL) {
+                            getPagedTvShowsWithGenre(page, genre, sort)
+                        } else {
+                            getPagedTvShowsWithGenreAndNetwork(page, genre, network, sort)
+                        }
+                    callback.onResult(
+                        response.networkTvShowsListItems,
+                        null,
+                        page + Constants.PAGE_LOAD_INCREMENT
+                    )
+                }
             }
-        }
     }
 
     override fun loadAfter(params: LoadParams<Int>, callback: LoadCallback<Int, NetworkTvShowsListItem>) {
@@ -74,8 +73,10 @@ class PagedTvShowsDataSource (
         }
     }
 
-    override fun loadBefore(params: LoadParams<Int>, callback: LoadCallback<Int, NetworkTvShowsListItem>) {
-        // Not used since recyclerview holds a reference in memory
+    override fun loadBefore(
+        params: LoadParams<Int>,
+        callback: LoadCallback<Int, NetworkTvShowsListItem>) {
+        // Not used
     }
 
     private suspend fun getPagedTvShowsWithGenericSort(
@@ -92,7 +93,7 @@ class PagedTvShowsDataSource (
         page: Int,
         network: NetworkType,
         sort: SortType): NetworkTvShowsResponse {
-        return api.getPagedTvShowsWithNetwork(page, network.id, sort.queryParameter)
+            return api.getPagedTvShowsWithNetwork(page, network.id, sort.queryParameter)
     }
 
     private suspend fun getPagedTvShowsWithGenre(
