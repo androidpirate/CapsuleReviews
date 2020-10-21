@@ -108,7 +108,11 @@ class SearchFragment : Fragment(), PagedItemClickListener {
 
     private fun setFlagDecorationOn() {
         if(!viewModel.getFlagDecoration()) {
-            rvSearch.addItemDecoration(GridSpacingItemDecoration(4, 30, true))
+            rvSearch.addItemDecoration(
+                GridSpacingItemDecoration(
+                    resources.getInteger(R.integer.grid_span_count),
+                    resources.getDimensionPixelSize(R.dimen.list_item_spacing),
+                    true))
         }
         viewModel.setFlagDecorationOn()
     }

@@ -12,6 +12,8 @@
     <dimen name="padding_32">32dp</dimen>
     <!-- Line Separator -->
     <dimen name="line_separator_height">1dp</dimen>
+    <!-- Grid Layout -->
+    <dimen name="list_item_spacing">16dp</dimen>
     <!-- Showcase -->
     <dimen name="showcase_height">550dp</dimen>
     <dimen name="showcase_favorite_width">80dp</dimen>

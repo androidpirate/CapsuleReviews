@@ -158,7 +158,11 @@ class PagedTvShowsListFragment :
 
     private fun setFlagDecorationOn() {
         if(!viewModel.getFlagDecoration()) {
-            rvPagedTvShows.addItemDecoration(GridSpacingItemDecoration(4, 30, true))
+            rvPagedTvShows.addItemDecoration(
+                GridSpacingItemDecoration(
+                    resources.getInteger(R.integer.grid_span_count),
+                    resources.getDimensionPixelSize(R.dimen.list_item_spacing),
+                    true))
         }
         viewModel.setFlagDecorationOn()
     }

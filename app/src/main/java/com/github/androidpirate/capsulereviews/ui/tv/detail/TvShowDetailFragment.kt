@@ -249,7 +249,11 @@ class TvShowDetailFragment : Fragment(), SimilarContentClickListener {
 
     private fun setFlagDecorationOn() {
         if(!viewModel.getFlagDecoration()) {
-            rvSimilar.addItemDecoration(GridSpacingItemDecoration(4, 30, true))
+            rvSimilar.addItemDecoration(
+                GridSpacingItemDecoration(
+                    resources.getInteger(R.integer.grid_span_count),
+                    resources.getDimensionPixelSize(R.dimen.list_item_spacing),
+                    true))
         }
         viewModel.setFlagDecorationOn()
     }
