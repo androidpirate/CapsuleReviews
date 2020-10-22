@@ -201,7 +201,7 @@ class TvShowDetailFragment : Fragment(), SimilarContentClickListener {
                 FragmentType.SEARCH_RESULTS ->
                     findNavController().navigate(R.id.action_tv_detail_to_search)
                 else ->
-                    throw IllegalArgumentException(Constants.ILLEGAL_BASE_FRAG_EXCEPTION)
+                    throw IllegalArgumentException(Constants.ILLEGAL_FRAGMENT_TYPE_EXCEPTION)
             }
         }
     }

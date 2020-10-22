@@ -36,7 +36,6 @@ import kotlinx.android.synthetic.main.movie_header.*
 import kotlinx.android.synthetic.main.movie_info.*
 import kotlinx.android.synthetic.main.movie_summary.*
 import java.lang.IllegalArgumentException
-import java.lang.IllegalStateException
 
 class MovieDetailFragment : Fragment(), SimilarContentClickListener {
     private val args: MovieDetailFragmentArgs by navArgs()
@@ -182,7 +181,7 @@ class MovieDetailFragment : Fragment(), SimilarContentClickListener {
                 FragmentType.SEARCH_RESULTS ->
                     findNavController().navigate(R.id.action_movie_detail_to_search)
                 else ->
-                    throw IllegalArgumentException(Constants.ILLEGAL_BASE_FRAG_EXCEPTION)
+                    throw IllegalArgumentException(Constants.ILLEGAL_FRAGMENT_TYPE_EXCEPTION)
             }
         }
     }

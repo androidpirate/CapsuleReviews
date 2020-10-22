@@ -12,8 +12,7 @@ import kotlinx.android.synthetic.main.networks_list_item.view.*
 
 class NetworkAdapter(
     private val listener: NetworkClickListener,
-    selectedNetwork: Int):
-RecyclerView.Adapter<NetworkAdapter.NetworkHolder>() {
+    selectedNetwork: Int): RecyclerView.Adapter<NetworkAdapter.NetworkHolder>() {
 
     private val networks = Constants.getTvNetworksArray()
     private var index = selectedNetwork

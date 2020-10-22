@@ -7,8 +7,7 @@ import com.github.androidpirate.capsulereviews.ui.favorites.FavoriteMoviesListFr
 import com.github.androidpirate.capsulereviews.ui.favorites.FavoriteTvShowsListFragment
 import com.github.androidpirate.capsulereviews.util.internal.Constants
 
-class FavoritePagerAdapter(
-    activity: FragmentActivity): FragmentStateAdapter(activity) {
+class FavoritePagerAdapter(activity: FragmentActivity): FragmentStateAdapter(activity) {
 
     override fun getItemCount(): Int {
         return Constants.PAGER_PAGE_COUNT

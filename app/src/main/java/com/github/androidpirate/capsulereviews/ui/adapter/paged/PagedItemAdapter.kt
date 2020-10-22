@@ -17,8 +17,10 @@ import com.github.androidpirate.capsulereviews.util.internal.FragmentType.*
 import kotlinx.android.synthetic.main.list_item.view.*
 import java.lang.IllegalArgumentException
 
-class PagedItemAdapter<T>(private val fragment: FragmentType, val clickListener: PagedItemClickListener)
-    : PagedListAdapter<T, PagedItemAdapter<T>.PagedItemHolder>(PagedItemDiffCallback<T>(fragment)) {
+class PagedItemAdapter<T>(
+    private val fragment: FragmentType,
+    val clickListener: PagedItemClickListener):
+    PagedListAdapter<T, PagedItemAdapter<T>.PagedItemHolder>(PagedItemDiffCallback<T>(fragment)) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PagedItemHolder {
         val itemView = LayoutInflater.from(parent.context)
@@ -37,10 +39,14 @@ class PagedItemAdapter<T>(private val fragment: FragmentType, val clickListener:
                 clickListener.onPagedItemClick(item)
             }
             when(fragment) {
-                PAGED_MOVIE_LIST -> setItemThumbnail((item as NetworkMoviesListItem).posterPath)
-                PAGED_TV_LIST -> setItemThumbnail((item as NetworkTvShowsListItem).posterPath)
-                SEARCH_RESULTS -> setItemThumbnail((item as NetworkMultiSearchListItem).posterPath)
-                else -> throw IllegalArgumentException("${Constants.ADAPTER_UNKNOWN_FRAGMENT_MESSAGE} $fragment")
+                PAGED_MOVIE_LIST ->
+                    setItemThumbnail((item as NetworkMoviesListItem).posterPath)
+                PAGED_TV_LIST ->
+                    setItemThumbnail((item as NetworkTvShowsListItem).posterPath)
+                SEARCH_RESULTS ->
+                    setItemThumbnail((item as NetworkMultiSearchListItem).posterPath)
+                else ->
+                    throw IllegalArgumentException("${Constants.ADAPTER_UNKNOWN_FRAGMENT_MESSAGE} $fragment")
             }
         }
 
@@ -50,6 +56,5 @@ class PagedItemAdapter<T>(private val fragment: FragmentType, val clickListener:
                 .placeholder(R.drawable.ic_no_preview)
                 .into(itemView.ivListItem)
         }
-
     }
 }

@@ -12,8 +12,7 @@ import kotlinx.android.synthetic.main.genres_list_item.view.*
 class GenreAdapter(
     private val genres: Array<String>,
     private val listener: GenreClickListener,
-    selectedGenre: Int):
-    RecyclerView.Adapter<GenreAdapter.GenreHolder>() {
+    selectedGenre: Int): RecyclerView.Adapter<GenreAdapter.GenreHolder>() {
 
     private var index = selectedGenre
 

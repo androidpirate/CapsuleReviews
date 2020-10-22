@@ -13,8 +13,8 @@ import com.github.androidpirate.capsulereviews.util.internal.Constants
 import kotlinx.android.synthetic.main.pager_list_item.view.*
 
 class PagerListItemAdapter(
-    val clickListener: PagerListItemClickListener
-    ): ListAdapter<DBFavorite, PagerListItemAdapter.PagerItemHolder>(PagerItemDiffCallback()) {
+    val clickListener: PagerListItemClickListener):
+    ListAdapter<DBFavorite, PagerListItemAdapter.PagerItemHolder>(PagerItemDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PagerItemHolder {
         val itemView = LayoutInflater.from(parent.context)
@@ -42,20 +42,26 @@ class PagerListItemAdapter(
         private fun setStatus(favoriteItem: DBFavorite) {
             itemView.status.text = favoriteItem.bingeStatus
             when(favoriteItem.bingeStatus) {
-                Constants.DEFAULT_BINGE_STATUS -> {
+                Constants.DEFAULT_BINGE_STATUS ->
+                {
                     itemView.status
                         .setTextColor(
-                            ContextCompat.getColor(itemView.context, R.color.colorDefaultBingeStatus))
+                            ContextCompat
+                                .getColor(itemView.context, R.color.colorDefaultBingeStatus))
                 }
-                Constants.BINGING_BINGE_STATUS -> {
+                Constants.BINGING_BINGE_STATUS ->
+                {
                     itemView.status
                         .setTextColor(
-                            ContextCompat.getColor(itemView.context, R.color.colorBingingBingeStatus))
+                            ContextCompat
+                                .getColor(itemView.context, R.color.colorBingingBingeStatus))
                 }
-                Constants.SEEN_BINGE_STATUS -> {
+                Constants.SEEN_BINGE_STATUS ->
+                {
                     itemView.status
                         .setTextColor(
-                            ContextCompat.getColor(itemView.context, R.color.colorSeenBingeStatus))
+                            ContextCompat
+                                .getColor(itemView.context, R.color.colorSeenBingeStatus))
                 }
             }
         }
@@ -65,14 +71,18 @@ class PagerListItemAdapter(
             popupMenu.inflate(R.menu.favorites_popup_menu)
             popupMenu.setOnMenuItemClickListener {
                 when(it.itemId) {
-                    R.id.unfavorite -> {
+                    R.id.unfavorite ->
+                    {
                         clickListener.onUnFavoriteClick(itemId)
                         true
                     }
-                    R.id.changeStatus -> {
+                    R.id.changeStatus ->
+                    {
                         clickListener.onChangeStatusClick(itemId)
                         true
-                    } else -> {
+                    }
+                    else ->
+                    {
                         false
                     }
                 }

@@ -18,8 +18,8 @@ import java.lang.IllegalArgumentException
 
 class SimilarContentAdapter<T>(
     private val fragment: FragmentType,
-    private val clickListener: SimilarContentClickListener
-): ListAdapter<T, SimilarContentAdapter<T>.SimilarContentHolder>(SimilarContentDiffCallback<T>(fragment)) {
+    private val clickListener: SimilarContentClickListener):
+    ListAdapter<T, SimilarContentAdapter<T>.SimilarContentHolder>(SimilarContentDiffCallback<T>(fragment)) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SimilarContentHolder {
         val itemView = LayoutInflater.from(parent.context)
@@ -38,9 +38,12 @@ class SimilarContentAdapter<T>(
                 clickListener.onItemClick(item)
             }
             when(fragment) {
-                MOVIE_DETAIL -> setSimilarItemThumbnail((item as NetworkMoviesListItem).posterPath)
-                TV_DETAIL -> setSimilarItemThumbnail((item as NetworkTvShowsListItem).posterPath)
-                else -> throw IllegalArgumentException("${Constants.ADAPTER_UNKNOWN_FRAGMENT_MESSAGE}: $fragment")
+                MOVIE_DETAIL ->
+                    setSimilarItemThumbnail((item as NetworkMoviesListItem).posterPath)
+                TV_DETAIL ->
+                    setSimilarItemThumbnail((item as NetworkTvShowsListItem).posterPath)
+                else ->
+                    throw IllegalArgumentException("${Constants.ADAPTER_UNKNOWN_FRAGMENT_MESSAGE}: $fragment")
             }
         }
 
