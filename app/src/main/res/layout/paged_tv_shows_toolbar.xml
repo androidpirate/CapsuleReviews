@@ -20,19 +20,20 @@
         app:layout_constraintStart_toStartOf="parent"/>
 
     <TextView
-        style="@style/SubTitleTextStyle"
+        style="@style/SubHeadBoldTextStyle"
         android:id="@+id/tvToolbarTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
-        android:layout_marginStart="@dimen/margin_8"
+        android:text="@string/tv_toolbar_title_content"
+        android:layout_marginStart="@dimen/margin_16"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@id/btUp"
-        tools:text="Tv Shows"/>
+        tools:text="TV"/>
 
     <Button
-        style="@style/SubTitleTextStyle"
+        style="@style/SubHeadTextStyle"
         android:id="@+id/tvNetworkSpinner"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -42,13 +43,13 @@
         android:maxLines="1"
         android:visibility="gone"
         android:drawableEnd="@drawable/ic_filled_dropdown_white"
-        android:layout_marginStart="@dimen/margin_8"
+        android:layout_marginStart="@dimen/margin_16"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@id/btUp"/>
+        app:layout_constraintStart_toEndOf="@id/tvToolbarTitle"/>
 
     <Button
-        style="@style/SubTitleTextStyle"
+        style="@style/SubHeadTextStyle"
         android:id="@+id/tvGenreSpinner"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -58,7 +59,7 @@
         android:maxLines="1"
         android:visibility="gone"
         android:drawableEnd="@drawable/ic_filled_dropdown_white"
-        android:layout_marginStart="@dimen/margin_8"
+        android:layout_marginStart="@dimen/margin_16"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@id/tvNetworkSpinner"/>

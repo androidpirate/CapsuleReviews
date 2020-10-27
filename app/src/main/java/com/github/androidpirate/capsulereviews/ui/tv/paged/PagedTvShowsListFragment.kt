@@ -18,7 +18,7 @@ import com.github.androidpirate.capsulereviews.ui.dialog.TvShowGenresDialogFragm
 import com.github.androidpirate.capsulereviews.util.GridSpacingItemDecoration
 import com.github.androidpirate.capsulereviews.util.internal.*
 import com.github.androidpirate.capsulereviews.util.internal.GenericSortType.*
-import com.github.androidpirate.capsulereviews.util.internal.NetworkType.*
+import com.github.androidpirate.capsulereviews.util.internal.NetworkType
 import com.github.androidpirate.capsulereviews.viewmodel.PagedTvShowsListViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_paged_movies_list.container
@@ -71,7 +71,7 @@ class PagedTvShowsListFragment :
                 getTvShowsByNetwork()
             }
             genre != GenreType.ALL -> {
-               tvShowsByGenericSort = false
+                tvShowsByGenericSort = false
                 getTvShowsByGenre()
             }
             else -> {
@@ -113,7 +113,6 @@ class PagedTvShowsListFragment :
     }
 
     private fun displaySpinners() {
-        tvToolbarTitle.visibility = View.GONE
         tvNetworkSpinner.visibility = View.VISIBLE
         tvGenreSpinner.visibility = View.VISIBLE
         tvGenreSpinner.text = Constants.getTvGenresKey(genre)
@@ -127,25 +126,17 @@ class PagedTvShowsListFragment :
     }
 
     private fun displayToolbarTitle() {
-        tvToolbarTitle.visibility = View.VISIBLE
         tvNetworkSpinner.visibility = View.GONE
         tvGenreSpinner.visibility = View.GONE
         setToolbarTitle()
     }
 
     private fun setToolbarTitle() {
-        if(network != NetworkType.ALL) {
-            when(network) {
-                NETFLIX -> tvToolbarTitle.text = Constants.TV_TRENDING_NETFLIX_TITLE
-                HULU -> tvToolbarTitle.text = Constants.TV_TRENDING_HULU_TITLE
-                DISNEY_PLUS -> tvToolbarTitle.text = Constants.TV_TRENDING_DISNEY_TITLE
-            }
-        } else {
-            when(genericSort) {
-                POPULAR -> tvToolbarTitle.text = Constants.TV_POPULAR_TITLE
-                TOP_RATED -> tvToolbarTitle.text = Constants.TV_TOP_RATED_TITLE
-                TRENDING -> tvToolbarTitle.text = Constants.TV_TRENDING_TITLE
-            }
+        when(genericSort) {
+            POPULAR -> tvToolbarTitle.text = Constants.TV_POPULAR_TITLE
+            TOP_RATED -> tvToolbarTitle.text = Constants.TV_TOP_RATED_TITLE
+            TRENDING -> tvToolbarTitle.text = Constants.TV_TRENDING_TITLE
+            else -> Constants.TV_POPULAR_TITLE
         }
     }
 

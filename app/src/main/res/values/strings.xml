@@ -10,7 +10,7 @@
     <string name="movie_toolbar_title_content">Movies</string>
     <string name="movie_toolbar_genres_spinner_content">Genres</string>
     <!-- Tv Toolbar -->
-    <string name="tv_toolbar_title_content">TV Shows</string>
+    <string name="tv_toolbar_title_content">TV</string>
     <string name="tv_toolbar_networks_spinner_content">Networks</string>
     <string name="tv_toolbar_genres_spinner_content">Genres</string>
     <!-- Movies List Fragment resources -->

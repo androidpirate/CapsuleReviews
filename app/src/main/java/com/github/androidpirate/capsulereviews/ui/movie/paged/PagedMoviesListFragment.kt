@@ -97,12 +97,10 @@ class PagedMoviesListFragment :
     }
 
     private fun displaySpinner() {
-        movieToolbarTitle.visibility = View.GONE
         movieGenreSpinner.visibility = View.VISIBLE
     }
 
     private fun displayToolbarTitle() {
-        movieToolbarTitle.visibility = View.VISIBLE
         movieGenreSpinner.visibility = View.GONE
     }
 
