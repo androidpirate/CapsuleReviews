@@ -17,8 +17,7 @@ import kotlinx.android.synthetic.main.list_item.view.*
 import java.lang.IllegalArgumentException
 import javax.inject.Inject
 
-@AndroidEntryPoint
-class ListItemAdapter<T> @Inject constructor(
+class ListItemAdapter<T> (
     private val fragment: FragmentType,
     private val genericSort: GenericSortType,
     private val network: NetworkType,
