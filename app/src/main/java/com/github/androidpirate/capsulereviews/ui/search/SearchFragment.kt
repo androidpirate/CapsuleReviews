@@ -48,6 +48,9 @@ class SearchFragment : Fragment(), PagedItemClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setSoftKeyboardListener(view)
+        btUp.setOnClickListener {
+            findNavController().navigate(R.id.search_to_movie_list)
+        }
         setupViews()
         etSearch.setOnEditorActionListener { textView, actionId, keyEvent ->
             return@setOnEditorActionListener when(actionId) {
