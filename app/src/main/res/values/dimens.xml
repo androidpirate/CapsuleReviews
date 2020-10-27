@@ -40,8 +40,8 @@
     <!-- Showcase -->
     <dimen name="showcase_control_frame_height">160dp</dimen>
     <!-- Logo -->
-    <dimen name="logo_width">40dp</dimen>
-    <dimen name="logo_height">40dp</dimen>
+    <dimen name="logo_width">60dp</dimen>
+    <dimen name="logo_height">60dp</dimen>
     <!-- Button More -->
     <dimen name="button_more_height">50dp</dimen>
     <!-- Genre & Network Dialog Cancel Button -->

@@ -40,7 +40,8 @@
         android:drawableEnd="@drawable/ic_filled_dropdown_white"
         android:layout_marginStart="@dimen/margin_16"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toEndOf="@id/tvToolbarTitle"/>
+        app:layout_constraintStart_toEndOf="@id/tvToolbarTitle"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
     <Button
         style="@style/SubHeadTextStyle"
@@ -54,6 +55,7 @@
         android:drawableEnd="@drawable/ic_filled_dropdown_white"
         android:layout_marginStart="@dimen/margin_16"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toEndOf="@id/tvNetworkSpinner"/>
+        app:layout_constraintStart_toEndOf="@id/tvNetworkSpinner"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
