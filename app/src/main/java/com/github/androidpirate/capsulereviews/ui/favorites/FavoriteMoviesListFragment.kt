@@ -5,30 +5,29 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.github.androidpirate.capsulereviews.R
 import com.github.androidpirate.capsulereviews.ui.adapter.pager.PagerListItemAdapter
 import com.github.androidpirate.capsulereviews.ui.adapter.pager.PagerListItemClickListener
 import com.github.androidpirate.capsulereviews.ui.dialog.BingeStatusDialogFragment
 import com.github.androidpirate.capsulereviews.viewmodel.FavoritesViewModel
-import com.github.androidpirate.capsulereviews.viewmodel.ViewModelFactory
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_favorite_movies_list.*
 
+@AndroidEntryPoint
 class FavoriteMoviesListFragment :
     Fragment(),
     PagerListItemClickListener,
     BingeStatusDialogFragment.BingeStatusDialogListener {
 
-    private lateinit var viewModel: FavoritesViewModel
+    private val viewModel: FavoritesViewModel by viewModels()
     private lateinit var adapter: PagerListItemAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         adapter = PagerListItemAdapter(this)
-        val factory = ViewModelFactory(requireActivity().application)
-        viewModel = ViewModelProvider(this, factory).get(FavoritesViewModel::class.java)
     }
 
     override fun onCreateView(

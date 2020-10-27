@@ -1,12 +1,16 @@
 package com.github.androidpirate.capsulereviews.viewmodel
 
+import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.*
 import androidx.paging.PagedList
 import com.github.androidpirate.capsulereviews.data.network.response.multiSearch.NetworkMultiSearchListItem
 import com.github.androidpirate.capsulereviews.data.repo.SearchRepository
 import com.github.androidpirate.capsulereviews.util.internal.Constants
 
-class PagedSearchResultsViewModel(private val repo: SearchRepository): ViewModel() {
+class PagedSearchResultsViewModel
+    @ViewModelInject
+    constructor(
+    private val repo: SearchRepository): ViewModel() {
 
     val queryString = MutableLiveData<String>(Constants.EMPTY_FIELD_STRING)
 

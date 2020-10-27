@@ -9,8 +9,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
@@ -26,7 +26,7 @@ import com.github.androidpirate.capsulereviews.ui.adapter.similar.SimilarContent
 import com.github.androidpirate.capsulereviews.util.internal.Constants
 import com.github.androidpirate.capsulereviews.util.internal.FragmentType
 import com.github.androidpirate.capsulereviews.viewmodel.MovieDetailViewModel
-import com.github.androidpirate.capsulereviews.viewmodel.ViewModelFactory
+import dagger.hilt.android.AndroidEntryPoint
 import jp.wasabeef.glide.transformations.BlurTransformation
 import kotlinx.android.synthetic.main.detail_action_bar.*
 import kotlinx.android.synthetic.main.detail_similar.*
@@ -37,20 +37,20 @@ import kotlinx.android.synthetic.main.movie_info.*
 import kotlinx.android.synthetic.main.movie_summary.*
 import java.lang.IllegalArgumentException
 
+@AndroidEntryPoint
 class MovieDetailFragment : Fragment(), SimilarContentClickListener {
+
     private val args: MovieDetailFragmentArgs by navArgs()
+    private val viewModel: MovieDetailViewModel by viewModels()
     private lateinit var networkMovie: NetworkMovie
     private lateinit var adapter: SimilarContentAdapter<NetworkMoviesListItem>
     private lateinit var similarMovies: List<NetworkMoviesListItem>
-    private lateinit var viewModel: MovieDetailViewModel
     private var videoKey: String = Constants.EMPTY_VIDEO_KEY
     private var imdbEndpoint: String = Constants.EMPTY_FIELD_STRING
     private var isFavorite = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val factory = ViewModelFactory(requireActivity().application)
-        viewModel = ViewModelProvider(this, factory).get(MovieDetailViewModel::class.java)
         adapter = SimilarContentAdapter(fragment = FragmentType.MOVIE_DETAIL, clickListener = this)
         requireActivity().onBackPressedDispatcher.addCallback(
             this,

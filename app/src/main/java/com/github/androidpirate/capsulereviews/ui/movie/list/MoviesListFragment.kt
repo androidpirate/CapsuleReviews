@@ -8,8 +8,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavDirections
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
@@ -20,37 +20,34 @@ import com.github.androidpirate.capsulereviews.data.db.entity.DBMovieShowcase
 import com.github.androidpirate.capsulereviews.ui.adapter.list.ListItemAdapter
 import com.github.androidpirate.capsulereviews.ui.adapter.list.ItemClickListener
 import com.github.androidpirate.capsulereviews.ui.dialog.MovieGenresDialogFragment
-import com.github.androidpirate.capsulereviews.util.GridSpacingItemDecoration
 import com.github.androidpirate.capsulereviews.util.internal.Constants
 import com.github.androidpirate.capsulereviews.util.internal.FragmentType.*
 import com.github.androidpirate.capsulereviews.util.internal.GenericSortType
 import com.github.androidpirate.capsulereviews.util.internal.GenericSortType.*
 import com.github.androidpirate.capsulereviews.util.internal.GenreType
 import com.github.androidpirate.capsulereviews.util.internal.NetworkType
-import com.github.androidpirate.capsulereviews.viewmodel.ViewModelFactory
 import com.github.androidpirate.capsulereviews.viewmodel.MoviesListViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_movies_list.*
-import kotlinx.android.synthetic.main.fragment_search.*
 import kotlinx.android.synthetic.main.movie_showcase.*
 import kotlinx.android.synthetic.main.movie_toolbar.*
 
+@AndroidEntryPoint
 class MoviesListFragment :
     Fragment(),
     ItemClickListener,
     MovieGenresDialogFragment.MovieGenresDialogListener {
 
+    private val viewModel: MoviesListViewModel by viewModels()
     private lateinit var popularNetworkMoviesAdapter: ListItemAdapter<DBMovie>
     private lateinit var topRatedNetworkMoviesAdapter: ListItemAdapter<DBMovie>
     private lateinit var nowPlayingNetworkMoviesAdapter: ListItemAdapter<DBMovie>
     private lateinit var upcomingNetworkMoviesAdapter: ListItemAdapter<DBMovie>
     private lateinit var trendingNetworkMoviesAdapter: ListItemAdapter<DBMovie>
-    private lateinit var viewModel: MoviesListViewModel
     private var isShowcaseFavorite = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val factory = ViewModelFactory(requireActivity().application)
-        viewModel = ViewModelProvider(this, factory).get(MoviesListViewModel::class.java)
         setupAdapters()
     }
 

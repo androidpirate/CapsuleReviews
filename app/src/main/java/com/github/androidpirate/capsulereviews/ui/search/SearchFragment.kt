@@ -9,8 +9,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavDirections
 import androidx.navigation.fragment.findNavController
 import com.github.androidpirate.capsulereviews.R
@@ -21,20 +21,19 @@ import com.github.androidpirate.capsulereviews.util.GridSpacingItemDecoration
 import com.github.androidpirate.capsulereviews.util.internal.Constants
 import com.github.androidpirate.capsulereviews.util.internal.FragmentType
 import com.github.androidpirate.capsulereviews.viewmodel.PagedSearchResultsViewModel
-import com.github.androidpirate.capsulereviews.viewmodel.ViewModelFactory
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_search.*
 import kotlinx.android.synthetic.main.search_bar.*
 
+@AndroidEntryPoint
 class SearchFragment : Fragment(), PagedItemClickListener {
 
-    private lateinit var viewModel: PagedSearchResultsViewModel
+    private val viewModel: PagedSearchResultsViewModel by viewModels()
     private lateinit var adapter: PagedItemAdapter<NetworkMultiSearchListItem>
     private var isKeyboardOn = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val factory = ViewModelFactory(requireActivity().application)
-        viewModel = ViewModelProvider(this, factory).get(PagedSearchResultsViewModel::class.java)
         adapter = PagedItemAdapter(FragmentType.SEARCH_RESULTS, this)
     }
 

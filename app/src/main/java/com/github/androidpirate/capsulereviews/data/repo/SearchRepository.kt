@@ -8,10 +8,11 @@ import com.github.androidpirate.capsulereviews.data.network.api.MovieDbService
 import com.github.androidpirate.capsulereviews.data.network.response.multiSearch.NetworkMultiSearchListItem
 import com.github.androidpirate.capsulereviews.util.internal.Constants
 import kotlinx.coroutines.CoroutineScope
+import javax.inject.Inject
 
-class SearchRepository(
-    private val api: MovieDbService
-) {
+class SearchRepository
+    @Inject
+    constructor(private val api: MovieDbService) {
 
     fun getSearchResults(
         scope: CoroutineScope,

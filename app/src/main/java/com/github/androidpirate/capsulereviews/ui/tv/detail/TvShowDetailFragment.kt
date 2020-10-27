@@ -9,8 +9,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavDirections
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -28,7 +28,7 @@ import com.github.androidpirate.capsulereviews.util.internal.Constants
 import com.github.androidpirate.capsulereviews.util.internal.FragmentType
 import com.github.androidpirate.capsulereviews.util.internal.FragmentType.*
 import com.github.androidpirate.capsulereviews.viewmodel.TvShowDetailViewModel
-import com.github.androidpirate.capsulereviews.viewmodel.ViewModelFactory
+import dagger.hilt.android.AndroidEntryPoint
 import jp.wasabeef.glide.transformations.BlurTransformation
 import kotlinx.android.synthetic.main.detail_action_bar.*
 import kotlinx.android.synthetic.main.detail_similar.*
@@ -42,12 +42,14 @@ import kotlinx.android.synthetic.main.tv_info.overview
 import kotlinx.android.synthetic.main.tv_summary.*
 import java.lang.IllegalArgumentException
 
+@AndroidEntryPoint
 class TvShowDetailFragment : Fragment(), SimilarContentClickListener {
+
     private val args: TvShowDetailFragmentArgs by navArgs()
+    private val viewModel: TvShowDetailViewModel by viewModels()
     private lateinit var networkTvShow: NetworkTvShow
     private lateinit var adapter: SimilarContentAdapter<NetworkTvShowsListItem>
     private lateinit var similarShows: List<NetworkTvShowsListItem>
-    private lateinit var viewModel: TvShowDetailViewModel
     private var videoKey: String = Constants.EMPTY_VIDEO_KEY
     private var imdbId: String = Constants.EMPTY_FIELD_STRING
     private var imdbEndpoint: String = Constants.EMPTY_FIELD_STRING
@@ -55,8 +57,6 @@ class TvShowDetailFragment : Fragment(), SimilarContentClickListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val factory = ViewModelFactory(requireActivity().application)
-        viewModel = ViewModelProvider(this, factory).get(TvShowDetailViewModel::class.java)
         adapter = SimilarContentAdapter(fragment = TV_DETAIL,clickListener = this)
         requireActivity().onBackPressedDispatcher.addCallback(
             this,

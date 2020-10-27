@@ -1,5 +1,6 @@
 package com.github.androidpirate.capsulereviews.viewmodel
 
+import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.*
 import androidx.paging.PagedList
 import com.github.androidpirate.capsulereviews.data.network.response.tvShows.NetworkTvShowsListItem
@@ -10,7 +11,10 @@ import com.github.androidpirate.capsulereviews.util.internal.GenreType
 import com.github.androidpirate.capsulereviews.util.internal.NetworkType
 import com.github.androidpirate.capsulereviews.util.internal.SortType.*
 
-class PagedTvShowsListViewModel(private val repo: TvShowsRepository): ViewModel() {
+class PagedTvShowsListViewModel
+    @ViewModelInject
+    constructor(
+    private val repo: TvShowsRepository): ViewModel() {
 
     val genericSort = MutableLiveData<GenericSortType>(POPULAR)
 

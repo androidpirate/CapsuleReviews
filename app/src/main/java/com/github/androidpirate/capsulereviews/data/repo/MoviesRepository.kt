@@ -17,11 +17,13 @@ import com.github.androidpirate.capsulereviews.util.internal.GenreType
 import com.github.androidpirate.capsulereviews.util.internal.GenericSortType
 import com.github.androidpirate.capsulereviews.util.internal.SortType
 import kotlinx.coroutines.CoroutineScope
+import javax.inject.Inject
 
-class MoviesRepository(
-    private val api: MovieDbService,
-    private val dao: MovieListDao
-) {
+class MoviesRepository
+    @Inject
+    constructor(
+        private val api: MovieDbService,
+        private val dao: MovieListDao) {
 
     fun getPopularMovies(): LiveData<List<DBMovie>> {
         return dao.getPopularMovies()

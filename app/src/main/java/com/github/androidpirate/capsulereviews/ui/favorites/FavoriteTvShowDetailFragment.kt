@@ -6,8 +6,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavDirections
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -16,17 +16,18 @@ import com.github.androidpirate.capsulereviews.data.db.entity.DBFavorite
 import com.github.androidpirate.capsulereviews.util.internal.Constants
 import com.github.androidpirate.capsulereviews.util.internal.FragmentType
 import com.github.androidpirate.capsulereviews.viewmodel.FavoritesViewModel
-import com.github.androidpirate.capsulereviews.viewmodel.ViewModelFactory
-import kotlinx.android.synthetic.main.fragment_favorite_movie_detail.*
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_favorite_tv_show_detail.*
 import kotlinx.android.synthetic.main.fragment_favorite_tv_show_detail.bingeStatus
 import kotlinx.android.synthetic.main.fragment_favorite_tv_show_detail.overview
 import kotlinx.android.synthetic.main.fragment_favorite_tv_show_detail.userRating
 import kotlinx.android.synthetic.main.tv_summary.*
 
+@AndroidEntryPoint
 class FavoriteTvShowDetailFragment : Fragment() {
+
     private val args: FavoriteTvShowDetailFragmentArgs by navArgs()
-    private lateinit var viewModel: FavoritesViewModel
+    private val viewModel: FavoritesViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -37,8 +38,6 @@ class FavoriteTvShowDetailFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        val factory = ViewModelFactory(requireActivity().application)
-        viewModel = ViewModelProvider(this, factory).get(FavoritesViewModel::class.java)
         viewModel.getFavoriteTvShow(args.tvShowId).observe(viewLifecycleOwner, Observer {
             if(it != null) {
                 setupViews(it)

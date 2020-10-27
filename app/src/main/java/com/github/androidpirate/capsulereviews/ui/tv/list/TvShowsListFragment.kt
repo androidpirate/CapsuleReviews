@@ -8,8 +8,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavDirections
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
@@ -25,7 +25,7 @@ import com.github.androidpirate.capsulereviews.util.internal.*
 import com.github.androidpirate.capsulereviews.util.internal.FragmentType.*
 import com.github.androidpirate.capsulereviews.util.internal.GenericSortType.*
 import com.github.androidpirate.capsulereviews.viewmodel.TvShowsListViewModel
-import com.github.androidpirate.capsulereviews.viewmodel.ViewModelFactory
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_tv_shows_list.*
 import kotlinx.android.synthetic.main.tv_showcase.scAddFavorite
 import kotlinx.android.synthetic.main.tv_showcase.scInfo
@@ -34,25 +34,24 @@ import kotlinx.android.synthetic.main.tv_showcase.scPoster
 import kotlinx.android.synthetic.main.tv_showcase.scTitle
 import kotlinx.android.synthetic.main.tv_toolbar.*
 
+@AndroidEntryPoint
 class TvShowsListFragment :
     Fragment(),
     ItemClickListener,
     TvShowGenresDialogFragment.TvShowGenresDialogListener,
     TvNetworksDialogFragment.NetworksDialogListener {
 
+    private val viewModel: TvShowsListViewModel by viewModels()
     private lateinit var popularShowsAdapter: ListItemAdapter<DBTvShow>
     private lateinit var topRatedShowsAdapter: ListItemAdapter<DBTvShow>
     private lateinit var trendingShowsAdapter: ListItemAdapter<DBTvShow>
     private lateinit var popularNetflixAdapter: ListItemAdapter<DBTvShow>
     private lateinit var popularHuluAdapter: ListItemAdapter<DBTvShow>
     private lateinit var popularDisneyPlusAdapter: ListItemAdapter<DBTvShow>
-    private lateinit var viewModel: TvShowsListViewModel
     private var isShowcaseFavorite = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val factory = ViewModelFactory(requireActivity().application)
-        viewModel = ViewModelProvider(this, factory).get(TvShowsListViewModel::class.java)
         setupAdapters()
     }
 

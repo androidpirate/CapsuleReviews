@@ -1,5 +1,6 @@
 package com.github.androidpirate.capsulereviews.viewmodel
 
+import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -11,7 +12,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class MoviesListViewModel(
+class MoviesListViewModel
+    @ViewModelInject
+    constructor(
     private val repo: MoviesRepository,
     private val favRepo: FavoritesRepository): ViewModel() {
 

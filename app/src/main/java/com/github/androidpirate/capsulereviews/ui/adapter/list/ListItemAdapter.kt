@@ -12,10 +12,13 @@ import com.github.androidpirate.capsulereviews.data.db.entity.DBMovie
 import com.github.androidpirate.capsulereviews.data.db.entity.DBTvShow
 import com.github.androidpirate.capsulereviews.util.internal.*
 import com.github.androidpirate.capsulereviews.util.internal.FragmentType.*
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.list_item.view.*
 import java.lang.IllegalArgumentException
+import javax.inject.Inject
 
-class ListItemAdapter<T>(
+@AndroidEntryPoint
+class ListItemAdapter<T> @Inject constructor(
     private val fragment: FragmentType,
     private val genericSort: GenericSortType,
     private val network: NetworkType,

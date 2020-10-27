@@ -3,10 +3,11 @@ package com.github.androidpirate.capsulereviews.data.repo
 import androidx.lifecycle.LiveData
 import com.github.androidpirate.capsulereviews.data.db.FavoritesDao
 import com.github.androidpirate.capsulereviews.data.db.entity.DBFavorite
+import javax.inject.Inject
 
-class FavoritesRepository(
-    private val dao: FavoritesDao
-) {
+class FavoritesRepository
+    @Inject
+    constructor(private val dao: FavoritesDao) {
 
     fun getFavoriteMovies(): LiveData<List<DBFavorite>> {
         return dao.getFavoriteMovies()

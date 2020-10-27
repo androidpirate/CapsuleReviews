@@ -1,5 +1,6 @@
 package com.github.androidpirate.capsulereviews.viewmodel
 
+import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -9,7 +10,10 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class FavoritesViewModel(private val repo: FavoritesRepository): ViewModel() {
+class FavoritesViewModel
+    @ViewModelInject
+    constructor(
+    private val repo: FavoritesRepository): ViewModel() {
 
     val favoriteMovies = repo.getFavoriteMovies()
     val favoriteTvShows = repo.getFavoriteTvShows()

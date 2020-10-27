@@ -5,8 +5,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.github.androidpirate.capsulereviews.R
@@ -20,13 +20,13 @@ import com.github.androidpirate.capsulereviews.util.internal.*
 import com.github.androidpirate.capsulereviews.util.internal.GenericSortType.*
 import com.github.androidpirate.capsulereviews.util.internal.NetworkType.*
 import com.github.androidpirate.capsulereviews.viewmodel.PagedTvShowsListViewModel
-import com.github.androidpirate.capsulereviews.viewmodel.ViewModelFactory
-import kotlinx.android.synthetic.main.fragment_paged_movies_list.*
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_paged_movies_list.container
 import kotlinx.android.synthetic.main.fragment_paged_movies_list.loadingScreen
 import kotlinx.android.synthetic.main.fragment_paged_tv_shows_list.*
 import kotlinx.android.synthetic.main.paged_tv_shows_toolbar.*
 
+@AndroidEntryPoint
 class PagedTvShowsListFragment :
     Fragment(),
     PagedItemClickListener,
@@ -34,18 +34,15 @@ class PagedTvShowsListFragment :
     TvNetworksDialogFragment.NetworksDialogListener {
 
     private val args: PagedTvShowsListFragmentArgs by navArgs()
-    private lateinit var viewModel: PagedTvShowsListViewModel
+    private val viewModel: PagedTvShowsListViewModel by viewModels()
     private lateinit var adapter: PagedItemAdapter<NetworkTvShowsListItem>
     private lateinit var genericSort: GenericSortType
     private lateinit var genre: GenreType
     private lateinit var network: NetworkType
-    private var flagDecoration = false
     private var tvShowsByGenericSort = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val factory = ViewModelFactory(requireActivity().application)
-        viewModel = ViewModelProvider(this, factory).get(PagedTvShowsListViewModel::class.java)
         genericSort = args.genericSortType
         viewModel.setGenericSort(genericSort)
         network = args.network

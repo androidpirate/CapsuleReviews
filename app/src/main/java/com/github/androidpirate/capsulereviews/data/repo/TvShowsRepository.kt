@@ -13,11 +13,14 @@ import com.github.androidpirate.capsulereviews.data.network.response.tvShows.Net
 import com.github.androidpirate.capsulereviews.data.network.response.videos.NetworkVideosListItem
 import com.github.androidpirate.capsulereviews.util.internal.*
 import kotlinx.coroutines.CoroutineScope
+import javax.inject.Inject
 
-class TvShowsRepository(
-    private val api: MovieDbService,
-    private val dao: TvShowListDao
-) {
+class TvShowsRepository
+    @Inject
+    constructor(
+        private val api: MovieDbService,
+        private val dao: TvShowListDao) {
+
     fun getPopularTvShows(): LiveData<List<DBTvShow>> {
         return dao.getPopularTvShows()
     }

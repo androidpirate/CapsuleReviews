@@ -1,10 +1,7 @@
 package com.github.androidpirate.capsulereviews.viewmodel
 
-
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.hilt.lifecycle.ViewModelInject
+import androidx.lifecycle.*
 import com.github.androidpirate.capsulereviews.data.network.response.movie.NetworkMovie
 import com.github.androidpirate.capsulereviews.data.network.response.movies.NetworkMoviesListItem
 import com.github.androidpirate.capsulereviews.data.repo.FavoritesRepository
@@ -13,16 +10,18 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class MovieDetailViewModel(
+class MovieDetailViewModel
+    @ViewModelInject
+    constructor(
     private val repo: MoviesRepository,
-    private val favRepo: FavoritesRepository
-): ViewModel() {
+    private val favRepo: FavoritesRepository): ViewModel() {
 
     private val movieDetails = MutableLiveData<NetworkMovie>()
     private val movieVideoKey = MutableLiveData<String>()
     private val similarMovies = MutableLiveData<List<NetworkMoviesListItem>>()
     private var imdbEndpoint = MutableLiveData<String>()
     private var isFavorite = MutableLiveData<Boolean>()
+    private var flagDecoration = false
 
     fun getMovieDetails(movieId: Int): LiveData<NetworkMovie> {
         viewModelScope.launch {
@@ -90,8 +89,6 @@ class MovieDetailViewModel(
     fun getImdbEndpoint(): LiveData<String> {
         return imdbEndpoint
     }
-
-    private var flagDecoration = false
 
     fun setFlagDecorationOn() {
         flagDecoration = true
