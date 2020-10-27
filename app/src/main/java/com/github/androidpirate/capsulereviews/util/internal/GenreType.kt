@@ -25,7 +25,7 @@ enum class GenreType(val id: Int) {
     TV_KIDS(10762),
     TV_NEWS(10763),
     TV_REALITY(10764),
-    TV_SCI_FI_FANTASY(10756),
+    TV_SCI_FI_FANTASY(10765),
     TV_SOAP(10766),
     TV_TALK(10767),
     TV_WAR_POLITICS(10768);
