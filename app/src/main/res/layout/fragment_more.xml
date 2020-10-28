@@ -8,63 +8,77 @@
     android:padding="@dimen/padding_16"
     tools:context=".ui.more.MoreFragment">
 
-    <ImageView
-        android:id="@+id/logo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_capsule_reviews_logo"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-    <TextView
-        style="@style/SubTitleTextStyle"
-        android:id="@+id/moreTitle"
-        android:layout_width="@dimen/match_constraint"
-        android:layout_height="wrap_content"
-        android:text="Capsule Reviews is powered by The Movie Database."
-        android:gravity="center_horizontal"
-        android:layout_marginTop="@dimen/margin_32"
-        app:layout_constraintTop_toBottomOf="@id/logo"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-    <TextView
-        style="@style/SubHeadTextStyle"
-        android:id="@+id/tmdbLink"
-        android:layout_width="@dimen/match_constraint"
-        android:layout_height="wrap_content"
-        android:text="www.tmdb.org"
-        android:gravity="center_horizontal"
-        android:textColor="@color/colorAccent"
-        android:layout_marginTop="@dimen/margin_32"
-        app:layout_constraintTop_toBottomOf="@id/moreTitle"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+            <ImageView
+                android:id="@+id/logo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_capsule_reviews_logo"
+                android:contentDescription="@string/capsule_reviews_logo_content"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/moreTitle"/>
 
-    <TextView
-        style="@style/SubTitleTextStyle"
-        android:id="@+id/repoTitle"
-        android:layout_width="@dimen/match_constraint"
-        android:layout_height="wrap_content"
-        android:text="Check source code on GitHub:"
-        android:gravity="center_horizontal"
-        android:layout_marginTop="@dimen/margin_32"
-        app:layout_constraintTop_toBottomOf="@id/tmdbLink"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+            <TextView
+                style="@style/SubTitleBoldTextStyle"
+                android:id="@+id/moreTitle"
+                android:layout_width="@dimen/match_constraint"
+                android:layout_height="wrap_content"
+                android:text="@string/app_name"
+                android:gravity="center_horizontal"
+                android:layout_marginTop="@dimen/margin_8"
+                app:layout_constraintTop_toBottomOf="@id/logo"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
 
-    <TextView
-        style="@style/SubHeadTextStyle"
-        android:id="@+id/repoLink"
-        android:layout_width="@dimen/match_constraint"
-        android:layout_height="wrap_content"
-        android:text="www.github.com/androidpirate/CapsuleReviews"
-        android:gravity="center_horizontal"
-        android:textColor="@color/colorAccent"
-        android:layout_marginTop="@dimen/margin_32"
-        app:layout_constraintTop_toBottomOf="@id/repoTitle"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+            <TextView
+                style="@style/SubTitleTextStyle"
+                android:id="@+id/poweredBy"
+                android:layout_width="@dimen/match_constraint"
+                android:layout_height="wrap_content"
+                android:text="@string/powered_by_content"
+                android:gravity="center_horizontal"
+                android:layout_marginTop="@dimen/margin_8"
+                app:layout_constraintTop_toBottomOf="@id/moreTitle"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+            <TextView
+                style="@style/SubTitleTextStyle"
+                android:id="@+id/tmdbTitle"
+                android:layout_width="@dimen/match_constraint"
+                android:layout_height="wrap_content"
+                android:text="@string/tmbd_title_content"
+                android:gravity="center_horizontal"
+                android:layout_marginTop="@dimen/margin_8"
+                app:layout_constraintTop_toBottomOf="@id/poweredBy"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+            <TextView
+                style="@style/SubHeadTextStyle"
+                android:id="@+id/tmdbLink"
+                android:layout_width="@dimen/match_constraint"
+                android:layout_height="wrap_content"
+                android:text="@string/tmdb_link_content"
+                android:gravity="center_horizontal"
+                android:textColor="@color/colorAccent"
+                android:layout_marginTop="@dimen/margin_32"
+                app:layout_constraintTop_toBottomOf="@id/tmdbTitle"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.core.widget.NestedScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

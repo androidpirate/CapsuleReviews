@@ -84,4 +84,7 @@
     <string name="release_date_title_content">Release Date</string>
     <string name="detail_link_title_content">Details</string>
     <string name="clear_query_button_description">Clear query button.</string>
+    <string name="powered_by_content">powered by</string>
+    <string name="tmbd_title_content">The Movie Database</string>
+    <string name="tmdb_link_content">www.tmdb.org</string>
 </resources>
