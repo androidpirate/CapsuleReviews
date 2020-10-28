@@ -23,6 +23,9 @@
         android:layout_height="wrap_content"
         app:tabSelectedTextColor="@color/colorWhite"
         app:tabTextColor="@color/colorAccent"
+        app:tabTextAppearance="@style/SubHeadBoldTextStyle"
+        app:tabMaxWidth="0dp"
+        app:tabGravity="fill"
         app:layout_constraintTop_toBottomOf="@id/toolbar"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
