@@ -7,13 +7,12 @@
     android:layout_height="wrap_content">
 
     <TextView
+        style="@style/SubTitleTextStyle"
         android:id="@+id/networkTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/colorWindowBackground"
         android:gravity="center"
-        android:textColor="@color/colorWhite"
-        android:textSize="18sp"
         android:paddingTop="@dimen/padding_16"
         android:paddingBottom="@dimen/padding_16"
         app:layout_constraintTop_toTopOf="parent"
