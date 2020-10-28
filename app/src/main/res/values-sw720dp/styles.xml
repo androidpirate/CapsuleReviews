@@ -1,0 +1,128 @@
+<resources>
+    <!-- Base application theme. -->
+    <style
+        name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowBackground">@color/colorWindowBackground</item>
+        <item name="android:popupMenuStyle">@style/PopupMenu</item>
+        <item name="android:textAppearanceLargePopupMenu">@style/PopupMenuTextAppearanceLarge</item>
+        <item name="android:textAppearanceSmallPopupMenu">@style/PopupMenuTextAppearanceSmall</item>
+    </style>
+
+    <style name="TitleBoldTextStyle" parent="TextAppearance.AppCompat.Headline">
+        <item name="android:textColor">@color/colorWhite</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">36sp</item>
+    </style>
+
+    <style name="TitleTextStyle" parent="TextAppearance.AppCompat.Headline">
+        <item name="android:textColor">@color/colorWhite</item>
+        <item name="android:textSize">36sp</item>
+    </style>
+
+    <style name="SubTitleBoldTextStyle" parent="TextAppearance.AppCompat.Title">
+        <item name="android:textColor">@color/colorWhite</item>
+        <item name="android:textSize">32sp</item>
+    </style>
+
+    <style name="SubTitleTextStyle" parent="TextAppearance.AppCompat.Title">
+        <item name="android:textColor">@color/colorWhite</item>
+        <item name="fontFamily">sans-serif</item>
+        <item name="android:textSize">32sp</item>
+    </style>
+
+    <style name="SubHeadBoldTextStyle" parent="TextAppearance.AppCompat.Subhead">
+        <item name="android:textColor">@color/colorWhite</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">28sp</item>
+    </style>
+
+    <style name="SubHeadTextStyle" parent="TextAppearance.AppCompat.Subhead">
+        <item name="android:textColor">@color/colorWhite</item>
+        <item name="android:textSize">28sp</item>
+    </style>
+
+    <style name="ContentBoldTextStyle" parent="@style/TextAppearance.AppCompat.Body1">
+        <item name="android:popupBackground">@color/colorWindowBackground</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">24sp</item>
+    </style>
+
+    <style name="ContentTextStyle" parent="TextAppearance.AppCompat.Body1">
+        <item name="android:textColor">@color/colorWhite</item>
+        <item name="android:textSize">24sp</item>
+    </style>
+
+    <style name="SearchContentTextStyle" parent="TextAppearance.AppCompat.Body1">
+        <item name="android:textColor">@color/colorLightGrey</item>
+        <item name="android:textColorHint">@color/colorLightGrey</item>
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:textSize">24sp</item>
+    </style>
+
+    <style name="UserRatingStyle" parent="TitleBoldTextStyle">
+        <item name="android:textColor">@color/colorAccent</item>
+        <item name="android:textSize">64sp</item>
+    </style>
+
+    <style name="EmptySimilarListMessageStyle" parent="SubTitleBoldTextStyle">
+        <item name="android:textColor">@color/colorAccent</item>
+        <item name="android:gravity">center_horizontal</item>
+    </style>
+
+    <style name="MovieTagLineStyle" parent="SubHeadTextStyle">
+        <item name="android:textStyle">bold|italic</item>
+    </style>
+
+    <style name="IMDBLinkStyle" parent="SubTitleBoldTextStyle">
+        <item name="android:textColor">@color/colorAccent</item>
+    </style>
+
+    <style name="ShowcaseCaptionStyle" parent="TextAppearance.MaterialComponents.Caption">
+        <item name="android:textColor">@color/colorWhite</item>
+        <item name="android:textSize">22sp</item>
+    </style>
+
+    <style name="PopupMenu" parent="@style/Widget.AppCompat.PopupMenu.Overflow">
+        <item name="android:popupBackground">@color/colorWindowBackground</item>
+        <item name="android:textSize">22sp</item>
+    </style>
+
+    <style name="PopupMenuTextAppearanceSmall" parent="@android:style/TextAppearance.DeviceDefault.Widget.PopupMenu.Small">
+        <item name="android:textColor">#FDFDFD</item>
+    </style>
+
+    <style
+        name="PopupMenuTextAppearanceLarge"
+        parent="@android:style/TextAppearance.DeviceDefault.Widget.PopupMenu.Large">
+        <item name="android:textColor">#FDFDFD</item>
+    </style>
+    
+    <style name="BingeStatusAlertDialogTheme" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="android:windowBackground">@color/colorWindowBackground</item>
+        <item name="android:textColor">@color/colorAccent</item>
+        <item name="android:textColorAlertDialogListItem">@color/colorWhite</item>
+    </style>
+
+    <style name="FullScreenDialogTheme" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="android:windowBackground">@color/colorTransparentBlack</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:textSize">22sp</item>
+        <item name="android:textColor">@color/colorAccent</item>
+        <item name="android:textColorAlertDialogListItem">@color/colorWhite</item>
+    </style>
+
+    <style name="CustomDialog" parent="android:Theme.Dialog">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@android:drawable/alert_dark_frame</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:textColorAlertDialogListItem">#FDFDFD</item>
+    </style>
+
+</resources>

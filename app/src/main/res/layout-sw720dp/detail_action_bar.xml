@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingStart="@dimen/margin_64"
+    android:paddingEnd="@dimen/margin_64">
+
+    <TextView
+        style="@style/UserRatingStyle"
+        android:id="@+id/userRating"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawablePadding="@dimen/padding_8"
+        android:layout_marginStart="@dimen/margin_8"
+        app:drawableStartCompat="@drawable/ic_outline_rating_accent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/btFavorite"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        tools:text="6.9"/>
+
+    <ImageView
+        android:id="@+id/btFavorite"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/custom_favorite_button"
+        android:contentDescription="@string/favorite_button_description"
+        android:layout_marginStart="@dimen/margin_32"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/btShare"
+        app:layout_constraintStart_toEndOf="@+id/userRating"
+        app:layout_constraintHorizontal_bias="0.5"/>
+
+    <ImageView
+        android:id="@+id/btShare"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/ic_outline_share_white"
+        android:contentDescription="@string/favorite_button_description"
+        android:layout_marginStart="@dimen/margin_16"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/btPlay"
+        app:layout_constraintStart_toEndOf="@+id/btFavorite"
+        app:layout_constraintHorizontal_bias="0.5"/>
+
+    <ImageView
+        android:id="@+id/btPlay"
+        android:layout_width="@dimen/button_play_width"
+        android:layout_height="@dimen/button_play_height"
+        android:src="@drawable/ic_outline_play_circle_accent"
+        android:contentDescription="@string/favorite_button_description"
+        android:layout_marginStart="@dimen/margin_16"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/btShare"
+        app:layout_constraintHorizontal_bias="0.5"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

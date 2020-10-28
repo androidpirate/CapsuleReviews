@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingStart="@dimen/padding_32"
+    android:paddingEnd="@dimen/padding_32">
+
+    <TextView
+        style="@style/SubHeadBoldTextStyle"
+        android:id="@+id/overviewTitle"
+        android:layout_width="@dimen/match_constraint"
+        android:layout_height="wrap_content"
+        android:text="@string/overview_title_content"
+        android:layout_marginTop="@dimen/margin_32"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <TextView
+        style="@style/ContentTextStyle"
+        android:id="@+id/overview"
+        android:layout_width="@dimen/match_constraint"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_16"
+        app:layout_constraintTop_toBottomOf="@id/overviewTitle"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <TextView
+        style="@style/SubHeadBoldTextStyle"
+        android:id="@+id/budgetTitle"
+        android:layout_width="@dimen/match_constraint"
+        android:layout_height="wrap_content"
+        android:text="@string/budget_title_content"
+        android:layout_marginTop="@dimen/margin_32"
+        app:layout_constraintTop_toBottomOf="@id/overview"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <TextView
+        style="@style/ContentTextStyle"
+        android:id="@+id/budget"
+        android:layout_width="@dimen/match_constraint"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_16"
+        app:layout_constraintTop_toBottomOf="@id/budgetTitle"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:text="$100,000,000.00"/>
+
+    <TextView
+        style="@style/SubHeadBoldTextStyle"
+        android:id="@+id/revenueTitle"
+        android:layout_width="@dimen/match_constraint"
+        android:layout_height="wrap_content"
+        android:text="@string/revenue_title_content"
+        android:layout_marginTop="@dimen/margin_32"
+        app:layout_constraintTop_toBottomOf="@id/budget"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <TextView
+        style="@style/ContentTextStyle"
+        android:id="@+id/revenue"
+        android:layout_width="@dimen/match_constraint"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_16"
+        app:layout_constraintTop_toBottomOf="@id/revenueTitle"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:text="$230,884,728.00"/>
+
+    <TextView
+        style="@style/SubHeadBoldTextStyle"
+        android:id="@+id/releaseDateTitle"
+        android:layout_width="@dimen/match_constraint"
+        android:layout_height="wrap_content"
+        android:text="@string/release_date_title_content"
+        android:layout_marginTop="@dimen/margin_32"
+        app:layout_constraintTop_toBottomOf="@id/revenue"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <TextView
+        style="@style/ContentTextStyle"
+        android:id="@+id/releaseDate"
+        android:layout_width="@dimen/match_constraint"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_16"
+        app:layout_constraintTop_toBottomOf="@id/releaseDateTitle"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:text="10/23/1998"/>
+
+    <TextView
+        style="@style/IMDBLinkStyle"
+        android:id="@+id/imdbLink"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/imdb_link_title_content"
+        android:layout_marginTop="@dimen/margin_64"
+        app:drawableEndCompat="@drawable/ic_outline_next_accent"
+        app:layout_constraintTop_toBottomOf="@id/releaseDate"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

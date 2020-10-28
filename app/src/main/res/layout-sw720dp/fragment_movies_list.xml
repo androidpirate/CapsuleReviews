@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.MainActivity">
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="@dimen/padding_16">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <include
+                layout="@layout/movie_showcase"
+                android:layout_width="@dimen/match_constraint"
+                android:layout_height="@dimen/showcase_height"
+                android:layout_marginBottom="@dimen/margin_32"
+                app:layout_constraintBottom_toTopOf="@id/popularTitle"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintVertical_bias="1.0"/>
+
+            <TextView
+                style="@style/SubTitleBoldTextStyle"
+                android:id="@+id/popularTitle"
+                android:layout_width="@dimen/match_constraint"
+                android:layout_height="wrap_content"
+                android:text="@string/popular_movies_title"
+                android:layout_marginBottom="@dimen/margin_32"
+                android:layout_marginStart="@dimen/margin_16"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/movieShowcase"
+                app:layout_constraintBottom_toTopOf="@id/rvPopular"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvPopular"
+                android:layout_width="@dimen/match_constraint"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:nestedScrollingEnabled="false"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/popularTitle"
+                app:layout_constraintBottom_toTopOf="@id/topRatedTitle"
+                tools:listitem="@layout/list_item"/>
+
+            <TextView
+                style="@style/SubTitleBoldTextStyle"
+                android:id="@+id/topRatedTitle"
+                android:layout_width="@dimen/match_constraint"
+                android:layout_height="wrap_content"
+                android:text="@string/top_rated_movies_title"
+                android:layout_marginTop="@dimen/margin_32"
+                android:layout_marginBottom="@dimen/margin_32"
+                android:layout_marginStart="@dimen/margin_16"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/rvPopular"
+                app:layout_constraintBottom_toTopOf="@id/rvTopRated"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvTopRated"
+                android:layout_width="@dimen/match_constraint"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:nestedScrollingEnabled="false"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/topRatedTitle"
+                app:layout_constraintBottom_toTopOf="@id/nowPlayingTitle"
+                tools:listitem="@layout/list_item"/>
+
+            <TextView
+                style="@style/SubTitleBoldTextStyle"
+                android:id="@+id/nowPlayingTitle"
+                android:layout_width="@dimen/match_constraint"
+                android:layout_height="wrap_content"
+                android:text="@string/now_playing_movies_title"
+                android:layout_marginTop="@dimen/margin_32"
+                android:layout_marginBottom="@dimen/margin_32"
+                android:layout_marginStart="@dimen/margin_16"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/rvTopRated"
+                app:layout_constraintBottom_toTopOf="@id/rvNowPlaying"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvNowPlaying"
+                android:layout_width="@dimen/match_constraint"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:nestedScrollingEnabled="false"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/nowPlayingTitle"
+                app:layout_constraintBottom_toTopOf="@id/upcomingTitle"
+                tools:listitem="@layout/list_item"/>
+
+            <TextView
+                style="@style/SubTitleBoldTextStyle"
+                android:id="@+id/upcomingTitle"
+                android:layout_width="@dimen/match_constraint"
+                android:layout_height="wrap_content"
+                android:text="@string/upcoming_movies_title"
+                android:layout_marginTop="@dimen/margin_32"
+                android:layout_marginBottom="@dimen/margin_32"
+                android:layout_marginStart="@dimen/margin_16"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/rvNowPlaying"
+                app:layout_constraintBottom_toTopOf="@id/rvUpcoming"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvUpcoming"
+                android:layout_width="@dimen/match_constraint"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:nestedScrollingEnabled="false"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/upcomingTitle"
+                app:layout_constraintBottom_toTopOf="@id/trendingTitle"
+                tools:listitem="@layout/list_item"/>
+
+            <TextView
+                style="@style/SubTitleBoldTextStyle"
+                android:id="@+id/trendingTitle"
+                android:layout_width="@dimen/match_constraint"
+                android:layout_height="wrap_content"
+                android:text="@string/trending_movies_title"
+                android:layout_marginTop="@dimen/margin_32"
+                android:layout_marginBottom="@dimen/margin_32"
+                android:layout_marginStart="@dimen/margin_16"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/rvUpcoming"
+                app:layout_constraintBottom_toTopOf="@id/rvTrending"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvTrending"
+                android:layout_width="@dimen/match_constraint"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:nestedScrollingEnabled="false"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/trendingTitle"
+                app:layout_constraintBottom_toBottomOf="parent"
+                tools:listitem="@layout/list_item"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+    <include
+        layout="@layout/loading_screen"
+        android:id="@+id/loadingScreen"
+        android:layout_width="@dimen/match_constraint"
+        android:layout_height="@dimen/match_constraint"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
