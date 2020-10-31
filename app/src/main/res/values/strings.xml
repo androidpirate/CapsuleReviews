@@ -78,8 +78,6 @@
     <!-- Favorites Fragment resources -->
     <string name="favorites_toolbar_title_content">Favorites</string>
     <string name="binge_status_title_content">Binge Status</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="cancel_button_content_description">Cancel movie genre selection.</string>
     <string name="release_date_title_content">Release Date</string>
     <string name="detail_link_title_content">Details</string>
@@ -87,4 +85,5 @@
     <string name="powered_by_content">powered by</string>
     <string name="tmbd_title_content">The Movie Database</string>
     <string name="tmdb_link_content">www.tmdb.org</string>
+    <string name="no_connection_content">No internet connection.</string>
 </resources>

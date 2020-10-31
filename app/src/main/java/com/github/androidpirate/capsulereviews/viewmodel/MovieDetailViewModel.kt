@@ -6,6 +6,7 @@ import com.github.androidpirate.capsulereviews.data.network.response.movie.Netwo
 import com.github.androidpirate.capsulereviews.data.network.response.movies.NetworkMoviesListItem
 import com.github.androidpirate.capsulereviews.data.repo.FavoritesRepository
 import com.github.androidpirate.capsulereviews.data.repo.MoviesRepository
+import com.github.androidpirate.capsulereviews.util.internal.NoConnectivityException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -16,19 +17,40 @@ class MovieDetailViewModel
     private val repo: MoviesRepository,
     private val favRepo: FavoritesRepository): ViewModel() {
 
-    private val movieDetails = MutableLiveData<NetworkMovie>()
-    private val movieVideoKey = MutableLiveData<String>()
-    private val similarMovies = MutableLiveData<List<NetworkMoviesListItem>>()
+    private val _movieDetails = MutableLiveData<NetworkMovie>()
+    val movieDetails: LiveData<NetworkMovie>
+    get() = _movieDetails
+
+    private val _similarMovies = MutableLiveData<List<NetworkMoviesListItem>>()
+    val similarMovies: LiveData<List<NetworkMoviesListItem>>
+    get() = _similarMovies
+
+    private val _movieVideoKey = MutableLiveData<String>()
+    val movieVideoKey: LiveData<String>
+    get() = _movieVideoKey
+
     private var imdbEndpoint = MutableLiveData<String>()
     private var isFavorite = MutableLiveData<Boolean>()
     private var flagDecoration = false
 
+    private val _isOnline = MutableLiveData<Boolean>(true)
+    val isOnline: LiveData<Boolean>
+    get() = _isOnline
+
+    private fun setOffline() {
+        _isOnline.postValue(false)
+    }
+
     fun getMovieDetails(movieId: Int): LiveData<NetworkMovie> {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
-                val networkMovie = repo.fetchMovieDetails(movieId)
-                movieDetails.postValue(networkMovie)
-                setIsFavorite(networkMovie.id)
+                try {
+                    val movieDetails = repo.fetchMovieDetails(movieId)
+                    _movieDetails.postValue(movieDetails)
+                    setIsFavorite(movieDetails.id)
+                } catch (e: NoConnectivityException) {
+                    setOffline()
+                }
             }
         }
         return movieDetails
@@ -37,7 +59,11 @@ class MovieDetailViewModel
     fun getSimilarMovies(movieId: Int): LiveData<List<NetworkMoviesListItem>> {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
-                similarMovies.postValue(repo.fetchSimilarMovies(movieId))
+                try {
+                    _similarMovies.postValue(repo.fetchSimilarMovies(movieId))
+                } catch (e: NoConnectivityException) {
+                    setOffline()
+                }
             }
         }
         return similarMovies
@@ -46,7 +72,12 @@ class MovieDetailViewModel
     fun getMovieKey(movieId: Int): LiveData<String> {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
-                movieVideoKey.postValue(repo.fetchVideoKey(movieId))
+                try {
+                    val movieVideos = repo.fetchMovieVideos(movieId)
+                    _movieVideoKey.postValue(repo.getMovieVideoKey(movieVideos))
+                } catch (e: NoConnectivityException) {
+                    setOffline()
+                }
             }
         }
         return movieVideoKey

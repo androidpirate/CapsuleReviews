@@ -10,6 +10,7 @@ import com.github.androidpirate.capsulereviews.BuildConfig
 import com.github.androidpirate.capsulereviews.R
 import com.github.androidpirate.capsulereviews.data.db.entity.DBMovie
 import com.github.androidpirate.capsulereviews.data.db.entity.DBTvShow
+import com.github.androidpirate.capsulereviews.data.network.response.movies.NetworkMoviesListItem
 import com.github.androidpirate.capsulereviews.util.internal.*
 import com.github.androidpirate.capsulereviews.util.internal.FragmentType.*
 import dagger.hilt.android.AndroidEntryPoint
@@ -72,7 +73,7 @@ class ListItemAdapter<T> (
                 clickListener.onItemClick(item, lastItem, genericSort, network, genre)
             }
             when(fragment) {
-                MOVIE_LIST -> if(!lastItem) { setItemThumbnail((item as DBMovie).posterPath) }
+                MOVIE_LIST -> if(!lastItem) { setItemThumbnail((item as NetworkMoviesListItem).posterPath) }
                 TV_LIST -> if(!lastItem) { setItemThumbnail((item as DBTvShow).posterPath) }
                 else -> throw IllegalArgumentException("${Constants.ADAPTER_UNKNOWN_FRAGMENT_MESSAGE}: $fragment")
             }

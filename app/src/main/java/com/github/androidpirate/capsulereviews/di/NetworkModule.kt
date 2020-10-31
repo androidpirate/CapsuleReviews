@@ -1,11 +1,15 @@
 package com.github.androidpirate.capsulereviews.di
 
+import android.content.Context
 import com.github.androidpirate.capsulereviews.BuildConfig
+import com.github.androidpirate.capsulereviews.data.network.ConnectivityInterceptor
+import com.github.androidpirate.capsulereviews.data.network.ConnectivityInterceptorImpl
 import com.github.androidpirate.capsulereviews.data.network.api.MovieDbService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ApplicationComponent
+import dagger.hilt.android.qualifiers.ApplicationContext
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
@@ -34,10 +38,18 @@ object NetworkModule {
     }
 
     @Provides
+    fun provideConnectivityInterceptor(@ApplicationContext appContext: Context): ConnectivityInterceptor {
+        return ConnectivityInterceptorImpl(appContext)
+    }
+
+    @Provides
     @Singleton
-    fun provideOkHttp(requestInterceptor: Interceptor): OkHttpClient {
+    fun provideOkHttp(
+        requestInterceptor: Interceptor,
+        connectivityInterceptor: ConnectivityInterceptor): OkHttpClient {
         val okHttpClient = OkHttpClient.Builder()
             .addInterceptor(requestInterceptor)
+            .addInterceptor(connectivityInterceptor)
         return okHttpClient.build()
     }
 

@@ -30,8 +30,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import jp.wasabeef.glide.transformations.BlurTransformation
 import kotlinx.android.synthetic.main.detail_action_bar.*
 import kotlinx.android.synthetic.main.detail_similar.*
-import kotlinx.android.synthetic.main.fragment_movie_detail.container
-import kotlinx.android.synthetic.main.fragment_movie_detail.loadingScreen
+import kotlinx.android.synthetic.main.fragment_movie_detail.*
 import kotlinx.android.synthetic.main.movie_header.*
 import kotlinx.android.synthetic.main.movie_info.*
 import kotlinx.android.synthetic.main.movie_summary.*
@@ -72,36 +71,72 @@ class MovieDetailFragment : Fragment(), SimilarContentClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         displayLoadingScreen()
-        viewModel.getMovieDetails(args.movieId).observe(viewLifecycleOwner, Observer {
-            networkMovie = it
-            setMoviePoster()
-            setMovieDetails()
-            setFavoriteButtonState()
-            setIMDBLink()
-        })
-        viewModel.getIsFavorite().observe(viewLifecycleOwner, Observer {
-            if(it != null) {
-                isFavorite = it
-                setFavoriteButtonState()
+        viewModel.isOnline.observe(viewLifecycleOwner, Observer { isOnLine ->
+            if(isOnLine) {
+                viewModel.getMovieDetails(args.movieId).observe(viewLifecycleOwner, Observer {
+                    networkMovie = it
+                    setMoviePoster()
+                    setMovieDetails()
+                    setFavoriteButtonState()
+                    setIMDBLink()
+                })
+                viewModel.getIsFavorite().observe(viewLifecycleOwner, Observer {
+                    if(it != null) {
+                        isFavorite = it
+                        setFavoriteButtonState()
+                    }
+                })
+                viewModel.getMovieKey(args.movieId).observe(viewLifecycleOwner, Observer {
+                    videoKey = it
+                    setTrailerLink()
+                })
+                viewModel.getSimilarMovies(args.movieId).observe(viewLifecycleOwner, Observer {
+                    similarMovies = it
+                    setSimilarMovies()
+                })
+                viewModel.getImdbEndpoint().observe(viewLifecycleOwner, Observer {
+                    if(it.isNotEmpty() || it.isNotBlank()) {
+                        imdbEndpoint = it
+                    }
+                })
+                setupUpNavigation()
+                setFavoriteListener()
+                setShareListener()
+                displayContainerScreen()
+            } else {
+                displayNoConnectionScreen()
             }
         })
-        viewModel.getMovieKey(args.movieId).observe(viewLifecycleOwner, Observer {
-            videoKey = it
-            setTrailerLink()
-        })
-        viewModel.getSimilarMovies(args.movieId).observe(viewLifecycleOwner, Observer {
-            similarMovies = it
-            setSimilarMovies()
-        })
-        viewModel.getImdbEndpoint().observe(viewLifecycleOwner, Observer {
-            if(it.isNotEmpty() || it.isNotBlank()) {
-                imdbEndpoint = it
-            }
-        })
-        setupUpNavigation()
-        setFavoriteListener()
-        setShareListener()
-        displayContainerScreen()
+//        viewModel.getMovieDetails(args.movieId).observe(viewLifecycleOwner, Observer {
+//            networkMovie = it
+//            setMoviePoster()
+//            setMovieDetails()
+//            setFavoriteButtonState()
+//            setIMDBLink()
+//        })
+//        viewModel.getIsFavorite().observe(viewLifecycleOwner, Observer {
+//            if(it != null) {
+//                isFavorite = it
+//                setFavoriteButtonState()
+//            }
+//        })
+//        viewModel.getMovieKey(args.movieId).observe(viewLifecycleOwner, Observer {
+//            videoKey = it
+//            setTrailerLink()
+//        })
+//        viewModel.getSimilarMovies(args.movieId).observe(viewLifecycleOwner, Observer {
+//            similarMovies = it
+//            setSimilarMovies()
+//        })
+//        viewModel.getImdbEndpoint().observe(viewLifecycleOwner, Observer {
+//            if(it.isNotEmpty() || it.isNotBlank()) {
+//                imdbEndpoint = it
+//            }
+//        })
+//        setupUpNavigation()
+//        setFavoriteListener()
+//        setShareListener()
+//        displayContainerScreen()
     }
 
     override fun onResume() {
@@ -110,12 +145,20 @@ class MovieDetailFragment : Fragment(), SimilarContentClickListener {
     }
 
     private fun displayLoadingScreen() {
-        loadingScreen.visibility = View.VISIBLE
+        noConnectionScreen.visibility = View.GONE
         container.visibility = View.GONE
+        loadingScreen.visibility = View.VISIBLE
+    }
+
+    private fun displayNoConnectionScreen() {
+        loadingScreen.visibility = View.GONE
+        container.visibility = View.GONE
+        noConnectionScreen.visibility = View.VISIBLE
     }
 
     private fun displayContainerScreen() {
         loadingScreen.visibility = View.GONE
+        noConnectionScreen.visibility = View.GONE
         container.visibility = View.VISIBLE
     }
 

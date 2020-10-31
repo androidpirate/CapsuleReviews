@@ -9,6 +9,11 @@ class Constants {
         const val TV_SHOWS_LIST_FRAG_TAG = "TvShowsListFragment"
         const val PAGED_MOVIES_LIST_FRAG_TAG = "PagedMoviesListFragment"
         const val PAGED_TV_SHOWS_LIST_FRAG_TAG = "PagedTvShowsListFragment"
+        // Video constants
+        const val VIDEO_SITE = "YouTube"
+        const val VIDEO_TYPE = "Trailer"
+        // Movie Detail constants
+        const val DEFAULT_MOVIE_ID = -1
         // Adapter constants
         const val ADAPTER_UNKNOWN_FRAGMENT_MESSAGE = "Unknown fragment type"
         const val ADAPTER_UNKNOWN_VIEW_TYPE_MESSAGE = "Unknown view type"

@@ -17,6 +17,8 @@ import com.github.androidpirate.capsulereviews.BuildConfig
 import com.github.androidpirate.capsulereviews.R
 import com.github.androidpirate.capsulereviews.data.db.entity.DBMovie
 import com.github.androidpirate.capsulereviews.data.db.entity.DBMovieShowcase
+import com.github.androidpirate.capsulereviews.data.network.response.movie.NetworkMovie
+import com.github.androidpirate.capsulereviews.data.network.response.movies.NetworkMoviesListItem
 import com.github.androidpirate.capsulereviews.ui.adapter.list.ListItemAdapter
 import com.github.androidpirate.capsulereviews.ui.adapter.list.ItemClickListener
 import com.github.androidpirate.capsulereviews.ui.dialog.MovieGenresDialogFragment
@@ -39,11 +41,12 @@ class MoviesListFragment :
     MovieGenresDialogFragment.MovieGenresDialogListener {
 
     private val viewModel: MoviesListViewModel by viewModels()
-    private lateinit var popularNetworkMoviesAdapter: ListItemAdapter<DBMovie>
-    private lateinit var topRatedNetworkMoviesAdapter: ListItemAdapter<DBMovie>
-    private lateinit var nowPlayingNetworkMoviesAdapter: ListItemAdapter<DBMovie>
-    private lateinit var upcomingNetworkMoviesAdapter: ListItemAdapter<DBMovie>
-    private lateinit var trendingNetworkMoviesAdapter: ListItemAdapter<DBMovie>
+    private lateinit var popularNetworkMoviesAdapter: ListItemAdapter<NetworkMoviesListItem>
+    private lateinit var topRatedNetworkMoviesAdapter: ListItemAdapter<NetworkMoviesListItem>
+    private lateinit var nowPlayingNetworkMoviesAdapter: ListItemAdapter<NetworkMoviesListItem>
+    private lateinit var upcomingNetworkMoviesAdapter: ListItemAdapter<NetworkMoviesListItem>
+    private lateinit var trendingNetworkMoviesAdapter: ListItemAdapter<NetworkMoviesListItem>
+    private var showcaseVideoKey = Constants.EMPTY_VIDEO_KEY
     private var isShowcaseFavorite = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -62,34 +65,72 @@ class MoviesListFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         displayLoadingScreen()
-        setupViews()
-        viewModel.showcaseMovie.observe(viewLifecycleOwner, Observer {
-            if(it != null) {
-                setShowcaseMovie(it)
-                viewModel.setIsShowcaseFavorite(it.movieId)
+        viewModel.isOnline.observe(viewLifecycleOwner, Observer { isOnLine ->
+            if(isOnLine) {
+                setupViews()
+                viewModel.popularMovies.observe(viewLifecycleOwner, Observer(popularNetworkMoviesAdapter::submitList))
+                viewModel.topRatedMovies.observe(viewLifecycleOwner, Observer(topRatedNetworkMoviesAdapter::submitList))
+                viewModel.nowPlayingMovies.observe(viewLifecycleOwner, Observer(nowPlayingNetworkMoviesAdapter::submitList))
+                viewModel.upcomingMovies.observe(viewLifecycleOwner, Observer(upcomingNetworkMoviesAdapter::submitList))
+                viewModel.trendingMovies.observe(viewLifecycleOwner, Observer(trendingNetworkMoviesAdapter::submitList))
+                viewModel.showcaseMovie.observe(viewLifecycleOwner, Observer { showcaseMovie ->
+                    if(showcaseMovie != null) {
+                        setShowcaseMovie(showcaseMovie)
+                        viewModel.setIsShowcaseFavorite(showcaseMovie.id)
+                    }
+                })
+                viewModel.showcaseVideoKey.observe(viewLifecycleOwner, Observer {
+                    if(it != null) {
+                        showcaseVideoKey = it
+                    }
+                })
+                viewModel.getIsShowcaseFavorite().observe(viewLifecycleOwner, Observer { isShowcaseFavorite ->
+                    if(isShowcaseFavorite != null) {
+                        this.isShowcaseFavorite = isShowcaseFavorite
+                        setFavoriteButtonState()
+                    }
+                })
+                displayContainerScreen()
+            } else {
+                displayNoConnectionScreen()
             }
         })
-        viewModel.getIsShowcaseFavorite().observe(viewLifecycleOwner, Observer {
-            if(it != null) {
-                isShowcaseFavorite = it
-                setFavoriteButtonState()
-            }
-        })
-        viewModel.popularMovies.observe(viewLifecycleOwner, Observer(popularNetworkMoviesAdapter::submitList))
-        viewModel.topRatedMovies.observe(viewLifecycleOwner, Observer(topRatedNetworkMoviesAdapter::submitList))
-        viewModel.nowPlayingMovies.observe(viewLifecycleOwner, Observer(nowPlayingNetworkMoviesAdapter::submitList))
-        viewModel.upcomingMovies.observe(viewLifecycleOwner, Observer(upcomingNetworkMoviesAdapter::submitList))
-        viewModel.trendingMovies.observe(viewLifecycleOwner, Observer(trendingNetworkMoviesAdapter::submitList))
-        displayContainerScreen()
+
+//        viewModel.showcaseMovie.observe(viewLifecycleOwner, Observer {
+//            if(it != null) {
+//                setShowcaseMovie(it)
+//                viewModel.setIsShowcaseFavorite(it.movieId)
+//            }
+//        })
+//        viewModel.getIsShowcaseFavorite().observe(viewLifecycleOwner, Observer {
+//            if(it != null) {
+//                isShowcaseFavorite = it
+//                setFavoriteButtonState()
+//            }
+//        })
+//        viewModel.popularMovies.observe(viewLifecycleOwner, Observer(popularNetworkMoviesAdapter::submitList))
+//        viewModel.topRatedMovies.observe(viewLifecycleOwner, Observer(topRatedNetworkMoviesAdapter::submitList))
+//        viewModel.nowPlayingMovies.observe(viewLifecycleOwner, Observer(nowPlayingNetworkMoviesAdapter::submitList))
+//        viewModel.upcomingMovies.observe(viewLifecycleOwner, Observer(upcomingNetworkMoviesAdapter::submitList))
+//        viewModel.trendingMovies.observe(viewLifecycleOwner, Observer(trendingNetworkMoviesAdapter::submitList))
+
     }
 
     private fun displayLoadingScreen() {
-        loadingScreen.visibility = View.VISIBLE
         container.visibility = View.GONE
+        noConnectionScreen.visibility = View.GONE
+        loadingScreen.visibility = View.VISIBLE
+    }
+
+    private fun displayNoConnectionScreen() {
+        container.visibility = View.GONE
+        loadingScreen.visibility = View.GONE
+        noConnectionScreen.visibility = View.VISIBLE
     }
 
     private fun displayContainerScreen() {
         loadingScreen.visibility = View.GONE
+        noConnectionScreen.visibility = View.GONE
         container.visibility = View.VISIBLE
     }
 
@@ -146,7 +187,7 @@ class MoviesListFragment :
         }
     }
 
-    private fun setShowcaseMovie(showCaseMovie: DBMovieShowcase) {
+    private fun setShowcaseMovie(showCaseMovie: NetworkMovie) {
         setShowCaseMoviePoster(showCaseMovie.posterPath)
         setShowcaseMovieTitle(showCaseMovie.title)
         setShowcaseMovieClickListeners(showCaseMovie)
@@ -166,13 +207,13 @@ class MoviesListFragment :
         scTitle.text = showcaseMovieTitle
     }
 
-    private fun setShowcaseMovieClickListeners(showCaseMovie: DBMovieShowcase) {
+    private fun setShowcaseMovieClickListeners(showCaseMovie: NetworkMovie) {
         setFavoriteListener(showCaseMovie)
         setPlayTrailerListener(showCaseMovie)
         setShowcaseDetailListener(showCaseMovie)
     }
 
-    private fun setFavoriteListener(showCaseMovie: DBMovieShowcase) {
+    private fun setFavoriteListener(showCaseMovie: NetworkMovie) {
         scAddFavorite.setOnClickListener {
             if(!isShowcaseFavorite) {
                 viewModel.insertShowcaseMovieToFavorites(showCaseMovie)
@@ -184,8 +225,8 @@ class MoviesListFragment :
         }
     }
 
-    private fun setPlayTrailerListener(showCaseMovie: DBMovieShowcase) {
-        val trailerEndpoint = BuildConfig.YOUTUBE_BASE_URL + showCaseMovie.videoKey
+    private fun setPlayTrailerListener(showCaseMovie: NetworkMovie) {
+        val trailerEndpoint = BuildConfig.YOUTUBE_BASE_URL + showcaseVideoKey
         scPlay.setOnClickListener {
             if(trailerEndpoint != BuildConfig.YOUTUBE_BASE_URL) {
                 val uri = Uri.parse(trailerEndpoint)
@@ -201,15 +242,11 @@ class MoviesListFragment :
         }
     }
 
-    private fun setShowcaseDetailListener(showCaseMovie: DBMovieShowcase) {
+    private fun setShowcaseDetailListener(showCaseMovie: NetworkMovie) {
         scInfo.setOnClickListener {
-            onShowcaseMovieClick(showCaseMovie)
+            val action = MoviesListFragmentDirections.actionMoviesListToDetail(showCaseMovie.id)
+            findNavController().navigate(action)
         }
-    }
-
-    private fun onShowcaseMovieClick(showCaseMovie: DBMovieShowcase) {
-        val action = MoviesListFragmentDirections.actionMoviesListToDetail(showCaseMovie.movieId)
-        findNavController().navigate(action)
     }
 
     private fun setFavoriteButtonState() {
@@ -266,7 +303,7 @@ class MoviesListFragment :
                 }
             } else {
                 val action = MoviesListFragmentDirections
-                    .actionMoviesListToDetail((item as DBMovie).id, MOVIE_LIST)
+                    .actionMoviesListToDetail((item as NetworkMoviesListItem).id, MOVIE_LIST)
                 navigateToDetails(action)
             }
     }

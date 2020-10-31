@@ -20,8 +20,8 @@ object RepositoryModule {
 
     @Provides
     @Singleton
-    fun provideMoviesRepository(service: MovieDbService, dao: MovieListDao) =
-        MoviesRepository(service, dao)
+    fun provideMoviesRepository(service: MovieDbService) =
+        MoviesRepository(service)
 
     @Provides
     @Singleton

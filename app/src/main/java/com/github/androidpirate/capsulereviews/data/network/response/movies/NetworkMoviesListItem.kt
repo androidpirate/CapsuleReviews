@@ -22,56 +22,9 @@ class NetworkMoviesListItem(
     fun toPopular() = DBMovie(
         this.id,
         this.title,
-        this.posterPath ?: EMPTY_POSTER_PATH,
+        this.posterPath,
         this.video,
         this.voteAverage,
         popular = true
     )
-
-    fun toTopRated() = DBMovie(
-        this.id,
-        this.title,
-        this.posterPath ?: EMPTY_POSTER_PATH,
-        this.video,
-        this.voteAverage,
-        topRated = true
-    )
-
-    fun toNowPlaying() = DBMovie(
-        this.id,
-        this.title,
-        this.posterPath ?: EMPTY_POSTER_PATH,
-        this.video,
-        this.voteAverage,
-        nowPlaying = true
-    )
-
-    fun toUpcoming() = DBMovie(
-        this.id,
-        this.title,
-        this.posterPath ?: EMPTY_POSTER_PATH,
-        this.video,
-        this.voteAverage,
-        upcoming = true
-    )
-
-    fun toTrending() = DBMovie(
-        this.id,
-        this.title,
-        this.posterPath ?: EMPTY_POSTER_PATH,
-        this.video,
-        this.voteAverage,
-        trending = true
-    )
-
-    fun toShowcase() = DBMovieShowcase(
-        this.id,
-        this.title,
-        this.posterPath ?: EMPTY_POSTER_PATH,
-        this.video
-    )
-
-    companion object {
-        const val EMPTY_POSTER_PATH = ""
-    }
 }

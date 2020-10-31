@@ -149,28 +149,28 @@ interface MovieDbService {
         @Query("query") query: String): NetworkMultiSearchResponse
 
     companion object {
-        operator fun invoke(): MovieDbService {
-            val requestInterceptor = Interceptor { chain ->
-                val updatedUrl = chain.request()
-                    .url()
-                    .newBuilder()
-                    .addQueryParameter("api_key", BuildConfig.MOVIE_DB_API_TOKEN)
-                    .build()
-                val updatedRequest = chain.request()
-                    .newBuilder()
-                    .url(updatedUrl)
-                    .build()
-                return@Interceptor chain.proceed(updatedRequest)
-            }
-            val okHttpClient = OkHttpClient.Builder()
-                .addInterceptor(requestInterceptor)
-                .build()
-            return Retrofit.Builder()
-                .client(okHttpClient)
-                .baseUrl(BuildConfig.MOVIE_DB_BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build()
-                .create(MovieDbService::class.java)
-        }
+//        operator fun invoke(): MovieDbService {
+//            val requestInterceptor = Interceptor { chain ->
+//                val updatedUrl = chain.request()
+//                    .url()
+//                    .newBuilder()
+//                    .addQueryParameter("api_key", BuildConfig.MOVIE_DB_API_TOKEN)
+//                    .build()
+//                val updatedRequest = chain.request()
+//                    .newBuilder()
+//                    .url(updatedUrl)
+//                    .build()
+//                return@Interceptor chain.proceed(updatedRequest)
+//            }
+//            val okHttpClient = OkHttpClient.Builder()
+//                .addInterceptor(requestInterceptor)
+//                .build()
+//            return Retrofit.Builder()
+//                .client(okHttpClient)
+//                .baseUrl(BuildConfig.MOVIE_DB_BASE_URL)
+//                .addConverterFactory(GsonConverterFactory.create())
+//                .build()
+//                .create(MovieDbService::class.java)
+//        }
     }
 }
