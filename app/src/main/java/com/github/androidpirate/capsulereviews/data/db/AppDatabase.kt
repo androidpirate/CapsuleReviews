@@ -7,18 +7,11 @@ import androidx.room.RoomDatabase
 import com.github.androidpirate.capsulereviews.data.db.entity.*
 
 @Database(
-    entities = [
-        DBMovie::class,
-        DBMovieShowcase:: class,
-        DBTvShow:: class,
-        DBTvShowShowcase:: class,
-        DBFavorite:: class],
+    entities = [DBFavorite:: class],
     version = 1,
     exportSchema = false)
 abstract class AppDatabase: RoomDatabase() {
 
-    abstract fun movieListDao(): MovieListDao
-    abstract fun tvShowListDao(): TvShowListDao
     abstract fun favoritesDao(): FavoritesDao
 
     companion object {
