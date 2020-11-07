@@ -34,6 +34,7 @@ import kotlinx.android.synthetic.main.fragment_movie_detail.*
 import kotlinx.android.synthetic.main.movie_header.*
 import kotlinx.android.synthetic.main.movie_info.*
 import kotlinx.android.synthetic.main.movie_summary.*
+import kotlinx.android.synthetic.main.no_connection_screen.*
 import java.lang.IllegalArgumentException
 
 @AndroidEntryPoint
@@ -107,36 +108,6 @@ class MovieDetailFragment : Fragment(), SimilarContentClickListener {
                 displayNoConnectionScreen()
             }
         })
-//        viewModel.getMovieDetails(args.movieId).observe(viewLifecycleOwner, Observer {
-//            networkMovie = it
-//            setMoviePoster()
-//            setMovieDetails()
-//            setFavoriteButtonState()
-//            setIMDBLink()
-//        })
-//        viewModel.getIsFavorite().observe(viewLifecycleOwner, Observer {
-//            if(it != null) {
-//                isFavorite = it
-//                setFavoriteButtonState()
-//            }
-//        })
-//        viewModel.getMovieKey(args.movieId).observe(viewLifecycleOwner, Observer {
-//            videoKey = it
-//            setTrailerLink()
-//        })
-//        viewModel.getSimilarMovies(args.movieId).observe(viewLifecycleOwner, Observer {
-//            similarMovies = it
-//            setSimilarMovies()
-//        })
-//        viewModel.getImdbEndpoint().observe(viewLifecycleOwner, Observer {
-//            if(it.isNotEmpty() || it.isNotBlank()) {
-//                imdbEndpoint = it
-//            }
-//        })
-//        setupUpNavigation()
-//        setFavoriteListener()
-//        setShareListener()
-//        displayContainerScreen()
     }
 
     override fun onResume() {
@@ -154,6 +125,7 @@ class MovieDetailFragment : Fragment(), SimilarContentClickListener {
         loadingScreen.visibility = View.GONE
         container.visibility = View.GONE
         noConnectionScreen.visibility = View.VISIBLE
+        setRefreshListener()
     }
 
     private fun displayContainerScreen() {
@@ -252,6 +224,13 @@ class MovieDetailFragment : Fragment(), SimilarContentClickListener {
 
             val shareIntent = Intent.createChooser(sendIntent, null)
             startActivity(shareIntent)
+        }
+    }
+
+    private fun setRefreshListener() {
+        refresh.setOnClickListener {
+            val action = MovieDetailFragmentDirections.actionMovieDetailPopToList()
+            findNavController().navigate(action)
         }
     }
 

@@ -51,6 +51,9 @@ class SearchFragment : Fragment(), PagedItemClickListener {
         btUp.setOnClickListener {
             findNavController().navigate(R.id.search_to_movie_list)
         }
+        swipeRefresh.setOnRefreshListener {
+            refreshData()
+        }
         setupViews()
         etSearch.setOnEditorActionListener { textView, actionId, keyEvent ->
             return@setOnEditorActionListener when(actionId) {
@@ -90,6 +93,7 @@ class SearchFragment : Fragment(), PagedItemClickListener {
     private fun displaySearchResults() {
         viewModel.searchResults.observe(viewLifecycleOwner, Observer {
             adapter.submitList(it)
+            swipeRefresh.isRefreshing = false
         })
     }
 
@@ -106,6 +110,19 @@ class SearchFragment : Fragment(), PagedItemClickListener {
     }
 
     private fun setupViews() {
+        rvSearch.adapter = adapter
+    }
+
+    private fun refreshData() {
+        resetRecyclerView()
+        if(etSearch.text.isNotBlank() || etSearch.text.isNotEmpty()) {
+            viewModel.refreshData(etSearch.text.toString())
+        }
+    }
+
+    private fun resetRecyclerView() {
+        rvSearch.adapter = null
+        adapter.submitList(null)
         rvSearch.adapter = adapter
     }
 
@@ -156,7 +173,7 @@ class SearchFragment : Fragment(), PagedItemClickListener {
         findNavController().navigate(action)
     }
 
-    override fun <T> onPagedItemClick(item: T) {
+    override fun <T : Any> onPagedItemClick(item: T) {
         viewModel.setFlagDecorationOff()
         val searchItem = item as NetworkMultiSearchListItem
         when(searchItem.mediaType) {

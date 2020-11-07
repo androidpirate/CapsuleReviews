@@ -15,18 +15,25 @@ import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.github.androidpirate.capsulereviews.BuildConfig
 import com.github.androidpirate.capsulereviews.R
-import com.github.androidpirate.capsulereviews.data.db.entity.DBTvShow
-import com.github.androidpirate.capsulereviews.data.db.entity.DBTvShowShowcase
+import com.github.androidpirate.capsulereviews.data.network.response.tvShow.NetworkTvShow
+import com.github.androidpirate.capsulereviews.data.network.response.tvShows.NetworkTvShowsListItem
 import com.github.androidpirate.capsulereviews.ui.adapter.list.ListItemAdapter
 import com.github.androidpirate.capsulereviews.ui.adapter.list.ItemClickListener
 import com.github.androidpirate.capsulereviews.ui.dialog.TvNetworksDialogFragment
 import com.github.androidpirate.capsulereviews.ui.dialog.TvShowGenresDialogFragment
 import com.github.androidpirate.capsulereviews.util.internal.*
-import com.github.androidpirate.capsulereviews.util.internal.FragmentType.*
-import com.github.androidpirate.capsulereviews.util.internal.GenericSortType.*
+import com.github.androidpirate.capsulereviews.util.internal.FragmentType
+import com.github.androidpirate.capsulereviews.util.internal.GenericSortType
 import com.github.androidpirate.capsulereviews.viewmodel.TvShowsListViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_tv_shows_list.*
+import kotlinx.android.synthetic.main.fragment_tv_shows_list.container
+import kotlinx.android.synthetic.main.fragment_tv_shows_list.loadingScreen
+import kotlinx.android.synthetic.main.fragment_tv_shows_list.noConnectionScreen
+import kotlinx.android.synthetic.main.fragment_tv_shows_list.rvPopular
+import kotlinx.android.synthetic.main.fragment_tv_shows_list.rvTopRated
+import kotlinx.android.synthetic.main.fragment_tv_shows_list.rvTrending
+import kotlinx.android.synthetic.main.no_connection_screen.*
 import kotlinx.android.synthetic.main.tv_showcase.scAddFavorite
 import kotlinx.android.synthetic.main.tv_showcase.scInfo
 import kotlinx.android.synthetic.main.tv_showcase.scPlay
@@ -42,12 +49,13 @@ class TvShowsListFragment :
     TvNetworksDialogFragment.NetworksDialogListener {
 
     private val viewModel: TvShowsListViewModel by viewModels()
-    private lateinit var popularShowsAdapter: ListItemAdapter<DBTvShow>
-    private lateinit var topRatedShowsAdapter: ListItemAdapter<DBTvShow>
-    private lateinit var trendingShowsAdapter: ListItemAdapter<DBTvShow>
-    private lateinit var popularNetflixAdapter: ListItemAdapter<DBTvShow>
-    private lateinit var popularHuluAdapter: ListItemAdapter<DBTvShow>
-    private lateinit var popularDisneyPlusAdapter: ListItemAdapter<DBTvShow>
+    private lateinit var popularShowsAdapter: ListItemAdapter<NetworkTvShowsListItem>
+    private lateinit var topRatedShowsAdapter: ListItemAdapter<NetworkTvShowsListItem>
+    private lateinit var trendingShowsAdapter: ListItemAdapter<NetworkTvShowsListItem>
+    private lateinit var popularNetflixAdapter: ListItemAdapter<NetworkTvShowsListItem>
+    private lateinit var popularHuluAdapter: ListItemAdapter<NetworkTvShowsListItem>
+    private lateinit var popularDisneyPlusAdapter: ListItemAdapter<NetworkTvShowsListItem>
+    private var showcaseVideoKey = Constants.EMPTY_VIDEO_KEY
     private var isShowcaseFavorite = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -66,77 +74,98 @@ class TvShowsListFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         displayLoadingScreen()
-        viewModel.popularTvShows.observe(viewLifecycleOwner, Observer(popularShowsAdapter::submitList))
-        viewModel.topRatedTvShows.observe(viewLifecycleOwner, Observer(topRatedShowsAdapter::submitList))
-        viewModel.trendingTvShows.observe(viewLifecycleOwner, Observer(trendingShowsAdapter::submitList))
-        viewModel.popularOnNetflix.observe(viewLifecycleOwner, Observer(popularNetflixAdapter::submitList))
-        viewModel.popularOnHulu.observe(viewLifecycleOwner, Observer(popularHuluAdapter::submitList))
-        viewModel.popularOnDisneyPlus.observe(viewLifecycleOwner, Observer(popularDisneyPlusAdapter::submitList))
-        setupViews()
-        viewModel.showcaseTvShow.observe(viewLifecycleOwner, Observer {
-            if(it != null) {
-                setShowCaseTvShow(it)
-                viewModel.setIsShowcaseFavorite(it.tvShowId)
-            }
-        })
-        viewModel.getIsShowcaseFavorite().observe(viewLifecycleOwner, Observer {
-            if(it != null) {
-                isShowcaseFavorite = it
-                setFavoriteButtonState()
+        viewModel.isOnline.observe(viewLifecycleOwner, Observer { isOnline ->
+            if(isOnline) {
+                setupViews()
+                viewModel.popularTvShows.observe(viewLifecycleOwner, Observer(popularShowsAdapter::submitList))
+                viewModel.topRatedTvShows.observe(viewLifecycleOwner, Observer(topRatedShowsAdapter::submitList))
+                viewModel.trendingTvShows.observe(viewLifecycleOwner, Observer(trendingShowsAdapter::submitList))
+                viewModel.popularShowsOnNetflix.observe(viewLifecycleOwner, Observer (popularNetflixAdapter::submitList))
+                viewModel.popularShowsOnHulu.observe(viewLifecycleOwner, Observer(popularHuluAdapter::submitList))
+                viewModel.popularShowsOnDisneyPlus.observe(viewLifecycleOwner, Observer(popularDisneyPlusAdapter::submitList))
+                viewModel.showcaseTvShow.observe(viewLifecycleOwner, Observer { showcaseTvShow ->
+                    if(showcaseTvShow != null) {
+                        setShowCaseTvShow(showcaseTvShow)
+                        viewModel.setIsShowcaseFavorite(showcaseTvShow.id)
+                    }
+                })
+                viewModel.showcaseVideoKey.observe(viewLifecycleOwner, Observer {
+                    if(it != null) {
+                        showcaseVideoKey = it
+                    }
+                })
+                viewModel.getIsShowcaseFavorite().observe(viewLifecycleOwner, Observer {
+                    if(it != null) {
+                        this.isShowcaseFavorite = it
+                        setFavoriteButtonState()
+                    }
+                })
+                displayContainerScreen()
+            } else {
+                displayNoConnectionScreen()
             }
         })
     }
 
     private fun displayLoadingScreen() {
         container.visibility = View.GONE
+        noConnectionScreen.visibility = View.GONE
         loadingScreen.visibility = View.VISIBLE
+    }
+
+    private fun displayNoConnectionScreen() {
+        container.visibility = View.GONE
+        loadingScreen.visibility = View.GONE
+        noConnectionScreen.visibility = View.VISIBLE
+        setRefreshListener()
     }
 
     private fun displayContainerScreen() {
         loadingScreen.visibility = View.GONE
+        noConnectionScreen.visibility = View.GONE
         container.visibility = View.VISIBLE
     }
 
     private fun setupAdapters() {
         popularShowsAdapter = ListItemAdapter(
-            fragment = TV_LIST,
+            fragment = FragmentType.TV_LIST,
             clickListener = this,
-            genericSort = POPULAR,
+            genericSort = GenericSortType.POPULAR,
             network = NetworkType.ALL,
             genre = GenreType.ALL
         )
         topRatedShowsAdapter = ListItemAdapter(
-            fragment = TV_LIST,
+            fragment = FragmentType.TV_LIST,
             clickListener = this,
-            genericSort = TOP_RATED,
+            genericSort = GenericSortType.TOP_RATED,
             network = NetworkType.ALL,
             genre = GenreType.ALL
         )
         trendingShowsAdapter = ListItemAdapter(
-            fragment = TV_LIST,
+            fragment = FragmentType.TV_LIST,
             clickListener = this,
-            genericSort = TRENDING,
+            genericSort = GenericSortType.TRENDING,
             network = NetworkType.ALL,
             genre = GenreType.ALL
         )
         popularNetflixAdapter = ListItemAdapter(
-            fragment = TV_LIST,
+            fragment = FragmentType.TV_LIST,
             clickListener = this,
-            genericSort = POPULAR,
+            genericSort = GenericSortType.POPULAR,
             network = NetworkType.NETFLIX,
             genre = GenreType.ALL
         )
         popularHuluAdapter = ListItemAdapter(
-            fragment = TV_LIST,
+            fragment = FragmentType.TV_LIST,
             clickListener = this,
-            genericSort = POPULAR,
+            genericSort = GenericSortType.POPULAR,
             network = NetworkType.HULU,
             genre = GenreType.ALL
         )
         popularDisneyPlusAdapter = ListItemAdapter(
-            fragment = TV_LIST,
+            fragment = FragmentType.TV_LIST,
             clickListener = this,
-            genericSort = POPULAR,
+            genericSort = GenericSortType.POPULAR,
             network = NetworkType.DISNEY_PLUS,
             genre = GenreType.ALL
         )
@@ -157,9 +186,9 @@ class TvShowsListFragment :
         }
     }
 
-    private fun setShowCaseTvShow(showcaseTvShow: DBTvShowShowcase) {
+    private fun setShowCaseTvShow(showcaseTvShow: NetworkTvShow) {
         setShowcaseTvShowPoster(showcaseTvShow.posterPath)
-        setShowCaseTvShowTitle(showcaseTvShow.title)
+        setShowCaseTvShowTitle(showcaseTvShow.name)
         setShowCaseTvShowClickListeners(showcaseTvShow)
     }
 
@@ -177,14 +206,26 @@ class TvShowsListFragment :
         scTitle.text = showcaseTvShowTitle
     }
 
-    private fun setShowCaseTvShowClickListeners(showcaseTvShow: DBTvShowShowcase) {
+    private fun setShowCaseTvShowClickListeners(showcaseTvShow: NetworkTvShow) {
         setFavoriteListener(showcaseTvShow)
+        setPlayTrailerListener()
+        setShowcaseDetailListener(showcaseTvShow)
+    }
 
-        scInfo.setOnClickListener {
-            onShowcaseTvShowClick(showcaseTvShow.tvShowId)
+    private fun setFavoriteListener(showcaseTvShow: NetworkTvShow) {
+        scAddFavorite.setOnClickListener {
+            if(!isShowcaseFavorite) {
+                viewModel.insertShowcaseMovieToFavorites(showcaseTvShow)
+                setFavoriteButtonState()
+            } else {
+                viewModel.deleteShowcaseMovieFromFavorites(showcaseTvShow)
+                setFavoriteButtonState()
+            }
         }
+    }
 
-        val trailerEndpoint = BuildConfig.YOUTUBE_BASE_URL + showcaseTvShow.videoKey
+    private fun setPlayTrailerListener() {
+        val trailerEndpoint = BuildConfig.YOUTUBE_BASE_URL + showcaseVideoKey
         scPlay.setOnClickListener {
             if(trailerEndpoint != BuildConfig.YOUTUBE_BASE_URL) {
                 val uri = Uri.parse(trailerEndpoint)
@@ -198,24 +239,20 @@ class TvShowsListFragment :
                     .show()
             }
         }
-        displayContainerScreen()
     }
 
-    private fun onShowcaseTvShowClick(showcaseTvShowId: Int) {
-        val action = TvShowsListFragmentDirections
-            .actionTvShowsListToDetail(showcaseTvShowId)
-        findNavController().navigate(action)
+    private fun setShowcaseDetailListener(showcaseTvShow: NetworkTvShow) {
+        scInfo.setOnClickListener {
+            val action = TvShowsListFragmentDirections
+                .actionTvShowsListToDetail(showcaseTvShow.id)
+            findNavController().navigate(action)
+        }
     }
 
-    private fun setFavoriteListener(showcaseTvShow: DBTvShowShowcase) {
-        scAddFavorite.setOnClickListener {
-            if(!isShowcaseFavorite) {
-                viewModel.insertShowcaseMovieToFavorites(showcaseTvShow)
-                setFavoriteButtonState()
-            } else {
-                viewModel.deleteShowcaseMovieFromFavorites(showcaseTvShow)
-                setFavoriteButtonState()
-            }
+    private fun setRefreshListener() {
+        refresh.setOnClickListener {
+            val action = TvShowsListFragmentDirections.actionTvShowsListPopToSelf()
+            findNavController().navigate(action)
         }
     }
 
@@ -253,37 +290,37 @@ class TvShowsListFragment :
                     when(network) {
                         NetworkType.NETFLIX -> {
                             val action = TvShowsListFragmentDirections
-                                .actionTvShowsListToPagedTvShows(POPULAR, NetworkType.NETFLIX, GenreType.ALL)
+                                .actionTvShowsListToPagedTvShows(GenericSortType.POPULAR, NetworkType.NETFLIX, GenreType.ALL)
                             navigateToPagedTvShowsList(action)
                         }
                         NetworkType.HULU -> {
                             val action = TvShowsListFragmentDirections
-                                .actionTvShowsListToPagedTvShows(POPULAR, NetworkType.HULU,  GenreType.ALL)
+                                .actionTvShowsListToPagedTvShows(GenericSortType.POPULAR, NetworkType.HULU,  GenreType.ALL)
                             navigateToPagedTvShowsList(action)
                         }
                         NetworkType.DISNEY_PLUS -> {
                             val action = TvShowsListFragmentDirections
-                                .actionTvShowsListToPagedTvShows(POPULAR, NetworkType.DISNEY_PLUS, GenreType.ALL)
+                                .actionTvShowsListToPagedTvShows(GenericSortType.POPULAR, NetworkType.DISNEY_PLUS, GenreType.ALL)
                             navigateToPagedTvShowsList(action)
                         }
                     }
                 } else {
                     when(genericSort) {
-                        POPULAR -> {
+                        GenericSortType.POPULAR -> {
                             val action = TvShowsListFragmentDirections
-                                .actionTvShowsListToPagedTvShows(POPULAR,
+                                .actionTvShowsListToPagedTvShows(GenericSortType.POPULAR,
                                     NetworkType.ALL, GenreType.ALL)
                             navigateToPagedTvShowsList(action)
                         }
-                        TOP_RATED -> {
+                        GenericSortType.TOP_RATED -> {
                             val action = TvShowsListFragmentDirections
-                                .actionTvShowsListToPagedTvShows(TOP_RATED,
+                                .actionTvShowsListToPagedTvShows(GenericSortType.TOP_RATED,
                                     NetworkType.ALL, GenreType.ALL)
                             navigateToPagedTvShowsList(action)
                         }
-                        TRENDING -> {
+                        GenericSortType.TRENDING -> {
                             val action = TvShowsListFragmentDirections
-                                .actionTvShowsListToPagedTvShows(TRENDING,
+                                .actionTvShowsListToPagedTvShows(GenericSortType.TRENDING,
                                     NetworkType.ALL, GenreType.ALL)
                             navigateToPagedTvShowsList(action)
                         }
@@ -291,7 +328,7 @@ class TvShowsListFragment :
                 }
             } else {
                 val action = TvShowsListFragmentDirections
-                    .actionTvShowsListToDetail((item as DBTvShow).id, FragmentType.TV_LIST)
+                    .actionTvShowsListToDetail((item as NetworkTvShowsListItem).id, FragmentType.TV_LIST)
                 navigateToDetails(action)
             }
     }
@@ -299,7 +336,7 @@ class TvShowsListFragment :
     override fun onGenreSelected(genre: GenreType) {
         val action = TvShowsListFragmentDirections
             .actionTvShowsListToPagedTvShows(
-                POPULAR,
+                GenericSortType.POPULAR,
                 NetworkType.ALL,
                 genre)
         navigateToPagedTvShowsList(action)
@@ -308,7 +345,7 @@ class TvShowsListFragment :
     override fun onNetworkSelected(network: NetworkType) {
         val action = TvShowsListFragmentDirections
             .actionTvShowsListToPagedTvShows(
-                POPULAR,
+                GenericSortType.POPULAR,
                 network,
                 GenreType.ALL
             )

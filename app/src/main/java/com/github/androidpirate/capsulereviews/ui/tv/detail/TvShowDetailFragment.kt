@@ -26,14 +26,15 @@ import com.github.androidpirate.capsulereviews.ui.adapter.similar.SimilarContent
 import com.github.androidpirate.capsulereviews.ui.adapter.similar.SimilarContentClickListener
 import com.github.androidpirate.capsulereviews.util.internal.Constants
 import com.github.androidpirate.capsulereviews.util.internal.FragmentType
-import com.github.androidpirate.capsulereviews.util.internal.FragmentType.*
 import com.github.androidpirate.capsulereviews.viewmodel.TvShowDetailViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import jp.wasabeef.glide.transformations.BlurTransformation
 import kotlinx.android.synthetic.main.detail_action_bar.*
 import kotlinx.android.synthetic.main.detail_similar.*
+import kotlinx.android.synthetic.main.fragment_movie_detail.noConnectionScreen
 import kotlinx.android.synthetic.main.fragment_tv_detail.container
 import kotlinx.android.synthetic.main.fragment_tv_detail.loadingScreen
+import kotlinx.android.synthetic.main.no_connection_screen.*
 import kotlinx.android.synthetic.main.tv_header.*
 import kotlinx.android.synthetic.main.tv_header.btUp
 import kotlinx.android.synthetic.main.tv_info.*
@@ -57,7 +58,7 @@ class TvShowDetailFragment : Fragment(), SimilarContentClickListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        adapter = SimilarContentAdapter(fragment = TV_DETAIL,clickListener = this)
+        adapter = SimilarContentAdapter(fragment = FragmentType.TV_DETAIL,clickListener = this)
         requireActivity().onBackPressedDispatcher.addCallback(
             this,
             object : OnBackPressedCallback(true) {
@@ -79,47 +80,52 @@ class TvShowDetailFragment : Fragment(), SimilarContentClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         displayLoadingScreen()
-        viewModel.getTvShowDetails(args.showId).observe(viewLifecycleOwner, Observer {
-            networkTvShow = it
-            setTvShowPoster()
-            setTvShowDetails()
-            setFavoriteButtonState()
-            setIMDBLink()
-        })
-        viewModel.getIsFavorite().observe(viewLifecycleOwner, Observer {
-            if(it != null) {
-                isFavorite = it
-                setFavoriteButtonState()
+        viewModel.isOnline.observe(viewLifecycleOwner, Observer { isOnline ->
+            if(isOnline) {
+                viewModel.getTvShowDetails(args.showId).observe(viewLifecycleOwner, Observer {
+                    networkTvShow = it
+                    setTvShowPoster()
+                    setTvShowDetails()
+                    setFavoriteButtonState()
+                    setIMDBLink()
+                })
+                viewModel.getIsFavorite().observe(viewLifecycleOwner, Observer {
+                    if(it != null) {
+                        isFavorite = it
+                        setFavoriteButtonState()
+                    }
+                })
+                viewModel.getShowKey(args.showId).observe(viewLifecycleOwner, Observer {
+                    if(it != null) {
+                        videoKey = it
+                        setTrailerLink()
+                    }
+                })
+                viewModel.getSimilarTvShows(args.showId).observe(viewLifecycleOwner, Observer {
+                    if(it != null) {
+                        similarShows = it
+                        setSimilarShows()
+                    }
+                })
+                viewModel.getIMDBId(args.showId).observe(viewLifecycleOwner, Observer {
+                        if(it != null) {
+                            imdbId = it
+                            setIMDBLink()
+                    }
+                })
+                viewModel.getImdbEndpoint().observe(viewLifecycleOwner, Observer {
+                    if(it.isNotEmpty() || it.isNotBlank()) {
+                        imdbEndpoint = it
+                    }
+                })
+                setupUpNavigation()
+                setFavoriteListener()
+                setShareListener()
+                displayContainerScreen()
+            } else {
+                displayNoConnectionScreen()
             }
         })
-        viewModel.getShowKey(args.showId).observe(viewLifecycleOwner, Observer {
-            if(it != null) {
-                videoKey = it
-                setTrailerLink()
-            }
-        })
-        viewModel.getSimilarTvShows(args.showId).observe(viewLifecycleOwner, Observer {
-            if(it != null) {
-                similarShows = it
-                setSimilarShows()
-            }
-        })
-        viewModel.getIMDBId(args.showId).observe(viewLifecycleOwner, Observer {
-            if(it != null) {
-                imdbId = it
-                setIMDBLink()
-            }
-        })
-        viewModel.getImdbEndpoint().observe(viewLifecycleOwner, Observer {
-            if(it.isNotEmpty() || it.isNotBlank()) {
-                imdbEndpoint = it
-            }
-        })
-        setupUpNavigation()
-        setFavoriteListener()
-        setShareListener()
-        displayContainerScreen()
-
     }
 
     override fun onResume() {
@@ -128,12 +134,21 @@ class TvShowDetailFragment : Fragment(), SimilarContentClickListener {
     }
 
     private fun displayLoadingScreen() {
-        loadingScreen.visibility = View.VISIBLE
+        noConnectionScreen.visibility = View.GONE
         container.visibility = View.GONE
+        loadingScreen.visibility = View.VISIBLE
+    }
+
+    private fun displayNoConnectionScreen() {
+        loadingScreen.visibility = View.GONE
+        container.visibility = View.GONE
+        noConnectionScreen.visibility = View.VISIBLE
+        setRefreshListener()
     }
 
     private fun displayContainerScreen() {
         loadingScreen.visibility = View.GONE
+        noConnectionScreen.visibility = View.GONE
         container.visibility = View.VISIBLE
     }
 
@@ -178,9 +193,9 @@ class TvShowDetailFragment : Fragment(), SimilarContentClickListener {
         viewModel.setImdbEndpoint(imdbEndpoint)
         imdbLink.setOnClickListener {
             if(imdbEndpoint != BuildConfig.IMDB_BASE_URL) {
-                val uri = Uri.parse(imdbEndpoint);
-                val intent = Intent(Intent.ACTION_VIEW, uri);
-                startActivity(intent);
+                val uri = Uri.parse(imdbEndpoint)
+                val intent = Intent(Intent.ACTION_VIEW, uri)
+                startActivity(intent)
             } else {
                 Toast.makeText(
                     context,
@@ -229,6 +244,13 @@ class TvShowDetailFragment : Fragment(), SimilarContentClickListener {
 
             val shareIntent = Intent.createChooser(sendIntent, null)
             startActivity(shareIntent)
+        }
+    }
+
+    private fun setRefreshListener() {
+        refresh.setOnClickListener {
+            val action = TvShowDetailFragmentDirections.actionTvDetailPopToList()
+            findNavController().navigate(action)
         }
     }
 

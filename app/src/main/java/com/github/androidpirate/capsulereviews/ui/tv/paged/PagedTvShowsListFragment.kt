@@ -35,7 +35,7 @@ class PagedTvShowsListFragment :
 
     private val args: PagedTvShowsListFragmentArgs by navArgs()
     private val viewModel: PagedTvShowsListViewModel by viewModels()
-    private lateinit var adapter: PagedItemAdapter<NetworkTvShowsListItem>
+    private lateinit var adapter: PagedItemAdapter<NetworkTvShowsListItem?>
     private lateinit var genericSort: GenericSortType
     private lateinit var genre: GenreType
     private lateinit var network: NetworkType
@@ -65,6 +65,9 @@ class PagedTvShowsListFragment :
         btUp.setOnClickListener {
             findNavController().navigate(R.id.action_paged_tv_shows_list_to_list)
         }
+        swipeRefresh.setOnRefreshListener {
+            refreshData()
+        }
         when {
             network != NetworkType.ALL -> {
                 tvShowsByGenericSort = false
@@ -88,8 +91,8 @@ class PagedTvShowsListFragment :
     }
 
     private fun displayLoadingScreen() {
-        loadingScreen.visibility = View.VISIBLE
         container.visibility = View.GONE
+        loadingScreen.visibility = View.VISIBLE
     }
 
     private fun displayContainerScreen() {
@@ -155,10 +158,20 @@ class PagedTvShowsListFragment :
         viewModel.setFlagDecorationOn()
     }
 
+    private fun getTvShowsByGenericSort() {
+        viewModel.tvShowsByGenericSortType.observe(viewLifecycleOwner, Observer {
+            if(it != null) {
+                adapter.submitList(it)
+                swipeRefresh.isRefreshing = false
+            }
+        })
+    }
+
     private fun getTvShowsByNetwork() {
         viewModel.tvShowsByNetwork.observe(viewLifecycleOwner, Observer {
             if(it != null) {
                 adapter.submitList(it)
+                swipeRefresh.isRefreshing = false
             }
         })
     }
@@ -167,16 +180,32 @@ class PagedTvShowsListFragment :
         viewModel.tvShowsByGenre.observe(viewLifecycleOwner, Observer {
             if(it != null) {
                 adapter.submitList(it)
+                swipeRefresh.isRefreshing = false
             }
         })
     }
 
-    private fun getTvShowsByGenericSort() {
-        viewModel.tvShowsByGenericSortType.observe(viewLifecycleOwner, Observer {
-            if(it != null) {
-                adapter.submitList(it)
+    private fun refreshData() {
+        resetRecyclerView()
+        when {
+            network != NetworkType.ALL -> {
+                viewModel.refreshDataByNetwork(network)
             }
-        })
+            genre != GenreType.ALL -> {
+                viewModel.refreshDataByGenre(genre)
+            }
+            else -> {
+                viewModel.refreshDataByGenericSort(genericSort)
+            }
+        }
+        displayContainerScreen()
+    }
+
+    private fun resetRecyclerView() {
+        rvPagedTvShows.adapter = null
+        adapter.submitList(null)
+        rvPagedTvShows.adapter = adapter
+        displayLoadingScreen()
     }
 
     private fun showTvGenresDialog() {
@@ -191,7 +220,7 @@ class PagedTvShowsListFragment :
         networksDialog.show(requireActivity().supportFragmentManager,   Constants.PAGED_TV_SHOWS_LIST_FRAG_TAG)
     }
 
-    override fun <T> onPagedItemClick(item: T) {
+    override fun <T : Any> onPagedItemClick(item: T) {
         viewModel.setFlagDecorationOff()
         val action = PagedTvShowsListFragmentDirections
             .actionPagedTvShowsListToDetail((item as NetworkTvShowsListItem).id)

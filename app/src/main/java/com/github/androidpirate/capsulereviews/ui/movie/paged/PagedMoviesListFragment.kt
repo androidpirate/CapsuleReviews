@@ -31,7 +31,7 @@ class PagedMoviesListFragment :
 
     private val args: PagedMoviesListFragmentArgs by navArgs()
     private val viewModel: PagedMoviesListViewModel by viewModels()
-    private lateinit var adapter: PagedItemAdapter<NetworkMoviesListItem>
+    private lateinit var adapter: PagedItemAdapter<NetworkMoviesListItem?>
     private var moviesByGenre = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -54,6 +54,9 @@ class PagedMoviesListFragment :
         btUp.setOnClickListener {
             findNavController().navigate(R.id.action_paged_movies_list_to_list)
         }
+        swipeRefresh.setOnRefreshListener {
+            refreshData()
+        }
         if(args.genreType == GenreType.ALL) {
             getMoviesByGenericSort()
         } else {
@@ -69,8 +72,8 @@ class PagedMoviesListFragment :
     }
 
     private fun displayLoadingScreen() {
-        loadingScreen.visibility = View.VISIBLE
         container.visibility = View.GONE
+        loadingScreen.visibility = View.VISIBLE
     }
 
     private fun displayContainerScreen() {
@@ -123,6 +126,7 @@ class PagedMoviesListFragment :
         viewModel.moviesByGenericSortType.observe(viewLifecycleOwner, Observer {
             if(it != null) {
                 adapter.submitList(it)
+                swipeRefresh.isRefreshing = false
             }
         })
     }
@@ -132,8 +136,26 @@ class PagedMoviesListFragment :
         viewModel.moviesByGenre.observe(viewLifecycleOwner, Observer {
             if(it != null) {
                 adapter.submitList(it)
+                swipeRefresh.isRefreshing = false
             }
         })
+    }
+
+   private fun refreshData() {
+        resetRecyclerView()
+        if(args.genreType == GenreType.ALL) {
+            viewModel.refreshDataByGenericSort(args.genericSortType)
+        } else {
+            viewModel.refreshDataByGenre(args.genreType)
+        }
+        displayContainerScreen()
+    }
+
+    private fun resetRecyclerView() {
+        rvPagedMovies.adapter = null
+        adapter.submitList(null)
+        rvPagedMovies.adapter = adapter
+        displayLoadingScreen()
     }
 
     private fun showMovieGenreDialog() {
@@ -142,7 +164,7 @@ class PagedMoviesListFragment :
         genresDialog.show(requireActivity().supportFragmentManager, Constants.PAGED_MOVIES_LIST_FRAG_TAG)
     }
 
-    override fun <T> onPagedItemClick(item: T) {
+    override fun <T : Any> onPagedItemClick(item: T) {
         viewModel.setFlagDecorationOff()
         val action = PagedMoviesListFragmentDirections
             .actionPagedMoviesListToDetail((item as NetworkMoviesListItem).id)
