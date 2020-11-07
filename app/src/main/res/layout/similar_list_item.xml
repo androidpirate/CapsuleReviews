@@ -9,7 +9,7 @@
         android:id="@+id/ivSimilarListItem"
         android:layout_width="@dimen/list_item_similar_width"
         android:layout_height="@dimen/list_item_similar_height"
-        android:src="@drawable/ic_image_placeholder_white"
+        android:src="@drawable/ic_no_preview"
         android:contentDescription="@string/list_item_preview_description"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
