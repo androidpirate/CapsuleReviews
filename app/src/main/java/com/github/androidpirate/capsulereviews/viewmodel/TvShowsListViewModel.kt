@@ -5,9 +5,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.github.androidpirate.capsulereviews.data.db.entity.DBTvShowShowcase
+import com.github.androidpirate.capsulereviews.data.network.response.tvShow.NetworkTvShow
+import com.github.androidpirate.capsulereviews.data.network.response.tvShows.NetworkTvShowsListItem
 import com.github.androidpirate.capsulereviews.data.repo.FavoritesRepository
 import com.github.androidpirate.capsulereviews.data.repo.TvShowsRepository
+import com.github.androidpirate.capsulereviews.util.internal.NoConnectivityException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -18,34 +20,82 @@ class TvShowsListViewModel
     private val repo: TvShowsRepository,
     private val favRepo: FavoritesRepository): ViewModel() {
 
-    val popularTvShows = repo.getPopularTvShows()
-    val topRatedTvShows = repo.getTopRatedTvShows()
-    val trendingTvShows = repo.getTrendingTvShows()
-    val popularOnNetflix = repo.getPopularTvShowsOnNetflix()
-    val popularOnHulu = repo.getPopularTvShowsOnHulu()
-    val popularOnDisneyPlus = repo.getPopularTvShowsOnDisneyPlus()
-    val showcaseTvShow = repo.getShowcaseTvShow()
+    private val _popularTvShows = MutableLiveData<List<NetworkTvShowsListItem>>()
+    val popularTvShows: LiveData<List<NetworkTvShowsListItem>>
+    get() = _popularTvShows
+
+    private val _topRatedTvShows = MutableLiveData<List<NetworkTvShowsListItem>>()
+    val topRatedTvShows: LiveData<List<NetworkTvShowsListItem>>
+    get() = _topRatedTvShows
+
+    private val _trendingTvShows = MutableLiveData<List<NetworkTvShowsListItem>>()
+    val trendingTvShows: LiveData<List<NetworkTvShowsListItem>>
+    get() = _trendingTvShows
+
+    private val _popularShowsOnNetflix = MutableLiveData<List<NetworkTvShowsListItem>>()
+    val popularShowsOnNetflix: LiveData<List<NetworkTvShowsListItem>>
+    get() = _popularShowsOnNetflix
+
+    private val _popularShowsOnHulu = MutableLiveData<List<NetworkTvShowsListItem>>()
+    val popularShowsOnHulu: LiveData<List<NetworkTvShowsListItem>>
+    get() = _popularShowsOnHulu
+
+    private val _popularShowsOnDisneyPlus = MutableLiveData<List<NetworkTvShowsListItem>>()
+    val popularShowsOnDisneyPlus: LiveData<List<NetworkTvShowsListItem>>
+    get() = _popularShowsOnDisneyPlus
+
+    val showcaseTvShow = repo.showcaseTvShow
+    val showcaseVideoKey = repo.showcaseVideoKey
+
+    private val _isOnline = MutableLiveData<Boolean>(true)
+    val isOnline: LiveData<Boolean>
+    get() = _isOnline
+
     private var isShowcaseFavorite = MutableLiveData<Boolean>(false)
 
     init {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
-                repo.fetchAndPersistPopularTvShows()
+                try {
+                    _popularTvShows.postValue(repo.fetchPopularTvShows())
+                } catch (e: NoConnectivityException) {
+                    setOffline()
+                }
             }
             withContext(Dispatchers.IO) {
-                repo.fetchAndPersistTopRatedTvShows()
+                try {
+                    _topRatedTvShows.postValue(repo.fetchTopRatedTvShows())
+                } catch (e: NoConnectivityException) {
+                    setOffline()
+                }
             }
             withContext(Dispatchers.IO) {
-                repo.fetchAndPersistTrendingTvShows()
+                try {
+                    _trendingTvShows.postValue(repo.fetchTrendingTvShows())
+                } catch (e: NoConnectivityException) {
+                    setOffline()
+                }
             }
             withContext(Dispatchers.IO) {
-                repo.fetchAndPersistPopularNetflixTvShows()
+                try {
+                    _popularShowsOnNetflix.postValue(repo.fetchPopularTvShowsOnNetflix())
+                } catch (e: NoConnectivityException) {
+                    setOffline()
+                }
             }
             withContext(Dispatchers.IO) {
-                repo.fetchAndPersistPopularHuluTvShows()
+                try {
+                    _popularShowsOnHulu.postValue(repo.fetchPopularTvShowsOnHulu())
+                } catch (e: NoConnectivityException) {
+                    setOffline()
+                }
             }
             withContext(Dispatchers.IO) {
-                repo.fetchAndPersisPopularDisneyPlusTvShows()
+                try {
+                    _popularShowsOnDisneyPlus.postValue(repo.fetchPopularTvShowsOnDisneyPlus())
+                } catch (e: NoConnectivityException) {
+                    setOffline()
+                }
             }
         }
     }
@@ -62,23 +112,27 @@ class TvShowsListViewModel
         }
     }
 
-    fun insertShowcaseMovieToFavorites(showcaseTvShow: DBTvShowShowcase) {
+    fun insertShowcaseMovieToFavorites(showcaseTvShow: NetworkTvShow) {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
-                val favoriteShowcaseTvShow = repo.fetchTvShowDetails(showcaseTvShow.tvShowId).toFavorite()
+                val favoriteShowcaseTvShow = showcaseTvShow.toFavorite()
                 favRepo.insertFavorite(favoriteShowcaseTvShow)
                 isShowcaseFavorite.postValue(true)
             }
         }
     }
 
-    fun deleteShowcaseMovieFromFavorites(showcaseTvShow: DBTvShowShowcase) {
+    fun deleteShowcaseMovieFromFavorites(showcaseTvShow: NetworkTvShow) {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
-                val favoriteShowcaseMovie = repo.fetchTvShowDetails(showcaseTvShow.tvShowId).toFavorite()
+                val favoriteShowcaseMovie = showcaseTvShow.toFavorite()
                 favRepo.deleteFavorite(favoriteShowcaseMovie)
                 isShowcaseFavorite.postValue(false)
             }
         }
+    }
+
+    private fun setOffline() {
+        _isOnline.postValue(false)
     }
 }

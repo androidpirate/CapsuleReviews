@@ -20,13 +20,9 @@ class PagedMoviesListViewModel
 
     fun setGenericSort(genericSortType: GenericSortType) = apply { genericSort.value = genericSortType }
 
-    val moviesByGenericSortType: LiveData<PagedList<NetworkMoviesListItem>> =
+    val moviesByGenericSortType: LiveData<PagedList<NetworkMoviesListItem?>> =
         Transformations.switchMap(genericSort, ::getMoviesByGenericSort)
 
-    // TODO 2: The problem here is I am using the function below with Transformations.switchMap
-    // TODO 2: Even though I could able to throw the exception from PagedMoviesDataSource
-    // TODO 2: no idea how to catch it here.
-    // TODO 2: Things worked pretty cool in MoviesListViewModel and MovieDetailViewModel.
     private fun getMoviesByGenericSort(genericSort: GenericSortType) = repo.getPagedMovies(
         scope = viewModelScope,
         genericSort = genericSort,
@@ -38,7 +34,7 @@ class PagedMoviesListViewModel
 
     fun setGenre(movieGenre: GenreType) = apply { genre.value = movieGenre }
 
-    val moviesByGenre: LiveData<PagedList<NetworkMoviesListItem>> =
+    val moviesByGenre: LiveData<PagedList<NetworkMoviesListItem?>> =
         Transformations.switchMap(genre, ::getMoviesByGenre)
 
     private fun getMoviesByGenre(genre: GenreType) = repo.getPagedMovies(
@@ -60,5 +56,13 @@ class PagedMoviesListViewModel
 
     fun getFlagDecoration(): Boolean {
         return flagDecoration
+    }
+
+    fun refreshDataByGenericSort(genericSort: GenericSortType) {
+        setGenericSort(genericSort)
+    }
+
+    fun refreshDataByGenre(genre: GenreType) {
+        setGenre(genre)
     }
 }

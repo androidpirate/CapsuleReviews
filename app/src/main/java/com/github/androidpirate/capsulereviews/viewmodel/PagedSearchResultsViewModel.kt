@@ -12,11 +12,11 @@ class PagedSearchResultsViewModel
     constructor(
     private val repo: SearchRepository): ViewModel() {
 
-    val queryString = MutableLiveData<String>(Constants.EMPTY_FIELD_STRING)
+    private val queryString = MutableLiveData<String>(Constants.EMPTY_FIELD_STRING)
 
     fun setQueryString(query: String) = apply { queryString.value = query }
 
-    val searchResults: LiveData<PagedList<NetworkMultiSearchListItem>> =
+    val searchResults: LiveData<PagedList<NetworkMultiSearchListItem?>> =
         Transformations.switchMap(queryString, ::getSearchResults)
 
     private fun getSearchResults(queryString: String) = repo.getSearchResults(
@@ -36,5 +36,9 @@ class PagedSearchResultsViewModel
 
     fun getFlagDecoration(): Boolean {
         return flagDecoration
+    }
+
+    fun refreshData(queryString: String) {
+        setQueryString(queryString)
     }
 }

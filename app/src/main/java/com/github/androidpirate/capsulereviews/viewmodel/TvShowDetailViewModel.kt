@@ -9,6 +9,7 @@ import com.github.androidpirate.capsulereviews.data.network.response.tvShow.Netw
 import com.github.androidpirate.capsulereviews.data.network.response.tvShows.NetworkTvShowsListItem
 import com.github.androidpirate.capsulereviews.data.repo.FavoritesRepository
 import com.github.androidpirate.capsulereviews.data.repo.TvShowsRepository
+import com.github.androidpirate.capsulereviews.util.internal.NoConnectivityException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -19,22 +20,71 @@ class TvShowDetailViewModel
     private val repo: TvShowsRepository,
     private val favRepo: FavoritesRepository): ViewModel() {
 
-    private val tvShowDetails = MutableLiveData<NetworkTvShow>()
-    private val tvShowVideoKey = MutableLiveData<String>()
-    private val similarTvShows = MutableLiveData<List<NetworkTvShowsListItem>>()
-    private val imdbId = MutableLiveData<String> ()
+    private val _tvShowDetails = MutableLiveData<NetworkTvShow>()
+    private val tvShowDetails: LiveData<NetworkTvShow>
+    get() = _tvShowDetails
+
+    private val _similarTvShows = MutableLiveData<List<NetworkTvShowsListItem>>()
+    private val similarTvShows: LiveData<List<NetworkTvShowsListItem>>
+    get() = _similarTvShows
+
+    private val _tvShowVideoKey = MutableLiveData<String>()
+    private val tvShowVideoKey: LiveData<String>
+    get() = _tvShowVideoKey
+
+    private val _isOnline = MutableLiveData<Boolean>(true)
+    val isOnline: LiveData<Boolean>
+    get() = _isOnline
+
+    private var imdbId = MutableLiveData<String>()
     private var imdbEndpoint = MutableLiveData<String>()
     private var isFavorite = MutableLiveData<Boolean>()
+    private var flagDecoration = false
+
+    private fun setOffline() {
+        _isOnline.postValue(false)
+    }
 
     fun getTvShowDetails(showId: Int): LiveData<NetworkTvShow> {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
-                val networkTvShow = repo.fetchTvShowDetails(showId)
-                tvShowDetails.postValue(networkTvShow)
-                setIsFavorite(networkTvShow.id)
+                try {
+                    val networkTvShow = repo.fetchTvShowDetails(showId)
+                    _tvShowDetails.postValue(networkTvShow)
+                    setIsFavorite(networkTvShow.id)
+                } catch (e: NoConnectivityException) {
+                    setOffline()
+                }
             }
         }
         return tvShowDetails
+    }
+
+    fun getSimilarTvShows(showId: Int): LiveData<List<NetworkTvShowsListItem>> {
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                try {
+                    _similarTvShows.postValue(repo.fetchSimilarTvShows(showId))
+                } catch (e: NoConnectivityException) {
+                    setOffline()
+                }
+            }
+        }
+        return similarTvShows
+    }
+
+    fun getShowKey(showId: Int): LiveData<String> {
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                try {
+                    val tvShowVideos = repo.fetchShowVideos(showId)
+                    _tvShowVideoKey.postValue(repo.getTvShowVideoKey(tvShowVideos))
+                } catch (e: NoConnectivityException) {
+                    setOffline()
+                }
+            }
+        }
+        return tvShowVideoKey
     }
 
     fun getIsFavorite(): LiveData<Boolean> {
@@ -47,33 +97,6 @@ class TvShowDetailViewModel
                 isFavorite.postValue(favRepo.isFavorite(itemId))
             }
         }
-    }
-
-    fun getSimilarTvShows(showId: Int): LiveData<List<NetworkTvShowsListItem>> {
-        viewModelScope.launch {
-            withContext(Dispatchers.IO) {
-                similarTvShows.postValue(repo.fetchSimilarTvShows(showId))
-            }
-        }
-        return similarTvShows
-    }
-
-    fun getShowKey(showId: Int): LiveData<String> {
-        viewModelScope.launch {
-            withContext(Dispatchers.IO) {
-                tvShowVideoKey.postValue(repo.fetchVideoKey(showId))
-            }
-        }
-        return tvShowVideoKey
-    }
-
-    fun getIMDBId(showId: Int) : LiveData<String> {
-        viewModelScope.launch {
-            withContext(Dispatchers.IO) {
-                imdbId.postValue(repo.fetchIMDBId(showId))
-            }
-        }
-        return imdbId
     }
 
     fun insertFavoriteTvShow(tvShow: NetworkTvShow) {
@@ -102,7 +125,18 @@ class TvShowDetailViewModel
         return imdbEndpoint
     }
 
-    private var flagDecoration = false
+    fun getIMDBId(showId: Int) : LiveData<String> {
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                try {
+                    imdbId.postValue(repo.fetchIMDBId(showId))
+                } catch (e: NoConnectivityException) {
+                    setOffline()
+                }
+            }
+        }
+        return imdbId
+    }
 
     fun setFlagDecorationOn() {
         flagDecoration = true

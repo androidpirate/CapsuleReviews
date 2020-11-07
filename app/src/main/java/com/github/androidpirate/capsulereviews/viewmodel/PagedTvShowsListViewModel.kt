@@ -20,7 +20,7 @@ class PagedTvShowsListViewModel
 
     fun setGenericSort(genericSortType: GenericSortType) = apply { genericSort.value = genericSortType }
 
-    val tvShowsByGenericSortType: LiveData<PagedList<NetworkTvShowsListItem>> =
+    val tvShowsByGenericSortType: LiveData<PagedList<NetworkTvShowsListItem?>> =
         Transformations.switchMap(genericSort, ::getTvShowsByGenericSort)
 
     private fun getTvShowsByGenericSort(genericSort: GenericSortType) = repo.getPagedTvShows(
@@ -39,7 +39,7 @@ class PagedTvShowsListViewModel
 
     fun setGenre(tvGenre: GenreType) = apply { genre.value = tvGenre }
 
-    val tvShowsByGenre: LiveData<PagedList<NetworkTvShowsListItem>> =
+    val tvShowsByGenre: LiveData<PagedList<NetworkTvShowsListItem?>> =
         Transformations.switchMap(genre, ::getTvShowsByGenre)
 
     private fun getTvShowsByGenre(genre: GenreType) = repo.getPagedTvShows(
@@ -58,7 +58,7 @@ class PagedTvShowsListViewModel
 
     fun setNetwork(tvNetwork: NetworkType) = apply { network.value = tvNetwork }
 
-    val tvShowsByNetwork: LiveData<PagedList<NetworkTvShowsListItem>> =
+    val tvShowsByNetwork: LiveData<PagedList<NetworkTvShowsListItem?>> =
         Transformations.switchMap(network, ::getTvShowsByNetwork)
 
     private fun getTvShowsByNetwork(network: NetworkType) = repo.getPagedTvShows(
@@ -81,5 +81,17 @@ class PagedTvShowsListViewModel
 
     fun getFlagDecoration(): Boolean {
         return flagDecoration
+    }
+
+    fun refreshDataByGenericSort(genericSort: GenericSortType) {
+        setGenericSort(genericSort)
+    }
+
+    fun refreshDataByNetwork(network: NetworkType) {
+        setNetwork(network)
+    }
+
+    fun refreshDataByGenre(tvGenre: GenreType) {
+        setGenre(tvGenre)
     }
 }

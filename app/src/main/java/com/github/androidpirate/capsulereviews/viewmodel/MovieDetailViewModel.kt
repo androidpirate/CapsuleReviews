@@ -18,24 +18,24 @@ class MovieDetailViewModel
     private val favRepo: FavoritesRepository): ViewModel() {
 
     private val _movieDetails = MutableLiveData<NetworkMovie>()
-    val movieDetails: LiveData<NetworkMovie>
+    private val movieDetails: LiveData<NetworkMovie>
     get() = _movieDetails
 
     private val _similarMovies = MutableLiveData<List<NetworkMoviesListItem>>()
-    val similarMovies: LiveData<List<NetworkMoviesListItem>>
+    private val similarMovies: LiveData<List<NetworkMoviesListItem>>
     get() = _similarMovies
 
     private val _movieVideoKey = MutableLiveData<String>()
-    val movieVideoKey: LiveData<String>
+    private val movieVideoKey: LiveData<String>
     get() = _movieVideoKey
+
+    private val _isOnline = MutableLiveData<Boolean>(true)
+    val isOnline: LiveData<Boolean>
+        get() = _isOnline
 
     private var imdbEndpoint = MutableLiveData<String>()
     private var isFavorite = MutableLiveData<Boolean>()
     private var flagDecoration = false
-
-    private val _isOnline = MutableLiveData<Boolean>(true)
-    val isOnline: LiveData<Boolean>
-    get() = _isOnline
 
     private fun setOffline() {
         _isOnline.postValue(false)

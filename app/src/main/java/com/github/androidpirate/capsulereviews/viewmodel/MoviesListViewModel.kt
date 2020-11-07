@@ -5,7 +5,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.github.androidpirate.capsulereviews.data.db.entity.DBMovieShowcase
 import com.github.androidpirate.capsulereviews.data.network.response.movie.NetworkMovie
 import com.github.androidpirate.capsulereviews.data.network.response.movies.NetworkMoviesListItem
 import com.github.androidpirate.capsulereviews.data.repo.FavoritesRepository
@@ -43,11 +42,12 @@ class MoviesListViewModel
 
     val showcaseMovie = repo.showcaseMovie
     val showcaseVideoKey = repo.showcaseVideoKey
-    private var isShowcaseFavorite = MutableLiveData<Boolean>(false)
 
     private val _isOnline = MutableLiveData<Boolean>(true)
     val isOnline: LiveData<Boolean>
     get() = _isOnline
+
+    private var isShowcaseFavorite = MutableLiveData<Boolean>(false)
 
     init {
         viewModelScope.launch {
@@ -89,10 +89,6 @@ class MoviesListViewModel
         }
     }
 
-    private fun setOffline() {
-        _isOnline.postValue(false)
-    }
-
     fun getIsShowcaseFavorite(): LiveData<Boolean> {
         return isShowcaseFavorite
     }
@@ -123,5 +119,9 @@ class MoviesListViewModel
                 isShowcaseFavorite.postValue(false)
             }
         }
+    }
+
+    private fun setOffline() {
+        _isOnline.postValue(false)
     }
 }
