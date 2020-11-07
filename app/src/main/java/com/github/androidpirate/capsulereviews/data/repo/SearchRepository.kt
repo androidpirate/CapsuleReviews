@@ -16,15 +16,15 @@ class SearchRepository
 
     fun getSearchResults(
         scope: CoroutineScope,
-        queryString: String): LiveData<PagedList<NetworkMultiSearchListItem>> {
+        queryString: String): LiveData<PagedList<NetworkMultiSearchListItem?>> {
         val searchDataSourceFactory = PagedSearchResultsDataSourceFactory(api, scope, queryString)
         val config = PagedList.Config.Builder()
             .setEnablePlaceholders(false)
             .setPageSize(Constants.PAGE_SIZE)
             .build()
         return LivePagedListBuilder<Int, NetworkMultiSearchListItem>(
-            searchDataSourceFactory,
-            config)
-            .build()
+                searchDataSourceFactory,
+                config)
+                .build()
     }
 }

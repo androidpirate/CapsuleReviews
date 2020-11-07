@@ -1,12 +1,10 @@
 package com.github.androidpirate.capsulereviews.data.repo
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
 import com.github.androidpirate.capsulereviews.data.datasource.PagedTvShowsDataSourceFactory
-import com.github.androidpirate.capsulereviews.data.db.TvShowListDao
-import com.github.androidpirate.capsulereviews.data.db.entity.DBTvShow
-import com.github.androidpirate.capsulereviews.data.db.entity.DBTvShowShowcase
 import com.github.androidpirate.capsulereviews.data.network.api.MovieDbService
 import com.github.androidpirate.capsulereviews.data.network.response.tvShow.NetworkTvShow
 import com.github.androidpirate.capsulereviews.data.network.response.tvShows.NetworkTvShowsListItem
@@ -18,36 +16,14 @@ import javax.inject.Inject
 class TvShowsRepository
     @Inject
     constructor(
-        private val api: MovieDbService,
-        private val dao: TvShowListDao) {
+        private val api: MovieDbService) {
 
-    fun getPopularTvShows(): LiveData<List<DBTvShow>> {
-        return dao.getPopularTvShows()
-    }
-
-    fun getTopRatedTvShows(): LiveData<List<DBTvShow>> {
-        return dao.getTopRatedTvShows()
-    }
-
-    fun getTrendingTvShows(): LiveData<List<DBTvShow>> {
-        return dao.getTrendingTvShows()
-    }
-
-    fun getPopularTvShowsOnNetflix(): LiveData<List<DBTvShow>> {
-        return dao.getPopularShowsOnNetflix()
-    }
-
-    fun getPopularTvShowsOnHulu(): LiveData<List<DBTvShow>> {
-        return dao.getPopularShowsOnHulu()
-    }
-
-    fun getPopularTvShowsOnDisneyPlus(): LiveData<List<DBTvShow>> {
-        return dao.getPopularShowsOnDisneyPlus()
-    }
-
-    fun getShowcaseTvShow(): LiveData<DBTvShowShowcase> {
-        return dao.getShowcaseTvShow()
-    }
+    private val _showcaseTvShow = MutableLiveData<NetworkTvShow>()
+    val showcaseTvShow: LiveData<NetworkTvShow>
+    get() = _showcaseTvShow
+    private val _showcaseVideoKey = MutableLiveData<String>()
+    val showcaseVideoKey: LiveData<String>
+    get() = _showcaseVideoKey
 
     fun getPagedTvShows(
         scope: CoroutineScope,
@@ -55,123 +31,139 @@ class TvShowsRepository
         sort: SortType,
         network: NetworkType,
         genre: GenreType
-    ): LiveData<PagedList<NetworkTvShowsListItem>> {
+    ): LiveData<PagedList<NetworkTvShowsListItem?>> {
         val tvShowsDataSourceFactory = PagedTvShowsDataSourceFactory(api, scope, genericSort, sort, network, genre)
         val config = PagedList.Config.Builder()
             .setEnablePlaceholders(false)
             .setPageSize(Constants.PAGE_SIZE)
             .build()
-        return LivePagedListBuilder<Int, NetworkTvShowsListItem>(
-            tvShowsDataSourceFactory,
-            config
-        ).build()
+        return LivePagedListBuilder<Int, NetworkTvShowsListItem>(tvShowsDataSourceFactory, config).build()
     }
 
-    suspend fun fetchAndPersistPopularTvShows() {
-        val popularShows = api.getPopularTvShows().networkTvShowsListItems
-        popularShows.forEach {
-            if(dao.isRowExist(it.id)) {
-                dao.updatePopularTvShow(it.id)
-            } else {
-                dao.insertPopularTvShow(it.toPopular())
-            }
+    suspend fun fetchPopularTvShows(): List<NetworkTvShowsListItem> {
+        val popularTvShows: List<NetworkTvShowsListItem>
+        try {
+            popularTvShows = api.getPopularTvShows().networkTvShowsListItems
+        } catch (e: NoConnectivityException) {
+            throw e
         }
+        return popularTvShows
     }
 
-    suspend fun fetchAndPersistTopRatedTvShows() {
-        val topRatedShows = api.getTopRatedTvShows().networkTvShowsListItems
-        topRatedShows.forEach {
-            if(dao.isRowExist(it.id)) {
-                dao.updateTopRatedTvShow(it.id)
-            } else {
-                dao.insertTopRatedTvShow(it.toTopRated())
-            }
+    suspend fun fetchTopRatedTvShows(): List<NetworkTvShowsListItem> {
+        val topRatedTvShows: List<NetworkTvShowsListItem>
+        try {
+            topRatedTvShows = api.getTopRatedTvShows().networkTvShowsListItems
+        } catch (e: NoConnectivityException) {
+            throw e
         }
+        return topRatedTvShows
     }
 
-    suspend fun fetchAndPersistTrendingTvShows() {
-        val trendingShows = api.getTrendingTvShows().networkTvShowsListItems
-        trendingShows.forEach {
-            if(dao.isRowExist(it.id)) {
-                dao.updateTrendingTvShow(it.id)
-            } else {
-                dao.insertTrendingTvShow(it.toTrending())
-            }
+    suspend fun fetchTrendingTvShows(): List<NetworkTvShowsListItem> {
+        val trendingTvShows: List<NetworkTvShowsListItem>
+        try {
+            trendingTvShows = api.getTrendingTvShows().networkTvShowsListItems
+            fetchShowcaseTvShow(trendingTvShows[0].id)
+        } catch (e: NoConnectivityException) {
+            throw e
         }
-        persistShowcaseTvShow(trendingShows[0])
+        return trendingTvShows
     }
 
-    suspend fun fetchAndPersistPopularNetflixTvShows() {
-        val popularShowsOnNetflix = api.getPopularTvShowsOnNetwork(NetworkType.NETFLIX.id).networkTvShowsListItems
-        popularShowsOnNetflix.forEach {
-            if(dao.isRowExist(it.id)) {
-                dao.updatePopularTvShowOnNetflix(it.id)
-            } else {
-                dao.insertPopularTvShowOnNetflix(it.toNetflix())
-            }
+    suspend fun fetchPopularTvShowsOnNetflix(): List<NetworkTvShowsListItem> {
+        val popularTvShowsOnNetflix: List<NetworkTvShowsListItem>
+        try {
+            popularTvShowsOnNetflix =
+                api.getPopularTvShowsOnNetwork(NetworkType.NETFLIX.id)
+                    .networkTvShowsListItems
+        } catch (e: NoConnectivityException) {
+            throw e
         }
+        return popularTvShowsOnNetflix
     }
 
-    suspend fun fetchAndPersistPopularHuluTvShows() {
-        val popularShowsOnHulu = api.getPopularTvShowsOnNetwork(NetworkType.HULU.id).networkTvShowsListItems
-        popularShowsOnHulu.forEach {
-            if(dao.isRowExist(it.id)) {
-                dao.updatePopularTvShowOnHulu(it.id)
-            } else {
-                dao.insertPopularTvShowOnHulu(it.toHulu())
-            }
+    suspend fun fetchPopularTvShowsOnHulu(): List<NetworkTvShowsListItem> {
+        val popularTvShowsOnHulu: List<NetworkTvShowsListItem>
+        try {
+            popularTvShowsOnHulu =
+                api.getPopularTvShowsOnNetwork(NetworkType.HULU.id)
+                    .networkTvShowsListItems
+        } catch (e: NoConnectivityException) {
+            throw e
         }
+        return popularTvShowsOnHulu
     }
 
-    suspend fun fetchAndPersisPopularDisneyPlusTvShows() {
-        val popularShowsOnDisneyPlus = api.getPopularTvShowsOnNetwork(NetworkType.DISNEY_PLUS.id).networkTvShowsListItems
-        popularShowsOnDisneyPlus.forEach {
-            if(dao.isRowExist(it.id)) {
-                dao.updatePopularTvShowOnDisneyPlus(it.id)
-            } else {
-                dao.insertPopularTvShowOnDisneyPlus(it.toDisneyPlus())
-            }
+    suspend fun fetchPopularTvShowsOnDisneyPlus(): List<NetworkTvShowsListItem> {
+        val popularTvShowsOnDisneyPlus: List<NetworkTvShowsListItem>
+        try {
+            popularTvShowsOnDisneyPlus =
+                api.getPopularTvShowsOnNetwork(NetworkType.DISNEY_PLUS.id)
+                    .networkTvShowsListItems
+        } catch (e: NoConnectivityException) {
+            throw e
         }
-    }
-
-    suspend fun fetchVideoKey(showId: Int): String {
-        val videos = fetchShowVideos(showId)
-        return fetchShowVideoKey(videos)
+        return popularTvShowsOnDisneyPlus
     }
 
     suspend fun fetchTvShowDetails(showId: Int) : NetworkTvShow {
-        return api.getTvShowDetails(showId)
+        val tvShowDetails: NetworkTvShow
+        try {
+            tvShowDetails = api.getTvShowDetails(showId)
+        } catch (e: NoConnectivityException) {
+            throw e
+        }
+        return tvShowDetails
     }
 
     suspend fun fetchSimilarTvShows(showId: Int): List<NetworkTvShowsListItem> {
-        return api.getSimilarTvShows(showId).networkTvShowsListItems
+        val similarTvShows: List<NetworkTvShowsListItem>
+        try {
+            similarTvShows = api.getSimilarTvShows(showId).networkTvShowsListItems
+        } catch (e: NoConnectivityException) {
+            throw e
+        }
+        return similarTvShows
+    }
+
+    suspend fun fetchShowVideos(showId: Int) : List<NetworkVideosListItem> {
+        val tvShowVideos: List<NetworkVideosListItem>
+        try {
+            tvShowVideos = api.getTvShowVideos(showId).networkVideosListItems
+        } catch (e: NoConnectivityException) {
+            throw e
+        }
+        return tvShowVideos
     }
 
     suspend fun fetchIMDBId(showId: Int): String {
-        return api.getTvShowExternalIDs(showId).imdbId
+        val imdbId: String
+        try {
+            imdbId = api.getTvShowExternalIDs(showId).imdbId
+        } catch (e: NoConnectivityException) {
+            throw e
+        }
+        return imdbId
     }
 
-    private suspend fun fetchShowVideos(showId: Int) : List<NetworkVideosListItem> {
-        return api.getTvShowVideos(showId).networkVideosListItems
-    }
-
-    private suspend fun persistShowcaseTvShow(showcaseTvShow: NetworkTvShowsListItem) {
-        val showcaseVideos = fetchShowVideos(showcaseTvShow.id)
-        val dbShowcaseTvShow = showcaseTvShow.toShowcase()
-        dbShowcaseTvShow.videoKey = fetchShowVideoKey(showcaseVideos)
-        dao.insertShowcaseTvShow(dbShowcaseTvShow)
-    }
-
-    private fun fetchShowVideoKey(videos: List<NetworkVideosListItem>): String {
+    fun getTvShowVideoKey(tvShowVideos: List<NetworkVideosListItem>): String {
         var videoKey = Constants.EMPTY_VIDEO_KEY
-        if(videos.isNotEmpty()) {
-            for (video in videos) {
-                if (video.site == "YouTube" && video.type == "Trailer") {
+        if(tvShowVideos.isNotEmpty()) {
+            for (video in tvShowVideos) {
+                if (video.site == Constants.VIDEO_SITE && video.type == Constants.VIDEO_TYPE) {
                     videoKey = video.key
                     break
                 }
             }
         }
         return videoKey
+    }
+
+    private suspend fun fetchShowcaseTvShow(showcaseTvShowId: Int) {
+        val showcaseTvShow = fetchTvShowDetails(showcaseTvShowId)
+        _showcaseTvShow.postValue(showcaseTvShow)
+        val showcaseTvShowVideos = fetchShowVideos(showcaseTvShowId)
+        _showcaseVideoKey.postValue(getTvShowVideoKey(showcaseTvShowVideos))
     }
 }

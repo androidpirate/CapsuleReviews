@@ -6,14 +6,12 @@ import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
 import com.github.androidpirate.capsulereviews.BuildConfig
 import com.github.androidpirate.capsulereviews.data.datasource.PagedMoviesDataSourceFactory
-import com.github.androidpirate.capsulereviews.data.db.MovieListDao
 import com.github.androidpirate.capsulereviews.data.network.api.MovieDbService
 import com.github.androidpirate.capsulereviews.data.network.response.movie.NetworkMovie
 import com.github.androidpirate.capsulereviews.data.network.response.movies.NetworkMoviesListItem
 import com.github.androidpirate.capsulereviews.data.network.response.videos.NetworkVideosListItem
 import com.github.androidpirate.capsulereviews.util.internal.*
 import kotlinx.coroutines.CoroutineScope
-import java.io.IOException
 import javax.inject.Inject
 
 class MoviesRepository
@@ -28,18 +26,18 @@ class MoviesRepository
     val showcaseVideoKey: LiveData<String>
     get() = _showcaseVideoKey
 
-    // TODO 1: This is the function that builds the data source.
-    // TODO 1: The api calls are embedded in the PagedMoviesDataSource class
-    // TODO 1: where the exception is originated unlike the fetch functions below.
     fun getPagedMovies(
         scope: CoroutineScope,
         genericSort: GenericSortType,
         sort: SortType,
         genre: GenreType)
-        : LiveData<PagedList<NetworkMoviesListItem>> {
+        : LiveData<PagedList<NetworkMoviesListItem?>> {
              val moviesDataSourceFactory = PagedMoviesDataSourceFactory(api, scope, genericSort, sort, genre)
              val config =
-                 PagedList.Config.Builder().setEnablePlaceholders(false).setPageSize(Constants.PAGE_SIZE).build()
+                 PagedList.Config.Builder()
+                     .setEnablePlaceholders(false)
+                     .setPageSize(Constants.PAGE_SIZE)
+                     .build()
              return LivePagedListBuilder<Int, NetworkMoviesListItem>(moviesDataSourceFactory, config).build()
     }
 
@@ -141,6 +139,6 @@ class MoviesRepository
         val showcaseMovie = fetchMovieDetails(showcaseMovieId)
         _showcaseMovie.postValue(showcaseMovie)
         val showcaseMovieVideos = fetchMovieVideos(showcaseMovieId)
-        _showcaseVideoKey.postValue(getMovieVideoKey(showcaseMovieVideos)!!)
+        _showcaseVideoKey.postValue(getMovieVideoKey(showcaseMovieVideos))
     }
 }
