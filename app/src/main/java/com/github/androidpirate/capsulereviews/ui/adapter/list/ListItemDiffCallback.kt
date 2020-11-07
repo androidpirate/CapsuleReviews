@@ -1,9 +1,8 @@
 package com.github.androidpirate.capsulereviews.ui.adapter.list
 
 import androidx.recyclerview.widget.DiffUtil
-import com.github.androidpirate.capsulereviews.data.db.entity.DBMovie
-import com.github.androidpirate.capsulereviews.data.db.entity.DBTvShow
 import com.github.androidpirate.capsulereviews.data.network.response.movies.NetworkMoviesListItem
+import com.github.androidpirate.capsulereviews.data.network.response.tvShows.NetworkTvShowsListItem
 import com.github.androidpirate.capsulereviews.util.internal.Constants
 import com.github.androidpirate.capsulereviews.util.internal.FragmentType
 import com.github.androidpirate.capsulereviews.util.internal.FragmentType.*
@@ -17,7 +16,7 @@ class ListItemDiffCallback<T>(
             MOVIE_LIST ->
                 (oldItem as NetworkMoviesListItem).id == (newItem as NetworkMoviesListItem).id
             TV_LIST ->
-                (oldItem as DBTvShow).id == (newItem as DBTvShow).id
+                (oldItem as NetworkTvShowsListItem).id == (newItem as NetworkTvShowsListItem).id
             else ->
                 throw IllegalArgumentException("${Constants.ILLEGAL_FRAGMENT_TYPE_EXCEPTION} $fragment")
         }
@@ -28,7 +27,7 @@ class ListItemDiffCallback<T>(
             MOVIE_LIST ->
                 (oldItem as NetworkMoviesListItem).title == (newItem as NetworkMoviesListItem).title
             TV_LIST ->
-                (oldItem as DBTvShow).title == (newItem as DBTvShow).title
+                (oldItem as NetworkTvShowsListItem).name == (newItem as NetworkTvShowsListItem).name
             else ->
                 throw IllegalArgumentException("${Constants.ILLEGAL_FRAGMENT_TYPE_EXCEPTION} $fragment")
         }

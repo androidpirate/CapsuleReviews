@@ -35,16 +35,18 @@ class PagedItemAdapter<T>(
     inner class PagedItemHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         fun onBindItem(item: T) {
-            itemView.setOnClickListener {
-                clickListener.onPagedItemClick(item)
+            item?.let {
+                itemView.setOnClickListener {
+                    clickListener.onPagedItemClick(item as Any)
+                }
             }
             when(fragment) {
                 PAGED_MOVIE_LIST ->
-                    setItemThumbnail((item as NetworkMoviesListItem).posterPath)
+                    (item as? NetworkMoviesListItem)?.let { setItemThumbnail(it.posterPath) }
                 PAGED_TV_LIST ->
-                    setItemThumbnail((item as NetworkTvShowsListItem).posterPath)
+                    (item as? NetworkTvShowsListItem)?.let { setItemThumbnail(it.posterPath) }
                 SEARCH_RESULTS ->
-                    setItemThumbnail((item as NetworkMultiSearchListItem).posterPath)
+                    (item as? NetworkMultiSearchListItem)?.let { setItemThumbnail(it.posterPath) }
                 else ->
                     throw IllegalArgumentException("${Constants.ADAPTER_UNKNOWN_FRAGMENT_MESSAGE} $fragment")
             }

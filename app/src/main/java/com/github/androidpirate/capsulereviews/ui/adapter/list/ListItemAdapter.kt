@@ -8,15 +8,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.github.androidpirate.capsulereviews.BuildConfig
 import com.github.androidpirate.capsulereviews.R
-import com.github.androidpirate.capsulereviews.data.db.entity.DBMovie
-import com.github.androidpirate.capsulereviews.data.db.entity.DBTvShow
 import com.github.androidpirate.capsulereviews.data.network.response.movies.NetworkMoviesListItem
+import com.github.androidpirate.capsulereviews.data.network.response.tvShows.NetworkTvShowsListItem
 import com.github.androidpirate.capsulereviews.util.internal.*
 import com.github.androidpirate.capsulereviews.util.internal.FragmentType.*
-import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.list_item.view.*
 import java.lang.IllegalArgumentException
-import javax.inject.Inject
 
 class ListItemAdapter<T> (
     private val fragment: FragmentType,
@@ -74,7 +71,7 @@ class ListItemAdapter<T> (
             }
             when(fragment) {
                 MOVIE_LIST -> if(!lastItem) { setItemThumbnail((item as NetworkMoviesListItem).posterPath) }
-                TV_LIST -> if(!lastItem) { setItemThumbnail((item as DBTvShow).posterPath) }
+                TV_LIST -> if(!lastItem) { setItemThumbnail((item as NetworkTvShowsListItem).posterPath) }
                 else -> throw IllegalArgumentException("${Constants.ADAPTER_UNKNOWN_FRAGMENT_MESSAGE}: $fragment")
             }
         }

@@ -42,7 +42,7 @@ class NetworkAdapter(
         return networks.size
     }
 
-    inner class NetworkHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
+    class NetworkHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
         fun onBindNetwork(network: String) {
             itemView.networkTitle.text = network
         }
