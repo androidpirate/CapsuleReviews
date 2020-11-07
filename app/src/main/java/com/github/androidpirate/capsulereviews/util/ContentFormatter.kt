@@ -29,7 +29,7 @@ class ContentFormatter {
         }
 
         fun formatGenres(networkGenres: List<NetworkGenre>): String {
-            var movieGenres: String = ""
+            var movieGenres = ""
             for(i in networkGenres.indices) {
                 if(i == networkGenres.size - 1) {
                     movieGenres += networkGenres[i].name

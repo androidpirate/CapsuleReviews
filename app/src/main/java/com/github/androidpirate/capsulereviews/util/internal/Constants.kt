@@ -2,8 +2,6 @@ package com.github.androidpirate.capsulereviews.util.internal
 
 class Constants {
     companion object {
-        // General constants
-        const val COMMA_SEPARATOR = ","
         // Fragment constants
         const val MOVIES_LIST_FRAG_TAG = "MoviesListFragment"
         const val TV_SHOWS_LIST_FRAG_TAG = "TvShowsListFragment"
@@ -12,15 +10,12 @@ class Constants {
         // Video constants
         const val VIDEO_SITE = "YouTube"
         const val VIDEO_TYPE = "Trailer"
-        // Movie Detail constants
-        const val DEFAULT_MOVIE_ID = -1
         // Adapter constants
         const val ADAPTER_UNKNOWN_FRAGMENT_MESSAGE = "Unknown fragment type"
         const val ADAPTER_UNKNOWN_VIEW_TYPE_MESSAGE = "Unknown view type"
         const val ADAPTER_POSTER_WIDTH = "w185/"
         // Item constants
         const val SHOWCASE_POSTER_WIDTH = "w342/"
-        const val SHOWCASE_ID = 0
         const val EMPTY_VIDEO_KEY = ""
         // Data source constants
         const val FIRST_PAGE = 1
@@ -36,7 +31,6 @@ class Constants {
         const val TV_TOP_RATED_TITLE = "Top Rated TV Shows"
         const val TV_TRENDING_TITLE = "Trending TV Shows"
         // Favorite content constants
-        const val EMPTY_POSTER_PATH = ""
         const val EMPTY_FIELD_STRING = ""
         const val EMPTY_FIELD_INT = 0
         const val FAVORITE_MOVIE_TYPE = "Movie"
@@ -48,7 +42,6 @@ class Constants {
         const val MOVIE_TAB_TITLE = "Movies"
         const val TV_SHOWS_TAB_TITLE = "TV Shows"
         const val PAGER_PAGE_COUNT = 2
-        const val PAGER_MOVIE_TAB_POS = 0
         // Binge status Alert Dialog constants
         const val ARG_ITEM_ID = "List Item Id"
         const val BINGE_STATUS_ALERT_DIALOG_TITLE = "Select Binge Status"
