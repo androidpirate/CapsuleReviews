@@ -3,10 +3,10 @@
 
     <item
         android:id="@+id/unfavorite"
-        android:title="Unfavorite"/>
+        android:title="@string/favorites_popup_unfavorite_content"/>
 
     <item
         android:id="@+id/changeStatus"
-        android:title="Change Binge Status"/>
+        android:title="@string/favorites_popup_change_status_content"/>
 
 </menu>
