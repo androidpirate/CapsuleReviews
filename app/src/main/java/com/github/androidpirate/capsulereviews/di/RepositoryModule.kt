@@ -1,8 +1,6 @@
 package com.github.androidpirate.capsulereviews.di
 
 import com.github.androidpirate.capsulereviews.data.db.FavoritesDao
-import com.github.androidpirate.capsulereviews.data.db.MovieListDao
-import com.github.androidpirate.capsulereviews.data.db.TvShowListDao
 import com.github.androidpirate.capsulereviews.data.network.api.MovieDbService
 import com.github.androidpirate.capsulereviews.data.repo.FavoritesRepository
 import com.github.androidpirate.capsulereviews.data.repo.MoviesRepository
@@ -35,6 +33,6 @@ object RepositoryModule {
 
     @Provides
     @Singleton
-    fun provideTvShowsRepository(service: MovieDbService, dao: TvShowListDao) =
-        TvShowsRepository(service, dao)
+    fun provideTvShowsRepository(service: MovieDbService) =
+        TvShowsRepository(service)
 }
