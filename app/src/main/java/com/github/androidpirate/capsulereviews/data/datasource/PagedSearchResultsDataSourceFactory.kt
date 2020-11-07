@@ -10,7 +10,7 @@ class PagedSearchResultsDataSourceFactory(
     private val scope: CoroutineScope,
     private val queryString: String): DataSource.Factory<Int, NetworkMultiSearchListItem>() {
 
-    override fun create(): DataSource<Int, NetworkMultiSearchListItem> {
+    override fun create(): DataSource<Int, NetworkMultiSearchListItem?> {
         return PagedSearchResultsDataSource(api, scope, queryString)
     }
 }

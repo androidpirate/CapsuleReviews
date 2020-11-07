@@ -5,12 +5,9 @@ import com.github.androidpirate.capsulereviews.BuildConfig
 import com.github.androidpirate.capsulereviews.data.network.api.MovieDbService
 import com.github.androidpirate.capsulereviews.data.network.response.movies.NetworkMoviesListItem
 import com.github.androidpirate.capsulereviews.data.network.response.movies.NetworkMoviesResponse
-import com.github.androidpirate.capsulereviews.util.internal.SortType
-import com.github.androidpirate.capsulereviews.util.internal.Constants
-import com.github.androidpirate.capsulereviews.util.internal.GenreType
-import com.github.androidpirate.capsulereviews.util.internal.GenericSortType
+import com.github.androidpirate.capsulereviews.util.internal.*
 import com.github.androidpirate.capsulereviews.util.internal.GenericSortType.*
-import com.github.androidpirate.capsulereviews.util.internal.GenreType.*
+import com.github.androidpirate.capsulereviews.util.internal.GenreType.ALL
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -21,46 +18,69 @@ class PagedMoviesDataSource(
     private val scope: CoroutineScope,
     private val genericSort: GenericSortType,
     private val sort: SortType,
-    private val genre: GenreType): PageKeyedDataSource<Int, NetworkMoviesListItem>() {
+    private val genre: GenreType): PageKeyedDataSource<Int, NetworkMoviesListItem?>() {
 
-    private lateinit var response: NetworkMoviesResponse
     private var page = Constants.FIRST_PAGE
 
     override fun loadInitial(
         params: LoadInitialParams<Int>,
-        callback: LoadInitialCallback<Int, NetworkMoviesListItem>) {
+        callback: LoadInitialCallback<Int, NetworkMoviesListItem?>) {
         scope.launch {
             withContext(Dispatchers.IO) {
-                response =
-                    if(genre == ALL) {
+                val response: NetworkMoviesResponse? = try {
+                    if (genre == ALL) {
                         getPagedMoviesWithGenericSort(page, genericSort)
                     } else {
                         getPagedMoviesWithGenre(page, genre, sort)
                     }
-                callback.onResult(
-                    response.networkMoviesListItems,
-                    null,
-                    page + Constants.PAGE_LOAD_INCREMENT)
+                } catch (e: NoConnectivityException) {
+                    null
+                }
+
+                if(response != null) {
+                    callback.onResult(
+                        response.networkMoviesListItems,
+                        null,
+                        page + Constants.PAGE_LOAD_INCREMENT)
+                } else {
+                    // If load failed, return a list of nulls of length Constants.PAGE_SIZE:
+                    callback.onResult(
+                        MutableList<NetworkMoviesListItem?>(Constants.PAGE_SIZE) { null },
+                        null,
+                        page + Constants.PAGE_LOAD_INCREMENT)
+                }
             }
         }
     }
 
     override fun loadAfter(
         params: LoadParams<Int>,
-        callback: LoadCallback<Int, NetworkMoviesListItem>) {
+        callback: LoadCallback<Int, NetworkMoviesListItem?>) {
             scope.launch {
                 withContext(Dispatchers.IO) {
-                    response =
-                        if(genre == ALL) {
-                            getPagedMoviesWithGenericSort(params.key, genericSort)
-                        } else {
-                            getPagedMoviesWithGenre(params.key, genre, sort)
+                    val response: NetworkMoviesResponse? =
+                        try {
+                            if (genre == ALL) {
+                                getPagedMoviesWithGenericSort(params.key, genericSort)
+                            } else {
+                                getPagedMoviesWithGenre(params.key, genre, sort)
+                            }
+                        } catch (e: NoConnectivityException) {
+                            null
                         }
 
-                    if(response.totalPages >= params.key) {
+                    if(response != null) {
+                        if (response.totalPages >= params.key) {
+                            callback.onResult(
+                                response.networkMoviesListItems, params.key + Constants.PAGE_LOAD_INCREMENT
+                            )
+                        }
+                    } else {
+                        // If load failed, return a list of nulls of length Constants.PAGE_SIZE:
                         callback.onResult(
-                            response.networkMoviesListItems,
-                            params.key + Constants.PAGE_LOAD_INCREMENT)
+                            MutableList<NetworkMoviesListItem?>(Constants.PAGE_SIZE) { null },
+                            params.key + Constants.PAGE_LOAD_INCREMENT
+                        )
                     }
                 }
             }
@@ -68,7 +88,7 @@ class PagedMoviesDataSource(
 
     override fun loadBefore(
         params: LoadParams<Int>,
-        callback: LoadCallback<Int, NetworkMoviesListItem>) {
+        callback: LoadCallback<Int, NetworkMoviesListItem?>) {
         // Not used
     }
 

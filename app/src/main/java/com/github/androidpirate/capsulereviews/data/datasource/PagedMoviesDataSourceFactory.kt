@@ -13,9 +13,9 @@ class PagedMoviesDataSourceFactory(
     private val scope: CoroutineScope,
     private val genericSort: GenericSortType,
     private val sort: SortType,
-    private val genre: GenreType): DataSource.Factory<Int, NetworkMoviesListItem>() {
+    private val genre: GenreType): DataSource.Factory<Int, NetworkMoviesListItem?>() {
 
-    override fun create(): DataSource<Int, NetworkMoviesListItem> {
+    override fun create(): DataSource<Int, NetworkMoviesListItem?> {
         return PagedMoviesDataSource(api, scope, genericSort, sort, genre)
     }
 }

@@ -4,11 +4,7 @@ import androidx.paging.PageKeyedDataSource
 import com.github.androidpirate.capsulereviews.data.network.api.MovieDbService
 import com.github.androidpirate.capsulereviews.data.network.response.tvShows.NetworkTvShowsListItem
 import com.github.androidpirate.capsulereviews.data.network.response.tvShows.NetworkTvShowsResponse
-import com.github.androidpirate.capsulereviews.util.internal.SortType
-import com.github.androidpirate.capsulereviews.util.internal.Constants
-import com.github.androidpirate.capsulereviews.util.internal.GenreType
-import com.github.androidpirate.capsulereviews.util.internal.NetworkType
-import com.github.androidpirate.capsulereviews.util.internal.GenericSortType
+import com.github.androidpirate.capsulereviews.util.internal.*
 import com.github.androidpirate.capsulereviews.util.internal.GenericSortType.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -21,9 +17,8 @@ class PagedTvShowsDataSource (
     private val genericSort: GenericSortType,
     private val sort: SortType,
     private val network: NetworkType,
-    private val genre: GenreType): PageKeyedDataSource<Int, NetworkTvShowsListItem> (){
+    private val genre: GenreType): PageKeyedDataSource<Int, NetworkTvShowsListItem>() {
 
-    private lateinit var response: NetworkTvShowsResponse
     private var page = Constants.FIRST_PAGE
 
     override fun loadInitial(
@@ -31,21 +26,33 @@ class PagedTvShowsDataSource (
         callback: LoadInitialCallback<Int, NetworkTvShowsListItem>) {
             scope.launch {
                 withContext(Dispatchers.IO) {
-                    response =
-                        if(genre == GenreType.ALL && network == NetworkType.ALL) {
-                            getPagedTvShowsWithGenericSort(page, genericSort)
-                        } else if(genre == GenreType.ALL && network != NetworkType.ALL) {
-                            getPagedTvShowsWithNetwork(page, network, sort)
-                        } else if(genre != GenreType.ALL && network == NetworkType.ALL) {
-                            getPagedTvShowsWithGenre(page, genre, sort)
-                        } else {
-                            getPagedTvShowsWithGenreAndNetwork(page, genre, network, sort)
+                    val response: NetworkTvShowsResponse? =
+                        try {
+                            if(genre == GenreType.ALL && network == NetworkType.ALL) {
+                                getPagedTvShowsWithGenericSort(page, genericSort)
+                            } else if(genre == GenreType.ALL && network != NetworkType.ALL) {
+                                getPagedTvShowsWithNetwork(page, network, sort)
+                            } else if(genre != GenreType.ALL && network == NetworkType.ALL) {
+                                getPagedTvShowsWithGenre(page, genre, sort)
+                            } else {
+                                getPagedTvShowsWithGenreAndNetwork(page, genre, network, sort)
+                            }
+                        } catch (e: NoConnectivityException) {
+                            null
                         }
-                    callback.onResult(
-                        response.networkTvShowsListItems,
-                        null,
-                        page + Constants.PAGE_LOAD_INCREMENT
-                    )
+                    if(response != null) {
+                        callback.onResult(
+                            response.networkTvShowsListItems,
+                            null,
+                            page + Constants.PAGE_LOAD_INCREMENT
+                        )
+                    } else {
+                        // If load failed, return a list of nulls of length Constants.PAGE_SIZE:
+                        callback.onResult(
+                            MutableList<NetworkTvShowsListItem?>(Constants.PAGE_SIZE) { null },
+                            null,
+                            page + Constants.PAGE_LOAD_INCREMENT)
+                    }
                 }
             }
     }
@@ -53,19 +60,32 @@ class PagedTvShowsDataSource (
     override fun loadAfter(params: LoadParams<Int>, callback: LoadCallback<Int, NetworkTvShowsListItem>) {
         scope.launch {
             withContext(Dispatchers.IO) {
-                response =
-                    if(genre == GenreType.ALL && network == NetworkType.ALL) {
-                        getPagedTvShowsWithGenericSort(params.key, genericSort)
-                    } else if(genre == GenreType.ALL && network != NetworkType.ALL) {
-                        getPagedTvShowsWithNetwork(params.key, network, sort)
-                    } else if(genre != GenreType.ALL && network == NetworkType.ALL) {
-                        getPagedTvShowsWithGenre(params.key, genre, sort)
-                    } else {
-                        getPagedTvShowsWithGenreAndNetwork(params.key, genre, network, sort)
+                val response: NetworkTvShowsResponse? =
+                    try {
+                        if(genre == GenreType.ALL && network == NetworkType.ALL) {
+                            getPagedTvShowsWithGenericSort(params.key, genericSort)
+                        } else if(genre == GenreType.ALL && network != NetworkType.ALL) {
+                            getPagedTvShowsWithNetwork(params.key, network, sort)
+                        } else if(genre != GenreType.ALL && network == NetworkType.ALL) {
+                            getPagedTvShowsWithGenre(params.key, genre, sort)
+                        } else {
+                            getPagedTvShowsWithGenreAndNetwork(params.key, genre, network, sort)
+                        }
+                    } catch (e: NoConnectivityException) {
+                        null
                     }
-                if(response.totalPages >= params.key) {
+
+                if(response != null) {
+                    if(response.totalPages >= params.key) {
+                        callback.onResult(
+                            response.networkTvShowsListItems,
+                            params.key + Constants.PAGE_LOAD_INCREMENT
+                        )
+                    }
+                } else {
+                    // If load failed, return a list of nulls of length Constants.PAGE_SIZE:
                     callback.onResult(
-                        response.networkTvShowsListItems,
+                        MutableList<NetworkTvShowsListItem?>(Constants.PAGE_SIZE) { null },
                         params.key + Constants.PAGE_LOAD_INCREMENT
                     )
                 }
