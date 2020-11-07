@@ -30,24 +30,32 @@ class ConnectivityInterceptorImpl(context: Context) : ConnectivityInterceptor {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             cm?.run {
                 cm.getNetworkCapabilities(cm.activeNetwork)?.run {
-                    if (hasTransport(NetworkCapabilities.TRANSPORT_WIFI)) {
-                        result = ConnectivityType.WIFI
-                    } else if (hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR)) {
-                        result = ConnectivityType.CELLULAR
-                    } else if (hasTransport(NetworkCapabilities.TRANSPORT_VPN)){
-                        result = ConnectivityType.VPN
+                    when {
+                        hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> {
+                            result = ConnectivityType.WIFI
+                        }
+                        hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> {
+                            result = ConnectivityType.CELLULAR
+                        }
+                        hasTransport(NetworkCapabilities.TRANSPORT_VPN) -> {
+                            result = ConnectivityType.VPN
+                        }
                     }
                 }
             }
         } else {
             cm?.run {
                 cm.activeNetworkInfo?.run {
-                    if (type == ConnectivityManager.TYPE_WIFI) {
-                        result = ConnectivityType.WIFI
-                    } else if (type == ConnectivityManager.TYPE_MOBILE) {
-                        result = ConnectivityType.CELLULAR
-                    } else if(type == ConnectivityManager.TYPE_VPN) {
-                        result = ConnectivityType.VPN
+                    when (type) {
+                        ConnectivityManager.TYPE_WIFI -> {
+                            result = ConnectivityType.WIFI
+                        }
+                        ConnectivityManager.TYPE_MOBILE -> {
+                            result = ConnectivityType.CELLULAR
+                        }
+                        ConnectivityManager.TYPE_VPN -> {
+                            result = ConnectivityType.VPN
+                        }
                     }
                 }
             }

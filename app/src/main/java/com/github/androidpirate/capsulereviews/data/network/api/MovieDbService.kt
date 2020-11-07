@@ -1,6 +1,5 @@
 package com.github.androidpirate.capsulereviews.data.network.api
 
-import com.github.androidpirate.capsulereviews.BuildConfig
 import com.github.androidpirate.capsulereviews.data.network.response.movie.NetworkMovie
 import com.github.androidpirate.capsulereviews.data.network.response.movies.NetworkMoviesResponse
 import com.github.androidpirate.capsulereviews.data.network.response.multiSearch.NetworkMultiSearchResponse
@@ -8,10 +7,6 @@ import com.github.androidpirate.capsulereviews.data.network.response.tvShow.Netw
 import com.github.androidpirate.capsulereviews.data.network.response.tvShow.external_ids.NetworkTvShowExternalIDs
 import com.github.androidpirate.capsulereviews.data.network.response.tvShows.NetworkTvShowsResponse
 import com.github.androidpirate.capsulereviews.data.network.response.videos.NetworkVideosResponse
-import okhttp3.Interceptor
-import okhttp3.OkHttpClient
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
@@ -147,30 +142,4 @@ interface MovieDbService {
     suspend fun getSearchResults(
         @Query("page") page: Int,
         @Query("query") query: String): NetworkMultiSearchResponse
-
-    companion object {
-//        operator fun invoke(): MovieDbService {
-//            val requestInterceptor = Interceptor { chain ->
-//                val updatedUrl = chain.request()
-//                    .url()
-//                    .newBuilder()
-//                    .addQueryParameter("api_key", BuildConfig.MOVIE_DB_API_TOKEN)
-//                    .build()
-//                val updatedRequest = chain.request()
-//                    .newBuilder()
-//                    .url(updatedUrl)
-//                    .build()
-//                return@Interceptor chain.proceed(updatedRequest)
-//            }
-//            val okHttpClient = OkHttpClient.Builder()
-//                .addInterceptor(requestInterceptor)
-//                .build()
-//            return Retrofit.Builder()
-//                .client(okHttpClient)
-//                .baseUrl(BuildConfig.MOVIE_DB_BASE_URL)
-//                .addConverterFactory(GsonConverterFactory.create())
-//                .build()
-//                .create(MovieDbService::class.java)
-//        }
-    }
 }
