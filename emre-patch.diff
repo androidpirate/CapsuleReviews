@@ -1,0 +1,261 @@
+diff --git a/app/src/main/java/com/github/androidpirate/capsulereviews/data/datasource/PagedMoviesDataSource.kt b/app/src/main/java/com/github/androidpirate/capsulereviews/data/datasource/PagedMoviesDataSource.kt
+index 23aa8ff..c31199a 100644
+--- a/app/src/main/java/com/github/androidpirate/capsulereviews/data/datasource/PagedMoviesDataSource.kt
++++ b/app/src/main/java/com/github/androidpirate/capsulereviews/data/datasource/PagedMoviesDataSource.kt
+@@ -5,12 +5,12 @@ import com.github.androidpirate.capsulereviews.BuildConfig
+ import com.github.androidpirate.capsulereviews.data.network.api.MovieDbService
+ import com.github.androidpirate.capsulereviews.data.network.response.movies.NetworkMoviesListItem
+ import com.github.androidpirate.capsulereviews.data.network.response.movies.NetworkMoviesResponse
+-import com.github.androidpirate.capsulereviews.util.internal.SortType
+ import com.github.androidpirate.capsulereviews.util.internal.Constants
+-import com.github.androidpirate.capsulereviews.util.internal.GenreType
+ import com.github.androidpirate.capsulereviews.util.internal.GenericSortType
+ import com.github.androidpirate.capsulereviews.util.internal.GenericSortType.*
+-import com.github.androidpirate.capsulereviews.util.internal.GenreType.*
++import com.github.androidpirate.capsulereviews.util.internal.GenreType
++import com.github.androidpirate.capsulereviews.util.internal.GenreType.ALL
++import com.github.androidpirate.capsulereviews.util.internal.SortType
+ import kotlinx.coroutines.CoroutineScope
+ import kotlinx.coroutines.Dispatchers
+ import kotlinx.coroutines.launch
+@@ -21,46 +21,73 @@ class PagedMoviesDataSource(
+     private val scope: CoroutineScope,
+     private val genericSort: GenericSortType,
+     private val sort: SortType,
+-    private val genre: GenreType): PageKeyedDataSource<Int, NetworkMoviesListItem>() {
++    private val genre: GenreType): PageKeyedDataSource<Int, NetworkMoviesListItem?>() {
+ 
+-    private lateinit var response: NetworkMoviesResponse
+     private var page = Constants.FIRST_PAGE
+ 
+     override fun loadInitial(
+         params: LoadInitialParams<Int>,
+-        callback: LoadInitialCallback<Int, NetworkMoviesListItem>) {
++        callback: LoadInitialCallback<Int, NetworkMoviesListItem?>) {
+         scope.launch {
+             withContext(Dispatchers.IO) {
+-                response =
+-                    if(genre == ALL) {
++                val response: NetworkMoviesResponse? = try {
++                    error("Fake exception")
++
++                    if (genre == ALL) {
+                         getPagedMoviesWithGenericSort(page, genericSort)
+                     } else {
+                         getPagedMoviesWithGenre(page, genre, sort)
+                     }
+-                callback.onResult(
+-                    response.networkMoviesListItems,
+-                    null,
+-                    page + Constants.PAGE_LOAD_INCREMENT)
++                } catch (/* todo: only catch networking exceptions */e: Exception) {
++                    null
++                }
++
++                if(response != null) {
++                    callback.onResult(
++                        response.networkMoviesListItems,
++                        null,
++                        page + Constants.PAGE_LOAD_INCREMENT)
++                } else {
++                    // If load failed, return a list of nulls of length Constants.PAGE_SIZE:
++                    callback.onResult(
++                        MutableList<NetworkMoviesListItem?>(Constants.PAGE_SIZE) { null },
++                        null,
++                        page + Constants.PAGE_LOAD_INCREMENT)
++                }
+             }
+         }
+     }
+ 
+     override fun loadAfter(
+         params: LoadParams<Int>,
+-        callback: LoadCallback<Int, NetworkMoviesListItem>) {
++        callback: LoadCallback<Int, NetworkMoviesListItem?>) {
+             scope.launch {
+                 withContext(Dispatchers.IO) {
+-                    response =
+-                        if(genre == ALL) {
+-                            getPagedMoviesWithGenericSort(params.key, genericSort)
+-                        } else {
+-                            getPagedMoviesWithGenre(params.key, genre, sort)
++                    val response: NetworkMoviesResponse? =
++                        try {
++                            error("Fake exception")
++
++                            if (genre == ALL) {
++                                getPagedMoviesWithGenericSort(params.key, genericSort)
++                            } else {
++                                getPagedMoviesWithGenre(params.key, genre, sort)
++                            }
++                        } catch (/* todo: only catch networking exceptions */ e: Exception) {
++                            null
+                         }
+ 
+-                    if(response.totalPages >= params.key) {
++                    if(response != null) {
++                        if (response.totalPages >= params.key) {
++                            callback.onResult(
++                                response.networkMoviesListItems, params.key + Constants.PAGE_LOAD_INCREMENT
++                            )
++                        }
++                    } else {
++                        // If load failed, return a list of nulls of length Constants.PAGE_SIZE:
+                         callback.onResult(
+-                            response.networkMoviesListItems,
+-                            params.key + Constants.PAGE_LOAD_INCREMENT)
++                            MutableList<NetworkMoviesListItem?>(Constants.PAGE_SIZE) { null },
++                            params.key + Constants.PAGE_LOAD_INCREMENT
++                        )
+                     }
+                 }
+             }
+@@ -68,7 +95,7 @@ class PagedMoviesDataSource(
+ 
+     override fun loadBefore(
+         params: LoadParams<Int>,
+-        callback: LoadCallback<Int, NetworkMoviesListItem>) {
++        callback: LoadCallback<Int, NetworkMoviesListItem?>) {
+         // Not used
+     }
+ 
+diff --git a/app/src/main/java/com/github/androidpirate/capsulereviews/data/datasource/PagedMoviesDataSourceFactory.kt b/app/src/main/java/com/github/androidpirate/capsulereviews/data/datasource/PagedMoviesDataSourceFactory.kt
+index 07836d4..6285023 100644
+--- a/app/src/main/java/com/github/androidpirate/capsulereviews/data/datasource/PagedMoviesDataSourceFactory.kt
++++ b/app/src/main/java/com/github/androidpirate/capsulereviews/data/datasource/PagedMoviesDataSourceFactory.kt
+@@ -13,9 +13,9 @@ class PagedMoviesDataSourceFactory(
+     private val scope: CoroutineScope,
+     private val genericSort: GenericSortType,
+     private val sort: SortType,
+-    private val genre: GenreType): DataSource.Factory<Int, NetworkMoviesListItem>() {
++    private val genre: GenreType): DataSource.Factory<Int, NetworkMoviesListItem?>() {
+ 
+-    override fun create(): DataSource<Int, NetworkMoviesListItem> {
++    override fun create(): DataSource<Int, NetworkMoviesListItem?> {
+         return PagedMoviesDataSource(api, scope, genericSort, sort, genre)
+     }
+ }
+\ No newline at end of file
+diff --git a/app/src/main/java/com/github/androidpirate/capsulereviews/data/repo/MoviesRepository.kt b/app/src/main/java/com/github/androidpirate/capsulereviews/data/repo/MoviesRepository.kt
+index 37a5825..7e9f2b1 100644
+--- a/app/src/main/java/com/github/androidpirate/capsulereviews/data/repo/MoviesRepository.kt
++++ b/app/src/main/java/com/github/androidpirate/capsulereviews/data/repo/MoviesRepository.kt
+@@ -36,7 +36,7 @@ class MoviesRepository
+         genericSort: GenericSortType,
+         sort: SortType,
+         genre: GenreType)
+-        : LiveData<PagedList<NetworkMoviesListItem>> {
++        : LiveData<PagedList<NetworkMoviesListItem?>> {
+              val moviesDataSourceFactory = PagedMoviesDataSourceFactory(api, scope, genericSort, sort, genre)
+              val config =
+                  PagedList.Config.Builder().setEnablePlaceholders(false).setPageSize(Constants.PAGE_SIZE).build()
+diff --git a/app/src/main/java/com/github/androidpirate/capsulereviews/ui/adapter/paged/PagedItemAdapter.kt b/app/src/main/java/com/github/androidpirate/capsulereviews/ui/adapter/paged/PagedItemAdapter.kt
+index aabb818..948e7c9 100644
+--- a/app/src/main/java/com/github/androidpirate/capsulereviews/ui/adapter/paged/PagedItemAdapter.kt
++++ b/app/src/main/java/com/github/androidpirate/capsulereviews/ui/adapter/paged/PagedItemAdapter.kt
+@@ -35,16 +35,18 @@ class PagedItemAdapter<T>(
+     inner class PagedItemHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+ 
+         fun onBindItem(item: T) {
+-            itemView.setOnClickListener {
+-                clickListener.onPagedItemClick(item)
++            item?.let {
++                itemView.setOnClickListener {
++                    clickListener.onPagedItemClick(it)
++                }
+             }
+             when(fragment) {
+                 PAGED_MOVIE_LIST ->
+-                    setItemThumbnail((item as NetworkMoviesListItem).posterPath)
++                    (item as? NetworkMoviesListItem)?.let { setItemThumbnail(it.posterPath) }
+                 PAGED_TV_LIST ->
+-                    setItemThumbnail((item as NetworkTvShowsListItem).posterPath)
++                    (item as? NetworkTvShowsListItem)?.let { setItemThumbnail(it.posterPath) }
+                 SEARCH_RESULTS ->
+-                    setItemThumbnail((item as NetworkMultiSearchListItem).posterPath)
++                    (item as? NetworkMultiSearchListItem)?.let { setItemThumbnail(it.posterPath) }
+                 else ->
+                     throw IllegalArgumentException("${Constants.ADAPTER_UNKNOWN_FRAGMENT_MESSAGE} $fragment")
+             }
+diff --git a/app/src/main/java/com/github/androidpirate/capsulereviews/ui/adapter/paged/PagedItemClickListener.kt b/app/src/main/java/com/github/androidpirate/capsulereviews/ui/adapter/paged/PagedItemClickListener.kt
+index c90ddf2..0cc567b 100644
+--- a/app/src/main/java/com/github/androidpirate/capsulereviews/ui/adapter/paged/PagedItemClickListener.kt
++++ b/app/src/main/java/com/github/androidpirate/capsulereviews/ui/adapter/paged/PagedItemClickListener.kt
+@@ -1,5 +1,5 @@
+ package com.github.androidpirate.capsulereviews.ui.adapter.paged
+ 
+ interface PagedItemClickListener {
+-    fun <T> onPagedItemClick(item: T)
++    fun <T : Any> onPagedItemClick(item: T)
+ }
+\ No newline at end of file
+diff --git a/app/src/main/java/com/github/androidpirate/capsulereviews/ui/movie/paged/PagedMoviesListFragment.kt b/app/src/main/java/com/github/androidpirate/capsulereviews/ui/movie/paged/PagedMoviesListFragment.kt
+index 3f3ed9d..be04c78 100644
+--- a/app/src/main/java/com/github/androidpirate/capsulereviews/ui/movie/paged/PagedMoviesListFragment.kt
++++ b/app/src/main/java/com/github/androidpirate/capsulereviews/ui/movie/paged/PagedMoviesListFragment.kt
+@@ -31,7 +31,7 @@ class PagedMoviesListFragment :
+ 
+     private val args: PagedMoviesListFragmentArgs by navArgs()
+     private val viewModel: PagedMoviesListViewModel by viewModels()
+-    private lateinit var adapter: PagedItemAdapter<NetworkMoviesListItem>
++    private lateinit var adapter: PagedItemAdapter<NetworkMoviesListItem?>
+     private var moviesByGenre = false
+ 
+     override fun onCreate(savedInstanceState: Bundle?) {
+@@ -142,7 +142,7 @@ class PagedMoviesListFragment :
+         genresDialog.show(requireActivity().supportFragmentManager, Constants.PAGED_MOVIES_LIST_FRAG_TAG)
+     }
+ 
+-    override fun <T> onPagedItemClick(item: T) {
++    override fun <T : Any> onPagedItemClick(item: T) {
+         viewModel.setFlagDecorationOff()
+         val action = PagedMoviesListFragmentDirections
+             .actionPagedMoviesListToDetail((item as NetworkMoviesListItem).id)
+diff --git a/app/src/main/java/com/github/androidpirate/capsulereviews/ui/search/SearchFragment.kt b/app/src/main/java/com/github/androidpirate/capsulereviews/ui/search/SearchFragment.kt
+index 15cab1f..6e45e11 100644
+--- a/app/src/main/java/com/github/androidpirate/capsulereviews/ui/search/SearchFragment.kt
++++ b/app/src/main/java/com/github/androidpirate/capsulereviews/ui/search/SearchFragment.kt
+@@ -156,7 +156,7 @@ class SearchFragment : Fragment(), PagedItemClickListener {
+         findNavController().navigate(action)
+     }
+ 
+-    override fun <T> onPagedItemClick(item: T) {
++    override fun <T : Any> onPagedItemClick(item: T) {
+         viewModel.setFlagDecorationOff()
+         val searchItem = item as NetworkMultiSearchListItem
+         when(searchItem.mediaType) {
+diff --git a/app/src/main/java/com/github/androidpirate/capsulereviews/ui/tv/paged/PagedTvShowsListFragment.kt b/app/src/main/java/com/github/androidpirate/capsulereviews/ui/tv/paged/PagedTvShowsListFragment.kt
+index 31237e7..ee18a4f 100644
+--- a/app/src/main/java/com/github/androidpirate/capsulereviews/ui/tv/paged/PagedTvShowsListFragment.kt
++++ b/app/src/main/java/com/github/androidpirate/capsulereviews/ui/tv/paged/PagedTvShowsListFragment.kt
+@@ -191,7 +191,7 @@ class PagedTvShowsListFragment :
+         networksDialog.show(requireActivity().supportFragmentManager,   Constants.PAGED_TV_SHOWS_LIST_FRAG_TAG)
+     }
+ 
+-    override fun <T> onPagedItemClick(item: T) {
++    override fun <T : Any> onPagedItemClick(item: T) {
+         viewModel.setFlagDecorationOff()
+         val action = PagedTvShowsListFragmentDirections
+             .actionPagedTvShowsListToDetail((item as NetworkTvShowsListItem).id)
+diff --git a/app/src/main/java/com/github/androidpirate/capsulereviews/viewmodel/PagedMoviesListViewModel.kt b/app/src/main/java/com/github/androidpirate/capsulereviews/viewmodel/PagedMoviesListViewModel.kt
+index e1bee34..36c7269 100644
+--- a/app/src/main/java/com/github/androidpirate/capsulereviews/viewmodel/PagedMoviesListViewModel.kt
++++ b/app/src/main/java/com/github/androidpirate/capsulereviews/viewmodel/PagedMoviesListViewModel.kt
+@@ -20,7 +20,7 @@ class PagedMoviesListViewModel
+ 
+     fun setGenericSort(genericSortType: GenericSortType) = apply { genericSort.value = genericSortType }
+ 
+-    val moviesByGenericSortType: LiveData<PagedList<NetworkMoviesListItem>> =
++    val moviesByGenericSortType: LiveData<PagedList<NetworkMoviesListItem?>> =
+         Transformations.switchMap(genericSort, ::getMoviesByGenericSort)
+ 
+     // TODO 2: The problem here is I am using the function below with Transformations.switchMap
+@@ -38,7 +38,7 @@ class PagedMoviesListViewModel
+ 
+     fun setGenre(movieGenre: GenreType) = apply { genre.value = movieGenre }
+ 
+-    val moviesByGenre: LiveData<PagedList<NetworkMoviesListItem>> =
++    val moviesByGenre: LiveData<PagedList<NetworkMoviesListItem?>> =
+         Transformations.switchMap(genre, ::getMoviesByGenre)
+ 
+     private fun getMoviesByGenre(genre: GenreType) = repo.getPagedMovies(
