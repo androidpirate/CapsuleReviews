@@ -108,21 +108,4 @@
         <item name="android:textColorAlertDialogListItem">@color/colorWhite</item>
     </style>
 
-    <style name="FullScreenDialogTheme" parent="Theme.AppCompat.Light.Dialog.Alert">
-        <item name="android:windowBackground">@color/colorTransparentBlack</item>
-        <item name="android:textAlignment">center</item>
-        <item name="android:textSize">22sp</item>
-        <item name="android:textColor">@color/colorAccent</item>
-        <item name="android:textColorAlertDialogListItem">@color/colorWhite</item>
-    </style>
-
-    <style name="CustomDialog" parent="android:Theme.Dialog">
-        <item name="android:windowIsTranslucent">true</item>
-        <item name="android:windowBackground">@android:drawable/alert_dark_frame</item>
-        <item name="android:windowNoTitle">true</item>
-        <item name="android:windowIsFloating">false</item>
-        <item name="android:backgroundDimEnabled">true</item>
-        <item name="android:textColorAlertDialogListItem">#FDFDFD</item>
-    </style>
-
 </resources>

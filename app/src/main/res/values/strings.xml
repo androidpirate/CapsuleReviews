@@ -49,9 +49,6 @@
     <string name="tv_info_type_title_content">Type</string>
     <string name="tv_info_network_title_content">Network</string>
     <!-- Other Detail resources -->
-    <string name="rating_icon_description">Rating icon.</string>
-    <string name="next_icon_description">Next icon.</string>
-    <string name="dot_separator_description">Dot separator.</string>
     <string name="navigate_up_button_description">Navigate up button.</string>
     <string name="imdb_link_title_content">See on IMDB</string>
     <string name="more_title_content">More Like This</string>
@@ -63,10 +60,8 @@
     <string name="progress_bar_text_content">Loading</string>
     <!-- Showcase item resources -->
     <string name="showcase_movie_poster_description">Showcase movie poster.</string>
-    <string name="showcase_add_to_favorite_description">Add showcase item to favorites button.</string>
     <string name="play_showcase_movie_description">Play showcase item trailer.</string>
     <string name="play_showcase_tv_show_description">Play showcase tv show trailer.</string>
-    <string name="showcase_goto_details_description">Go to showcase item details.</string>
     <string name="showcase_tv_poster_description">Showcase tv show poster.</string>
     <string name="showcase_subtitle_content">Trending Now</string>
     <string name="add_favorites_button_content">Favorite</string>
@@ -74,7 +69,6 @@
     <!-- Search Fragment resources -->
     <string name="search_icon_description">Search icon.</string>
     <string name="et_search_hint_content">Search for a keyword</string>
-    <string name="search_spinner_title_content">Movies</string>
     <!-- Favorites Fragment resources -->
     <string name="favorites_toolbar_title_content">Favorites</string>
     <string name="binge_status_title_content">Binge Status</string>
@@ -86,4 +80,9 @@
     <string name="tmbd_title_content">The Movie Database</string>
     <string name="tmdb_link_content">www.tmdb.org</string>
     <string name="no_connection_content">No internet connection.</string>
+    <string name="refresh_content">Tap to refresh the page.</string>
+    <string name="no_connection_icon_description">No internet connection icon.</string>
+    <string name="refresh_button_description">Refresh button.</string>
+    <string name="favorites_popup_unfavorite_content">Unfavorite</string>
+    <string name="favorites_popup_change_status_content">Change Binge Status</string>
 </resources>

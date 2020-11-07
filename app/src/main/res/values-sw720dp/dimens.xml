@@ -50,4 +50,10 @@
     <!-- Search Bar Clear Button -->
     <dimen name="clearButtonWidth">30dp</dimen>
     <dimen name="clearButtonHeight">30dp</dimen>
+    <!-- No connection Icon -->
+    <dimen name="noConnectionIconWidth">100dp</dimen>
+    <dimen name="noConnectionIconHeight">100dp</dimen>
+    <!-- Refresh Icon -->
+    <dimen name="refreshIconWidth">50dp</dimen>
+    <dimen name="refreshIconHeight">50dp</dimen>
 </resources>
