@@ -19,8 +19,8 @@
 
             <ImageView
                 android:id="@+id/logo"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="@dimen/moreFragmentLogoWidth"
+                android:layout_height="@dimen/moreFragmentLogoHeight"
                 android:src="@drawable/ic_capsule_reviews_logo"
                 android:contentDescription="@string/capsule_reviews_logo_content"
                 app:layout_constraintTop_toTopOf="parent"
@@ -35,7 +35,6 @@
                 android:layout_height="wrap_content"
                 android:text="@string/app_name"
                 android:gravity="center_horizontal"
-                android:layout_marginTop="@dimen/margin_8"
                 app:layout_constraintTop_toBottomOf="@id/logo"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"/>
@@ -74,6 +73,18 @@
                 android:textColor="@color/colorAccent"
                 android:layout_marginTop="@dimen/margin_32"
                 app:layout_constraintTop_toBottomOf="@id/tmdbTitle"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+            <TextView
+                style="@style/SubTitleBoldTextStyle"
+                android:id="@+id/disclaimer"
+                android:layout_width="@dimen/match_constraint"
+                android:layout_height="wrap_content"
+                android:text="@string/disclaimer_content"
+                android:gravity="center_horizontal"
+                android:layout_marginTop="@dimen/margin_32"
+                app:layout_constraintTop_toBottomOf="@id/tmdbLink"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"/>
 

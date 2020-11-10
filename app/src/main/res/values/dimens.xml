@@ -50,6 +50,9 @@
     <!-- Search Bar Clear Button -->
     <dimen name="clearButtonWidth">20dp</dimen>
     <dimen name="clearButtonHeight">20dp</dimen>
+    <!-- Capsule Reviews Logo in More Fragment-->
+    <dimen name="moreFragmentLogoWidth">300dp</dimen>
+    <dimen name="moreFragmentLogoHeight">300dp</dimen>
     <!-- No connection Icon -->
     <dimen name="noConnectionIconWidth">100dp</dimen>
     <dimen name="noConnectionIconHeight">100dp</dimen>

@@ -75,10 +75,12 @@
     <string name="cancel_button_content_description">Cancel movie genre selection.</string>
     <string name="release_date_title_content">Release Date</string>
     <string name="detail_link_title_content">Details</string>
+    <!-- More Fragment resources -->
     <string name="clear_query_button_description">Clear query button.</string>
     <string name="powered_by_content">powered by</string>
     <string name="tmbd_title_content">The Movie Database</string>
-    <string name="tmdb_link_content">www.tmdb.org</string>
+    <string name="tmdb_link_content"><u>www.tmdb.org</u></string>
+    <string name="disclaimer_content">This product uses the TMDb API but is not endorsed or certified by TMDb.</string>
     <string name="no_connection_content">No internet connection.</string>
     <string name="refresh_content">Tap to refresh the page.</string>
     <string name="no_connection_icon_description">No internet connection icon.</string>
