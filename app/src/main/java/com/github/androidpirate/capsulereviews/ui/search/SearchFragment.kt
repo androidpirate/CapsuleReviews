@@ -55,7 +55,7 @@ class SearchFragment : Fragment(), PagedItemClickListener {
             refreshData()
         }
         setupViews()
-        etSearch.setOnEditorActionListener { textView, actionId, keyEvent ->
+        etSearch.setOnEditorActionListener { _, actionId, _ ->
             return@setOnEditorActionListener when(actionId) {
                 EditorInfo.IME_ACTION_SEARCH -> {
                     if(etSearch.text.isNotBlank() || etSearch.text.isNotEmpty()) {
@@ -72,7 +72,7 @@ class SearchFragment : Fragment(), PagedItemClickListener {
                 else -> false
             }
         }
-        etSearch.setOnFocusChangeListener { view, b ->
+        etSearch.setOnFocusChangeListener { _, _ ->
             if(etSearch.hasFocus()) {
                 displayClearButton()
             }

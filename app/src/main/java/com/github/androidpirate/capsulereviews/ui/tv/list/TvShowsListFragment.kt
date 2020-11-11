@@ -302,6 +302,8 @@ class TvShowsListFragment :
                             val action = TvShowsListFragmentDirections
                                 .actionTvShowsListToPagedTvShows(GenericSortType.POPULAR, NetworkType.DISNEY_PLUS, GenreType.ALL)
                             navigateToPagedTvShowsList(action)
+                        } else -> {
+                            // Do nothing
                         }
                     }
                 } else {
