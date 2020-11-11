@@ -10,6 +10,7 @@
     <dimen name="padding_8">8dp</dimen>
     <dimen name="padding_16">16dp</dimen>
     <dimen name="padding_32">32dp</dimen>
+    <dimen name="padding_64">64dp</dimen>
     <!-- Line Separator -->
     <dimen name="line_separator_height">1dp</dimen>
     <!-- Grid Layout -->
@@ -34,6 +35,12 @@
     <!-- Header Poster ImageView -->
     <dimen name="header_poster_width">280dp</dimen>
     <dimen name="header_poster_height">320dp</dimen>
+    <!-- Button Favorite -->
+    <dimen name="button_favorite_width">40dp</dimen>
+    <dimen name="button_favorite_height">40dp</dimen>
+    <!-- Button Share -->
+    <dimen name="button_share_width">40dp</dimen>
+    <dimen name="button_share_height">40dp</dimen>
     <!-- Button Play -->
     <dimen name="button_play_width">80dp</dimen>
     <dimen name="button_play_height">80dp</dimen>

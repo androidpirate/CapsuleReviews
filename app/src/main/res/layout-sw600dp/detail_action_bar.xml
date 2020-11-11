@@ -5,8 +5,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingStart="@dimen/padding_64"
-    android:paddingEnd="@dimen/padding_64">
+    android:paddingStart="@dimen/padding_32"
+    android:paddingEnd="@dimen/padding_32">
 
     <TextView
         style="@style/UserRatingStyle"
@@ -38,8 +38,8 @@
 
     <ImageView
         android:id="@+id/btShare"
-        android:layout_width="@dimen/button_share_width"
-        android:layout_height="@dimen/button_share_height"
+        android:layout_width="@dimen/button_favorite_width"
+        android:layout_height="@dimen/button_favorite_height"
         android:src="@drawable/ic_outline_share_white"
         android:contentDescription="@string/favorite_button_description"
         android:layout_marginStart="@dimen/margin_16"

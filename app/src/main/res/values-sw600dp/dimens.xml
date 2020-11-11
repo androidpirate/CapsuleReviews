@@ -10,60 +10,59 @@
     <dimen name="padding_8">8dp</dimen>
     <dimen name="padding_16">16dp</dimen>
     <dimen name="padding_32">32dp</dimen>
-    <dimen name="padding_64">64dp</dimen>
     <!-- Line Separator -->
     <dimen name="line_separator_height">1dp</dimen>
     <!-- Grid Layout -->
-    <dimen name="list_item_spacing">16dp</dimen>
+    <dimen name="list_item_spacing">24dp</dimen>
     <!-- Showcase -->
     <dimen name="showcase_height">550dp</dimen>
     <dimen name="showcase_favorite_width">80dp</dimen>
     <dimen name="showcase_favorite_height">80dp</dimen>
-    <dimen name="showcase_play_width">60dp</dimen>
-    <dimen name="showcase_play_height">40dp</dimen>
+    <dimen name="showcase_play_width">70dp</dimen>
+    <dimen name="showcase_play_height">50dp</dimen>
     <dimen name="showcase_info_width">80dp</dimen>
     <dimen name="showcase_info_height">80dp</dimen>
     <!-- List Item ImageView -->
-    <dimen name="list_item_iv_width">120dp</dimen>
-    <dimen name="list_item_iv_height">160dp</dimen>
+    <dimen name="list_item_iv_width">160dp</dimen>
+    <dimen name="list_item_iv_height">200dp</dimen>
     <!-- List Item See More -->
-    <dimen name="list_item_see_more_width">120dp</dimen>
-    <dimen name="list_item_see_more_height">160dp</dimen>
+    <dimen name="list_item_see_more_width">160dp</dimen>
+    <dimen name="list_item_see_more_height">200dp</dimen>
     <!-- List Item Similar -->
-    <dimen name="list_item_similar_width">140dp</dimen>
-    <dimen name="list_item_similar_height">180dp</dimen>
+    <dimen name="list_item_similar_width">160dp</dimen>
+    <dimen name="list_item_similar_height">200dp</dimen>
     <!-- Header Poster ImageView -->
-    <dimen name="header_poster_width">200dp</dimen>
-    <dimen name="header_poster_height">240dp</dimen>
+    <dimen name="header_poster_width">240dp</dimen>
+    <dimen name="header_poster_height">280dp</dimen>
     <!-- Button Favorite -->
-    <dimen name="button_favorite_width">40dp</dimen>
-    <dimen name="button_favorite_height">40dp</dimen>
+    <dimen name="button_favorite_width">30dp</dimen>
+    <dimen name="button_favorite_height">30dp</dimen>
     <!-- Button Share -->
-    <dimen name="button_share_width">40dp</dimen>
-    <dimen name="button_share_height">40dp</dimen>
+    <dimen name="button_share_width">30dp</dimen>
+    <dimen name="button_share_height">30dp</dimen>
     <!-- Button Play -->
-    <dimen name="button_play_width">50dp</dimen>
-    <dimen name="button_play_height">50dp</dimen>
+    <dimen name="button_play_width">60dp</dimen>
+    <dimen name="button_play_height">60dp</dimen>
     <!-- Showcase -->
     <dimen name="showcase_control_frame_height">160dp</dimen>
     <!-- Logo -->
-    <dimen name="logo_width">60dp</dimen>
-    <dimen name="logo_height">60dp</dimen>
+    <dimen name="logo_width">80dp</dimen>
+    <dimen name="logo_height">80dp</dimen>
     <!-- Button More -->
     <dimen name="button_more_height">50dp</dimen>
     <!-- Genre & Network Dialog Cancel Button -->
-    <dimen name="dialog_cancel_button_width">40dp</dimen>
-    <dimen name="dialog_cancel_button_height">40dp</dimen>
+    <dimen name="dialog_cancel_button_width">50dp</dimen>
+    <dimen name="dialog_cancel_button_height">50dp</dimen>
     <!-- Search Bar Clear Button -->
-    <dimen name="clearButtonWidth">20dp</dimen>
-    <dimen name="clearButtonHeight">20dp</dimen>
+    <dimen name="clearButtonWidth">30dp</dimen>
+    <dimen name="clearButtonHeight">30dp</dimen>
     <!-- Capsule Reviews Logo in More Fragment-->
-    <dimen name="moreFragmentLogoWidth">300dp</dimen>
-    <dimen name="moreFragmentLogoHeight">300dp</dimen>
+    <dimen name="moreFragmentLogoWidth">380dp</dimen>
+    <dimen name="moreFragmentLogoHeight">380dp</dimen>
     <!-- No connection Icon -->
     <dimen name="noConnectionIconWidth">100dp</dimen>
     <dimen name="noConnectionIconHeight">100dp</dimen>
     <!-- Refresh Icon -->
-    <dimen name="refreshIconWidth">40dp</dimen>
-    <dimen name="refreshIconHeight">40dp</dimen>
+    <dimen name="refreshIconWidth">50dp</dimen>
+    <dimen name="refreshIconHeight">50dp</dimen>
 </resources>
