@@ -213,13 +213,6 @@ I would like to take this opportunity to thank [Brian Munzenberger](https://gith
 
 ---
 
-# Download Capsule Reviews
-
-You can download **Capsule Reviews** application from the link below:
-
-https://play.google.com/store/apps/details?id=com.github.androidpirate.capsulereviews
-
-
 # Legal Disclaimer
 
 **This product uses the TMDb API but is not endorsed or certified by TMDb.**
