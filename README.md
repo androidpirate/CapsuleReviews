@@ -17,8 +17,6 @@ This project uses the **Model-View-ViewModel architecture pattern**.
 - **Dependency injection** with **Hilt**
 - **LiveData**
 
-![](App_Architecture.png)
-
 ---
 
 # Front-End Features
@@ -28,8 +26,6 @@ This project uses the **Model-View-ViewModel architecture pattern**.
 Displays a glimpse of search results for popular movie endpoints including popular, top-rated, upcoming, etc.
 
 Data is observed in the **LiveData** format by **MoviesListViewModel** and is displayed by the **ListItemAdapter**. Any user interaction over data is handled by **MoviesListFragment.**
-
-<img src="movies_list.gif" width="300" height="650">
 
 ### Key features:
 
@@ -44,8 +40,6 @@ Displays an endless scrolling list of movies using the **Paging Library** for 
 
 Data is observed in the **LiveData** format by **PagedMoviesListViewModel** and is displayed by the **PagedItemAdapter**. Any user interaction over data is handled by **PagedMoviesListFragment.**
 
-<img src="paged_movies_list.gif" width="300" height="650">
-
 ### Key features:
 
 - Updates the data by genre
@@ -56,8 +50,6 @@ Data is observed in the **LiveData** format by **PagedMoviesListViewModel** 
 Displays details of a selected movie such as release date, rating, and overview, along with useful links to **the IMDB page** and movie trailer on **YouTube**.
 
 Data is observed in the **LiveData** format by **MovieDetailViewModel** and is displayed by the **MovieDetailFragment**. Any user interaction over data is handled by **MovieDetailFragment**.
-
-<img src="movie_details.gif" width="300" height="650">
 
 ### Key features:
 
@@ -73,8 +65,6 @@ Data is observed in the **LiveData** format by **MovieDetailViewModel** and 
 Displays a glimpse of search results for trending tv shows for various endpoints and networks.
 
 Data is observed in the **LiveData** format by **TvShowsListViewModel** and is displayed by the **ListItemAdapter**. Any user interaction over data is handled by **TvShowsListFragment.**
-
-<img src="tv_shows_list.gif" width="300" height="650">
 
 ### Key features:
 
@@ -101,8 +91,6 @@ Displays details of a selected tv show such as release date, rating, and overvie
 
 Data is observed in the **LiveData** format by **TvShowDetailViewModel** and is displayed by the **TvShowDetailFragment**. Any user interaction over data is handled by **TvShowDetailFragment**.
 
-<img src="tv_show_details.gif" width="300" height="650">
-
 ### Key features:
 
 - Displays tv show details
@@ -118,8 +106,6 @@ Takes a keyword input and displays a paged list of search results for movies and
 
 Data is observed in the **LiveData** format by **PagedSearchResultsViewModel** and is displayed by the **SearchFragment**. Any user interaction over data is handled by **SearchFragment**.
 
-<img src="search.gif" width="300" height="650">
-
 ### Key features:
 
 - Displays a list of search results
@@ -130,8 +116,6 @@ Data is observed in the **LiveData** format by **PagedSearchResultsViewModel*
 Displays lists of favorite movies and tv shows in a **ViewPager**. Allows the user to change the binge status for list items, display details, and remove them from the lists.
 
 Data is observed in the **LiveData** format by **FavoritesViewModel** from the local database and is displayed by the **FavoritesFragment**. Any user interaction over data is handled by their respected fragments.
-
-<img src="favorites.gif" width="300" height="650">
 
 ### Key features:
 
